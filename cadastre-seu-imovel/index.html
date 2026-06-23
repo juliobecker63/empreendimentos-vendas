@@ -24,6 +24,7 @@ form.cad{background:#0e2138;border:1px solid rgba(255,255,255,.08);border-radius
 .grid{display:grid;gap:14px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
 .f{display:flex;flex-direction:column;gap:5px}.f.col2{grid-column:span 2}
 .f label{font-size:12.5px;color:#cdd9e6;font-weight:600}
+.f label .rq{color:#ff6b6b;font-weight:800;margin-left:3px}
 .f input,.f select,.f textarea{width:100%;padding:11px 12px;border:1px solid #d7dee6;border-radius:9px;background:#fff;color:#15202b;font-size:14.5px;font-family:inherit}
 .f input:focus,.f select:focus,.f textarea:focus{outline:2px solid var(--gold)}
 .f.inline{flex-direction:row;align-items:flex-end;gap:8px}.f.inline label{align-self:center}
@@ -64,7 +65,7 @@ footer{background:#06101d;color:#9fb1c4;text-align:center;padding:28px 20px;font
 
 <div class="page"><div class="wrap">
 <h1 class="ptitle">Cadastrar Imóvel</h1>
-<p class="psub">Preencha os dados abaixo. Entraremos em contato para avaliar e anunciar seu imóvel.</p>
+<p class="psub">Preencha os dados abaixo. Entraremos em contato para avaliar e anunciar seu imóvel.<br><small style="color:#8aa0b6">Campos com <span style="color:#ff6b6b">*</span> são obrigatórios.</small></p>
 
 <form class="cad" action="https://formsubmit.co/contato@investirimoveisemflorianopolis.com" method="POST">
 <input type="hidden" name="_subject" value="Novo cadastro de imóvel - site">
@@ -74,16 +75,15 @@ footer{background:#06101d;color:#9fb1c4;text-align:center;padding:28px 20px;font
 
 <div class="sechead"><span class="ic">👤</span> Sobre Você</div>
 <div class="grid g3">
-<div class="f col2"><label>Nome</label><input type="text" name="Nome" required></div>
-<div class="f"><label>Data de Nascimento</label><input type="text" name="Nascimento" placeholder="dd/mm/aaaa"></div>
-<div class="f col2"><label>E-mail</label><input type="email" name="E-mail"></div>
+<div class="f col2"><label>Nome <span class="rq">*</span></label><input type="text" name="Nome" required></div>
 <div class="f"><label>Como conheceu nosso site?</label><select name="Como conheceu"><option value="">Escolha uma opção</option><option>Amigos</option><option>Facebook</option><option>Google</option><option>Instagram</option><option>Jornal</option><option>OLX</option><option>Placa no imóvel</option><option>Plantão</option><option>Recebi um e-mail</option><option>Recebi um telefonema</option><option>Stand</option><option>Outros</option></select></div>
+<div class="f col2"><label>E-mail <span class="rq">*</span></label><input type="email" name="E-mail" required></div>
 <div class="f"><label>Telefone</label><input type="text" name="Telefone" placeholder="(48) 99123-4567"></div>
-<div class="f"><label>Celular / WhatsApp</label><input type="text" name="Celular" placeholder="(48) 99123-4567"></div>
+<div class="f"><label>Celular / WhatsApp <span class="rq">*</span></label><input type="text" name="Celular" placeholder="(48) 99123-4567" required></div>
 <div class="f"><label translate="no" class="notranslate">CEP</label><input type="text" name="CEP"></div>
-<div class="f col2"><label>Logradouro</label><input type="text" name="Logradouro"></div>
 <div class="f"><label>Número</label><input type="text" name="Numero"></div>
-<div class="f col2"><label>Complemento</label><input type="text" name="Complemento"></div>
+<div class="f col2"><label>Logradouro</label><input type="text" name="Logradouro"></div>
+<div class="f"><label>Complemento</label><input type="text" name="Complemento"></div>
 <div class="f"><label>Bairro</label><input type="text" name="Bairro"></div>
 <div class="f"><label>Cidade</label><input type="text" name="Cidade"></div>
 <div class="f"><label>Estado</label><select name="Estado"><option>SC</option><option>AC</option><option>AL</option><option>AM</option><option>AP</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MG</option><option>MS</option><option>MT</option><option>PA</option><option>PB</option><option>PE</option><option>PI</option><option>PR</option><option>RJ</option><option>RN</option><option>RO</option><option>RR</option><option>RS</option><option>SE</option><option>SP</option><option>TO</option></select></div>
@@ -92,11 +92,11 @@ footer{background:#06101d;color:#9fb1c4;text-align:center;padding:28px 20px;font
 
 <div class="sechead"><span class="ic">🏠</span> Sobre o Imóvel</div>
 <div class="grid g3">
-<div class="f"><label>Tipo de Imóvel</label><select name="Tipo de Imovel"><option value="">Escolha o tipo</option><option>Apartamento</option><option>Apartamento Duplex</option><option>Apartamento Garden</option><option>Apartamento Loft</option><option>Casa</option><option>Casa de Vila</option><option>Casa Duplex</option><option>Casa em Condomínio</option><option>Chácara</option><option>Cobertura</option><option>Estúdio</option><option>Fazenda</option><option>Flat</option><option>Galpão</option><option>Kitnet</option><option>Lançamento</option><option>Loja</option><option>Lote</option><option>Mansão</option><option>Pousada</option><option>Prédio</option><option>Sala Comercial</option><option>Sítio</option><option>Sobrado</option><option>Terreno</option><option>Terreno em Condomínio</option></select></div>
-<div class="f"><label>Perfil de Utilização</label><select name="Utilizacao"><option value="">Escolha uma opção</option><option>Comercial</option><option>Industrial</option><option>Residencial</option><option>Residencial/Comercial</option><option>Rural Comercial</option><option>Rural Residencial</option></select></div>
+<div class="f"><label>Tipo de Imóvel <span class="rq">*</span></label><select name="Tipo de Imovel" required><option value="">Escolha o tipo</option><option>Apartamento</option><option>Apartamento Duplex</option><option>Apartamento Garden</option><option>Apartamento Loft</option><option>Casa</option><option>Casa de Vila</option><option>Casa Duplex</option><option>Casa em Condomínio</option><option>Chácara</option><option>Cobertura</option><option>Estúdio</option><option>Fazenda</option><option>Flat</option><option>Galpão</option><option>Kitnet</option><option>Lançamento</option><option>Loja</option><option>Lote</option><option>Mansão</option><option>Pousada</option><option>Prédio</option><option>Sala Comercial</option><option>Sítio</option><option>Sobrado</option><option>Terreno</option><option>Terreno em Condomínio</option></select></div>
+<div class="f"><label>Perfil de Utilização <span class="rq">*</span></label><select name="Utilizacao" required><option value="">Escolha uma opção</option><option>Comercial</option><option>Industrial</option><option>Residencial</option><option>Residencial/Comercial</option><option>Rural Comercial</option><option>Rural Residencial</option></select></div>
 <div class="f"><label>Transação</label><select name="Transacao"><option value="">Escolha</option><option>Venda</option><option>Aluguel</option><option>Venda e Aluguel</option><option>Venda, Aluguel e Temporada</option><option>Temporada</option></select></div>
-<div class="f col2"><label>Já está sendo negociado por outros corretores?</label><select name="Exclusividade"><option value="">Escolha</option><option>Sim</option><option>Não</option></select></div>
-<div class="f"><label>O imóvel pode ser financiado?</label><select name="Financiamento"><option value="">Escolha</option><option>Sim</option><option>Não</option></select></div>
+<div class="f col2"><label>Já está sendo negociado por outros corretores? <span class="rq">*</span></label><select name="Exclusividade" required><option value="">Escolha</option><option>Sim</option><option>Não</option></select></div>
+<div class="f"><label>O imóvel pode ser financiado? <span class="rq">*</span></label><select name="Financiamento" required><option value="">Escolha</option><option>Sim</option><option>Não</option></select></div>
 </div>
 
 <div class="subhead">🛏 Cômodos</div>
@@ -114,17 +114,24 @@ footer{background:#06101d;color:#9fb1c4;text-align:center;padding:28px 20px;font
 <div class="f"><label>Dep. Empregada</label><select name="Dep Empregada"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option></select></div>
 </div>
 
+<div class="subhead">📍 Endereço do imóvel</div>
+<div class="grid"><div class="f"><label>O imóvel fica no mesmo endereço que você informou acima? <span class="rq">*</span></label>
+<select name="Endereco do imovel" id="end_local" required><option value="">Escolha</option><option value="Mesmo endereço informado acima">Sim — é o mesmo endereço informado acima</option><option value="Em outro lugar">Não — fica em outro lugar (preencher abaixo)</option></select>
+<span class="hint">Se for o mesmo endereço, não precisa preencher os campos abaixo.</span></div></div>
+<div id="loc_block" style="display:none">
 <div class="subhead">📍 Localização do Imóvel</div>
 <div class="grid g3">
-<div class="f"><label translate="no" class="notranslate">CEP</label><input type="text" name="Imovel CEP"></div>
-<div class="f col2"><label>Logradouro</label><input type="text" name="Imovel Logradouro"></div>
-<div class="f"><label>Número</label><input type="text" name="Imovel Numero"></div>
+<div class="f"><label translate="no" class="notranslate">CEP</label><input type="text" name="Imovel CEP" data-locreq></div>
+<div class="f col2"><label>Logradouro <span class="rq">*</span></label><input type="text" name="Imovel Logradouro" data-locreq></div>
+<div class="f"><label>Número</label><input type="text" name="Imovel Numero" data-locreq></div>
 <div class="f col2"><label>Complemento</label><input type="text" name="Imovel Complemento"></div>
-<div class="f"><label>Bairro</label><input type="text" name="Imovel Bairro"></div>
-<div class="f"><label>Cidade</label><input type="text" name="Imovel Cidade"></div>
+<div class="f"><label>Bairro <span class="rq">*</span></label><input type="text" name="Imovel Bairro" data-locreq></div>
+<div class="f"><label>Cidade <span class="rq">*</span></label><input type="text" name="Imovel Cidade" data-locreq></div>
 <div class="f"><label>Estado</label><select name="Imovel Estado"><option>SC</option><option>AC</option><option>AL</option><option>AM</option><option>AP</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MG</option><option>MS</option><option>MT</option><option>PA</option><option>PB</option><option>PE</option><option>PI</option><option>PR</option><option>RJ</option><option>RN</option><option>RO</option><option>RR</option><option>RS</option><option>SE</option><option>SP</option><option>TO</option></select></div>
 <div class="f col2"><label>Ponto de referência</label><input type="text" name="Ponto de referencia"></div>
 </div>
+</div>
+<script>(function(){var s=document.getElementById('end_local'),b=document.getElementById('loc_block');function u(){var o=s.value==='Em outro lugar';b.style.display=o?'block':'none';b.querySelectorAll('[data-locreq]').forEach(function(f){if(o)f.setAttribute('required','required');else f.removeAttribute('required');});}s.addEventListener('change',u);u();})();</script>
 <div class="grid"><div class="f"><label>Mais informações sobre o imóvel</label><textarea name="Mais informacoes" rows="4"></textarea></div></div>
 
 <div class="submit"><button class="btn-cad" type="submit">Cadastrar</button></div>
