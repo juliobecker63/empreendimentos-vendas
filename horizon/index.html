@@ -52,8 +52,13 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 .site-hd .wpp{background:#25D366;color:#fff;padding:12px 22px;border-radius:30px;font-weight:700;font-size:15px;display:inline-flex;gap:8px;align-items:center;white-space:nowrap}
 .hd-nav{background:#07111f;border-top:1px solid rgba(255,255,255,.07)}
 .hd-nav .nav-in{display:flex;gap:6px;flex-wrap:wrap}
-.hd-nav a{color:var(--gold2);font-weight:700;font-size:15px;letter-spacing:.5px;padding:14px 22px;text-transform:uppercase;border-bottom:3px solid transparent;transition:.15s}
-.hd-nav a:hover{color:#fff;background:rgba(201,162,39,.12);border-bottom-color:var(--gold)}
+.hd-nav>.wrap>a,.nav-ddt{color:var(--gold2);font-weight:700;font-size:15px;letter-spacing:.5px;padding:14px 22px;text-transform:uppercase;border-bottom:3px solid transparent;transition:.15s;display:inline-block}
+.hd-nav>.wrap>a:hover,.nav-ddt:hover,.nav-dd:hover .nav-ddt{color:#fff;background:rgba(201,162,39,.12);border-bottom-color:var(--gold)}
+.nav-dd{position:relative;display:inline-block}
+.nav-ddm{display:none;position:absolute;left:0;top:100%;background:#0a1626;border:1px solid var(--gold);border-radius:0 0 10px 10px;min-width:200px;z-index:60;box-shadow:0 14px 30px rgba(0,0,0,.45)}
+.nav-dd:hover .nav-ddm,.nav-dd:focus-within .nav-ddm{display:block}
+.nav-ddm a{display:block;color:var(--gold2);font-weight:600;font-size:14px;padding:11px 16px;text-transform:none;letter-spacing:0}
+.nav-ddm a:hover{background:rgba(201,162,39,.16);color:#fff}
 @media(max-width:860px){.brand .logo{height:74px}.brand-tx .nm{font-size:15px}.brand-tx .creci{font-size:11px}.hd-top{flex-wrap:wrap;justify-content:center;text-align:center}.hd-contact{justify-content:center;gap:14px;width:100%}.hd-contact .ci{font-size:14px}.hd-nav .nav-in{justify-content:center;overflow-x:auto;-webkit-overflow-scrolling:touch}.hd-nav a{padding:12px 15px;font-size:13px;white-space:nowrap}}
 @media(max-width:480px){.brand-tx .nm{font-size:12.5px}.hd-contact .ci{font-size:12.5px}.site-hd .wpp{padding:10px 16px}}
 
@@ -63,7 +68,7 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 <a class="brand" href="/home" aria-label="Início"><img src="/logo.png" class="logo" alt="Investir Imóveis em Florianópolis"><span class="brand-tx"><b class="creci">CRECI 11783</b><b class="nm">INVESTIMENTOS IMOBILIÁRIOS</b></span></a>
 <div class="hd-contact"><a class="ci" href="tel:+5548991115191">📞 (48) 99111-5191</a><a class="ci notranslate" translate="no" href="mailto:contato@investirimoveisemflorianopolis.com">✉️ contato@investirimoveisemflorianopolis.com</a><a class="wpp" href="https://wa.me/5548991115191?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Horizon.">💬 WhatsApp</a></div>
 </div>
-<nav class="hd-nav"><div class="wrap nav-in"><a href="/home">Home</a><a href="/#lancamentos">Imóveis a Venda</a><a href="/cadastre-seu-imovel">Cadastre seu Imóvel</a></div></nav>
+<nav class="hd-nav"><div class="wrap nav-in"><a href="/home">Home</a><div class="nav-dd"><a class="nav-ddt" href="/apartamentos-venda">Imóveis a Venda ▾</a><div class="nav-ddm"><a href="/apartamentos-venda">Apartamentos</a><a href="/casas-venda">Casas</a><a href="/terrenos-venda">Terrenos</a><a href="/lancamentos">Lançamentos</a><a href="/imoveis-usados">Usados</a></div></div><a href="/investidor">Investidor</a><a href="/cadastre-seu-imovel">Cadastre seu Imóvel</a></div></nav>
 </header>
 <div class="hero" style="background-image:linear-gradient(180deg,rgba(13,27,42,.15),rgba(13,27,42,.85)),url('horizon-01.jpg')"><div class="wrap">
 <div class="badges"><span class="badge">Lançamento</span><span class="badge alt">Preço de Custo</span></div>
