@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>Cadastro do Investidor | Investir Imóveis em Florianópolis</title>
+<style>
+:root{--navy:#0d1b2a;--navy2:#1b263b;--gold:#c9a227;--gold2:#e0b449;--ink:#15202b;--muted:#5b6b7b;--line:#e6e9ee;--bg:#f6f7f9;--white:#fff;--green:#1f8b4c}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+header{background:var(--navy);color:#fff}
+.hd{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1100px;margin:0 auto;padding:0 20px}
+.brand{font-weight:700;letter-spacing:.5px;font-size:15px}
+.brand small{display:block;font-weight:400;color:#9fb1c4;font-size:11px;letter-spacing:1px}
+.back{color:#9fb1c4;font-size:14px}
+.intro{background:var(--navy2);color:#fff;padding:30px 0}
+.intro h1{font-size:26px;margin-bottom:6px}.intro p{color:#aebccd;font-size:15px}
+.card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:28px;margin-top:-24px;box-shadow:0 10px 30px rgba(13,27,42,.08)}
+.tipo{margin-bottom:18px}
+.tipo .lbl2{font-size:13px;font-weight:600;color:#33424f;margin-bottom:8px}
+.tipo .opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt{text-align:left;padding:14px 16px;border:2px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;font-family:inherit}
+.opt b{display:block;color:var(--navy);font-size:15px;margin-bottom:3px}
+.opt span{display:block;color:var(--muted);font-size:12px;line-height:1.35}
+.opt.sel{border-color:var(--gold);background:#fffdf4}
+.opt:hover{border-color:var(--gold2)}
+.summary{background:#fbf7e8;border:1px solid #ecdfae;border-radius:12px;padding:16px 18px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.summary .lbl{font-size:12px;color:#6a5b25;text-transform:uppercase;letter-spacing:.5px}
+.summary .v{font-size:20px;font-weight:800;color:var(--navy)}
+.field{margin-bottom:16px}.field label{display:block;font-size:13px;margin-bottom:6px;color:#33424f;font-weight:600}
+.field input,.field textarea{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-size:15px;font-family:inherit}
+.field input:focus,.field textarea:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+.field textarea{resize:vertical;min-height:64px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.cotasfield{display:flex;align-items:center;gap:12px}
+.stepper{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.stepper button{width:42px;height:46px;border:none;background:var(--bg);font-size:20px;font-weight:700;color:var(--navy);cursor:pointer}
+.stepper button:hover{background:#eceff3}
+.stepper input{width:60px;height:46px;border:none;text-align:center;font-size:18px;font-weight:700;color:var(--navy);background:#fff}
+.btn{display:block;text-align:center;font-weight:700;font-size:16px;border:none;border-radius:10px;padding:15px;width:100%;cursor:pointer;background:var(--gold);color:#1b1b1b;margin-top:8px}
+.btn:hover{background:var(--gold2)}
+.secure{font-size:12px;color:var(--muted);margin-top:16px;text-align:center;line-height:1.5}
+.err{color:#c0392b;font-size:13px;margin-top:6px;display:none}
+/* tela de sucesso */
+.done{display:none;text-align:center;padding:20px 0}
+.done.show{display:block}
+.card.hide{display:none}
+.check{width:74px;height:74px;border-radius:50%;background:#eaf5ee;color:var(--green);font-size:40px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+.done h2{color:var(--navy);font-size:24px;margin-bottom:8px}
+.done p{color:var(--muted);font-size:15px;max-width:460px;margin:0 auto 22px}
+footer{background:#08111c;color:#9fb1c4;text-align:center;padding:30px 20px;font-size:14px;margin-top:50px}footer b{color:#fff}
+@media(max-width:600px){.row{grid-template-columns:1fr}.tipo .opts{grid-template-columns:1fr}}
+</style></head><body>
+<header><div class="hd"><div class="brand">INVESTIR IMÓVEIS EM FLORIANÓPOLIS<small>JULIO BECKER · CRECI SC 11783</small></div>
+<a class="back" href="oportunidade-investidores.html">← Voltar à oferta</a></div></header>
+
+<div class="intro"><div class="wrap"><h1>Cadastro do Investidor</h1>
+<p>Edifício de Renda — Studios Mobiliados · Florianópolis, SC</p></div></div>
+
+<div class="wrap">
+<div class="card" id="formCard">
+  <div class="tipo">
+    <div class="lbl2">Qual é o seu interesse?</div>
+    <div class="opts">
+      <button type="button" class="opt" id="optSozinho" onclick="setTipo('sozinho')">
+        <b>Comprar sozinho</b><span>Adquirir o imóvel inteiro · R$ 2.000.000</span>
+      </button>
+      <button type="button" class="opt" id="optCotas" onclick="setTipo('cotas')">
+        <b>Participar em cotas</b><span>Compra conjunta · escolha quantas cotas</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="summary">
+    <div><div class="lbl" id="sumLbl">Você está reservando</div><div class="v" id="sumQtd">1 cota(s)</div></div>
+    <div style="text-align:right"><div class="lbl">Investimento</div><div class="v" id="sumValor">R$ 200.000</div></div>
+  </div>
+
+  <form id="form" onsubmit="return enviar(event)">
+    <div class="field">
+      <label>Nome completo *</label>
+      <input id="nome" type="text" placeholder="Seu nome completo" required/>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>Telefone / WhatsApp *</label>
+        <input id="tel" type="tel" placeholder="(48) 99999-9999" required/>
+      </div>
+      <div class="field">
+        <label>E-mail *</label>
+        <input id="email" type="email" placeholder="seu@email.com" required/>
+      </div>
+    </div>
+    <div class="field">
+      <label>Endereço completo *</label>
+      <textarea id="end" placeholder="Rua, número, bairro, cidade, CEP" required></textarea>
+    </div>
+    <div class="field" id="cotasField">
+      <label>Quantidade de cotas *</label>
+      <div class="cotasfield">
+        <div class="stepper">
+          <button type="button" onclick="step(-1)">−</button>
+          <input id="cotas" type="number" min="1" max="10" value="1" oninput="recalc()"/>
+          <button type="button" onclick="step(1)">+</button>
+        </div>
+        <span style="font-size:13px;color:var(--muted)">de 10 cotas · R$ 200.000 cada</span>
+      </div>
+    </div>
+    <button class="btn" type="submit">Confirmar interesse →</button>
+    <div class="secure">🔒 Seus dados são usados apenas para conferência da proposta. A reserva da cota só é confirmada após nosso contato. Ao confirmar, abriremos o WhatsApp com seu resumo.</div>
+  </form>
+</div>
+
+<div class="done" id="doneCard">
+  <div class="check">✓</div>
+  <h2>Recebemos seu interesse!</h2>
+  <p>Obrigado, <span id="doneNome">investidor</span>. Em breve entraremos em contato pelo WhatsApp ou e-mail para confirmar sua participação e conferir a proposta. Se o WhatsApp não abriu automaticamente, toque no botão abaixo.</p>
+  <a class="btn" id="waBtn" style="max-width:360px;margin:0 auto" href="#" target="_blank">Abrir conversa no WhatsApp</a>
+</div>
+</div>
+
+<footer><div class="wrap"><b>Investir Imóveis em Florianópolis</b> · Julio Becker · CRECI SC 11783<br/>WhatsApp (48) 99111-5191</div></footer>
+
+<script>
+var VALOR_COTA=200000, RENDA_COTA=1400, VALOR_TOTAL=2000000, WPP='5548991115191';
+var tipo='cotas';
+function fmt(n){return 'R$ '+n.toLocaleString('pt-BR');}
+function getParam(k){var m=location.search.match(new RegExp(k+'=([^&]+)'));return m?decodeURIComponent(m[1]):null;}
+function getCotasParam(){var v=parseInt(getParam('cotas'));return v?Math.min(10,Math.max(1,v)):1;}
+function step(d){var i=document.getElementById('cotas');var v=(parseInt(i.value)||1)+d;if(v<1)v=1;if(v>10)v=10;i.value=v;recalc();}
+function setTipo(t){
+  tipo=t;
+  document.getElementById('optSozinho').classList.toggle('sel',t==='sozinho');
+  document.getElementById('optCotas').classList.toggle('sel',t==='cotas');
+  document.getElementById('cotasField').style.display=(t==='cotas')?'block':'none';
+  recalc();
+}
+function recalc(){
+  if(tipo==='sozinho'){
+    document.getElementById('sumLbl').textContent='Você quer adquirir';
+    document.getElementById('sumQtd').textContent='Imóvel inteiro';
+    document.getElementById('sumValor').textContent=fmt(VALOR_TOTAL);
+  }else{
+    var v=parseInt(document.getElementById('cotas').value)||1;if(v<1)v=1;if(v>10)v=10;
+    document.getElementById('sumLbl').textContent='Você está reservando';
+    document.getElementById('sumQtd').textContent=v+' cota(s)';
+    document.getElementById('sumValor').textContent=fmt(v*VALOR_COTA);
+  }
+}
+document.getElementById('cotas').value=getCotasParam();
+setTipo(getParam('tipo')==='sozinho'?'sozinho':'cotas');
+
+function enviar(e){
+  e.preventDefault();
+  var nome=document.getElementById('nome').value.trim();
+  var tel=document.getElementById('tel').value.trim();
+  var email=document.getElementById('email').value.trim();
+  var end=document.getElementById('end').value.trim();
+  var cotas=(tipo==='sozinho')?10:(parseInt(document.getElementById('cotas').value)||1);
+  var valor=(tipo==='sozinho')?VALOR_TOTAL:cotas*VALOR_COTA;
+  var tipoLabel=(tipo==='sozinho')?'Comprar sozinho (imóvel inteiro)':'Participar em cotas';
+  if(!nome||!tel||!email||!end)return false;
+
+  var registro={nome:nome,tel:tel,email:email,endereco:end,tipo:tipo,tipoLabel:tipoLabel,cotas:cotas,valor:valor,data:new Date().toISOString()};
+  // Fase 1: guarda localmente para o Painel Secreto exibir
+  try{var lista=JSON.parse(localStorage.getItem('cadastros_investidores')||'[]');lista.push(registro);localStorage.setItem('cadastros_investidores',JSON.stringify(lista));}catch(err){}
+
+  // monta mensagem de WhatsApp para o Julio
+  var detalhe=(tipo==='sozinho')?'*Compra do imóvel inteiro* ('+encodeURIComponent(fmt(VALOR_TOTAL))+')':'*Cotas:* '+cotas+' ('+encodeURIComponent(fmt(valor))+')';
+  var msg='*Novo interesse de investidor* %0A'+
+    '%0A*Interesse:* '+encodeURIComponent(tipoLabel)+
+    '%0A*Nome:* '+encodeURIComponent(nome)+
+    '%0A*WhatsApp:* '+encodeURIComponent(tel)+
+    '%0A*E-mail:* '+encodeURIComponent(email)+
+    '%0A*Endereço:* '+encodeURIComponent(end)+
+    '%0A'+detalhe+
+    '%0A%0AEdifício de Renda — Studios Mobiliados';
+  var url='https://wa.me/'+WPP+'?text='+msg;
+
+  document.getElementById('doneNome').textContent=nome.split(' ')[0];
+  document.getElementById('waBtn').href=url;
+  document.getElementById('formCard').classList.add('hide');
+  document.getElementById('doneCard').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+  window.open(url,'_blank');
+  return false;
+}
+</script>
+</body></html>
