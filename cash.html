@@ -18,6 +18,7 @@ header{position:sticky;top:0;z-index:50;background:var(--navy);color:#fff}
 /* HERO com simulador embutido (estilo CashMe) */
 .hero{background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 100%);color:#fff;padding:50px 0 60px}
 .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:start}
+.hero-grid>*{min-width:0}
 .badges{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
 .badge{background:var(--gold);color:#1b1b1b;font-weight:700;font-size:12px;letter-spacing:.5px;padding:6px 12px;border-radius:6px;text-transform:uppercase}
 .badge.alt{background:rgba(255,255,255,.16);color:#fff}
@@ -34,7 +35,7 @@ header{position:sticky;top:0;z-index:50;background:var(--navy);color:#fff}
 .sim .stn{width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none}
 .sim .stt b{color:var(--navy);font-size:16px}
 .sim label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
-.sim .money{width:100%;border:none;border-bottom:2px solid var(--line);font-size:30px;font-weight:700;color:var(--navy);padding:2px 0 6px;font-family:inherit}
+.sim .money{width:100%;min-width:0;border:none;border-bottom:2px solid var(--line);font-size:30px;font-weight:700;color:var(--navy);padding:2px 0 6px;font-family:inherit}
 .sim .money:focus{outline:none;border-bottom-color:var(--gold)}
 .sim .money::placeholder{color:#b9c4cf;font-weight:600}
 .sim input.txt{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font-size:15px;color:var(--ink);font-family:inherit}
