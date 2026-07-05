@@ -44,8 +44,19 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:30px 20px}
     <input id="tel" required placeholder="(48) 99999-9999"/>
     <label>E-mail</label>
     <input id="email" type="email" required placeholder="voce@email.com"/>
-    <label>Cidade/UF do imóvel</label>
-    <input id="cidadeUf" required placeholder="Florianópolis/SC"/>
+    <label>Estado do imóvel</label>
+    <select id="uf" required>
+      <option value="">Selecione o estado</option>
+      <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+      <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+      <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+      <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+      <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+      <option>RS</option><option>RO</option><option>RR</option><option selected>SC</option>
+      <option>SP</option><option>SE</option><option>TO</option>
+    </select>
+    <label>Cidade do imóvel</label>
+    <select id="cidade" required disabled><option value="">Escolha o estado primeiro</option></select>
     <label>Valor aproximado do imóvel</label>
     <input id="valorImovel" required type="text" inputmode="numeric" placeholder="R$ 500.000"/>
     <label>Quanto você deseja de crédito</label>
@@ -60,6 +71,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:30px 20px}
   <h1>Recebemos sua simulação, <span id="doneNome"></span>!</h1>
   <p>Em breve entraremos em contato pelo WhatsApp ou e-mail informado com uma proposta.</p>
   <p>Qualquer dúvida, fale com a gente pelo WhatsApp (48) 99111-5191.</p>
+  <p style="margin-top:14px;color:var(--muted)">Voltando para o site em <b id="cont">4</b>s…</p>
 </div>
 </div>
 
@@ -69,12 +81,34 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:30px 20px}
 var SUPABASE_URL='https://ljxijsfumxrstixkimyg.supabase.co';
 var SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxqeGlqc2Z1bXhyc3RpeGtpbXlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3ODE3MzgsImV4cCI6MjA5NzM1NzczOH0._aECk1delZGRuxXBSa75JA7Z43w-uQ1gL2yFoU2kNr0';
 function parseMoney(s){var n=String(s).replace(/[^\d]/g,'');return parseInt(n||'0',10);}
+
+/* Estado -> Cidade (IBGE). Se a API falhar, vira campo de texto livre. */
+function carregarCidades(){
+  var uf=document.getElementById('uf').value;
+  var sel=document.getElementById('cidade');
+  if(!uf){sel.disabled=true;sel.innerHTML='<option value="">Escolha o estado primeiro</option>';return;}
+  sel.disabled=true;sel.innerHTML='<option value="">Carregando cidades…</option>';
+  fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados/'+uf+'/municipios?orderBy=nome')
+    .then(function(r){if(!r.ok)throw new Error();return r.json();})
+    .then(function(cidades){
+      sel.innerHTML='<option value="">Selecione a cidade</option>'+cidades.map(function(c){return '<option>'+c.nome+'</option>';}).join('');
+      sel.disabled=false;
+    })
+    .catch(function(){
+      var inp=document.createElement('input');
+      inp.id='cidade';inp.required=true;inp.placeholder='Digite a cidade';
+      sel.parentNode.replaceChild(inp,sel);
+    });
+}
+document.getElementById('uf').addEventListener('change',carregarCidades);
+carregarCidades();
+
 function enviar(e){
   e.preventDefault();
   var nome=document.getElementById('nome').value.trim();
   var tel=document.getElementById('tel').value.trim();
   var email=document.getElementById('email').value.trim();
-  var cidadeUf=document.getElementById('cidadeUf').value.trim();
+  var cidadeUf=document.getElementById('cidade').value.trim()+'/'+document.getElementById('uf').value;
   var valorImovel=parseMoney(document.getElementById('valorImovel').value);
   var valorDesejado=parseMoney(document.getElementById('valorDesejado').value);
   var registro={nome:nome,telefone:tel,email:email,cidade_uf:cidadeUf,valor_imovel:valorImovel,valor_desejado:valorDesejado};
@@ -89,6 +123,12 @@ function enviar(e){
       document.getElementById('formCard').classList.add('hide');
       document.getElementById('doneCard').classList.remove('hide');
       window.scrollTo({top:0,behavior:'smooth'});
+      var s=4;
+      setInterval(function(){
+        s--;
+        document.getElementById('cont').textContent=s;
+        if(s<=0)window.location.href='https://investirimoveisemflorianopolis.com/';
+      },1000);
     })
     .catch(function(){
       btn.disabled=false;btn.textContent='Simular agora →';
