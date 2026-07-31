@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /painel-cash-hj4m2p/
+Disallow: /ir/
+Disallow: /redirecionamento-investidor/
+
+Sitemap: https://investirimoveisemflorianopolis.com/sitemap.xml
