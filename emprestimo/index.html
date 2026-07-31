@@ -69,6 +69,12 @@ section.block{padding:44px 0}h2{font-size:25px;color:var(--navy);margin-bottom:6
 .reqs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px;max-width:820px}
 .req{display:flex;gap:10px;align-items:flex-start;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:14px;color:#33424f}
 .req::before{content:"✔";color:var(--green);font-weight:700}
+.deps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:8px}
+.dep{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column}
+.dep q{quotes:none;font-style:italic;color:#33424f;font-size:14px;flex:1;margin-bottom:14px}
+.dep b{color:var(--navy);font-size:14px}
+.dep span{color:var(--muted);font-size:13px}
+.fonte{font-size:12px;color:var(--muted);margin-top:12px}
 details.faq{background:var(--white);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
 details.faq summary{cursor:pointer;padding:16px 18px;font-weight:600;color:var(--navy);font-size:15px;list-style:none;position:relative;padding-right:40px}
 details.faq summary::-webkit-details-marker{display:none}
@@ -82,7 +88,7 @@ details.faq .a{padding:0 18px 16px;color:var(--muted);font-size:14px}
 .btn-lg:hover{background:var(--gold2)}
 .disclaimer{background:#fbf7e8;border:1px solid #ecdfae;border-radius:12px;padding:18px 20px;color:#6a5b25;font-size:13px;margin-top:24px}
 footer{background:#08111c;color:#9fb1c4;text-align:center;padding:30px 20px;font-size:14px}footer b{color:#fff}
-@media(max-width:860px){.hero-grid{grid-template-columns:1fr}.hero{padding:36px 0 44px}.facts .grid{gap:8px}.fact b{font-size:17px}.steps{grid-template-columns:1fr 1fr}.advs{grid-template-columns:1fr}.reqs{grid-template-columns:1fr}.sim .row2{grid-template-columns:1fr}}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr}.deps{grid-template-columns:1fr}.hero{padding:36px 0 44px}.facts .grid{gap:8px}.fact b{font-size:17px}.steps{grid-template-columns:1fr 1fr}.advs{grid-template-columns:1fr}.reqs{grid-template-columns:1fr}.sim .row2{grid-template-columns:1fr}}
 @media(max-width:560px){.steps{grid-template-columns:1fr}}
 </style></head><body>
 <header><div class="wrap hd"><div class="brand">INVESTIR IMÓVEIS EM FLORIANÓPOLIS<small>JULIO BECKER · CRECI SC 11783</small></div>
@@ -188,6 +194,28 @@ footer{background:#08111c;color:#9fb1c4;text-align:center;padding:30px 20px;font
 </div></section>
 
 <section class="block" style="padding-top:0"><div class="wrap">
+<h2>Quem libera o crédito</h2>
+<div class="sub">Trabalhamos com a CashMe, fintech de crédito com garantia de imóvel do Grupo Cyrela.</div>
+<div class="facts" style="border:1px solid var(--line);border-radius:16px"><div class="grid">
+  <div class="fact"><b>+ R$ 6 bilhões</b><span>já liberados em crédito</span></div>
+  <div class="fact"><b>+ 3 mil cidades</b><span>atendidas no Brasil</span></div>
+  <div class="fact"><b>+ 330</b><span>colaboradores no país</span></div>
+</div></div>
+<p class="fonte">Números divulgados pela CashMe (cashme.com.br). Julio Becker atua como parceiro credenciado, cuidando do seu atendimento do início ao fim.</p>
+</div></section>
+
+<section class="block" style="padding-top:0"><div class="wrap">
+<h2>O que dizem os clientes</h2>
+<div class="sub">Depoimentos de clientes da CashMe, nossa instituição parceira.</div>
+<div class="deps">
+  <div class="dep"><q>Eu e minha família vínhamos há quase um ano em um aperto financeiro e psicológico sem precedentes. Foi quando conheci a CashMe, porque já estava pensando em vender a casa para quitar todas as dívidas. Quando entrei em contato e contei a minha história, recebi um direcionamento que salvou a minha casa e restaurou o meu crédito na praça. Estamos muito felizes.</q><b>Silvio</b><span>São Paulo, SP</span></div>
+  <div class="dep"><q>É muito bom quando se pode conectar com uma empresa como a CashMe, de maneira rápida e eficiente, com ótima taxa de mercado. Fiquei tranquilo quando vi que pertence ao Grupo Cyrela. Ainda bem que existe uma empresa assim, pois as restrições de outras instituições financeiras são muito grandes.</q><b>José Felipe da Silva Neto</b><span>São Paulo, SP</span></div>
+  <div class="dep"><q>Dei um voto de confiança porque senti segurança e transparência nas orientações. A minha operação foi a primeira em contato digital. Foi uma experiência muito inovadora, prática e sem problemas.</q><b>José Rodrigues</b><span>São Paulo, SP</span></div>
+</div>
+<p class="fonte">Depoimentos publicados pela CashMe em cashme.com.br.</p>
+</div></section>
+
+<section class="block" style="padding-top:0"><div class="wrap">
 <h2>Tire suas dúvidas</h2>
 <div class="sub">As perguntas mais comuns sobre o empréstimo com garantia de imóvel.</div>
 <details class="faq"><summary>O imóvel precisa estar quitado?</summary><div class="a">O ideal é que sim, mas imóveis com saldo pequeno de financiamento também podem ser aceitos, dependendo da análise. Na simulação a gente verifica o seu caso.</div></details>
@@ -198,6 +226,16 @@ footer{background:#08111c;color:#9fb1c4;text-align:center;padding:30px 20px;font
 <details class="faq"><summary>Qual o prazo para o dinheiro cair na conta?</summary><div class="a">Depende da análise de crédito, avaliação do imóvel e cartório. O processo completo costuma levar algumas semanas — bem mais rápido quando a documentação está em dia.</div></details>
 <details class="faq"><summary>Posso usar o dinheiro para qualquer coisa?</summary><div class="a">Sim, o crédito é de uso livre: quitar dívidas, reformar, investir no negócio, estudar ou comprar outro imóvel.</div></details>
 <details class="faq"><summary>E se eu atrasar as parcelas?</summary><div class="a">Como em qualquer crédito com garantia, o imóvel responde pela dívida em caso de inadimplência prolongada. Por isso orientamos contratar um valor com parcela confortável — a simulação serve exatamente pra isso.</div></details>
+<details class="faq"><summary>O que é alienação fiduciária?</summary><div class="a">É o mecanismo jurídico da garantia: enquanto o contrato durar, fica registrado na matrícula que o imóvel garante a dívida. Você mantém a posse e o uso normalmente. Quitado o empréstimo, a alienação é baixada e o imóvel volta a ficar totalmente livre.</div></details>
+<details class="faq"><summary>Posso usar um imóvel ainda financiado?</summary><div class="a">Em muitos casos, sim. A instituição quita o saldo devedor do financiamento atual e libera o restante do crédito para você — é o chamado refinanciamento. Quanto maior a parte já paga do imóvel, melhores as condições.</div></details>
+<details class="faq"><summary>Posso somar minha renda com a de outra pessoa?</summary><div class="a">Sim. A composição de renda costuma ser aceita com cônjuge, familiares e, em alguns casos, sócios da empresa. Somar rendas aumenta o valor de crédito que você consegue aprovar.</div></details>
+<details class="faq"><summary>Qual é a taxa de juros?</summary><div class="a">Varia conforme a instituição, seu perfil, o prazo escolhido e quanto o crédito representa do valor do imóvel. Há opções prefixadas (juros fixos até o fim) e pós-fixadas (corrigidas por um índice, como o IPCA). Na simulação apresentamos as condições reais para o seu caso.</div></details>
+<details class="faq"><summary>Quais custos existem além dos juros?</summary><div class="a">Normalmente: avaliação/vistoria do imóvel, IOF, tarifa de contratação e os custos de cartório para registrar a garantia na matrícula. Tudo isso é informado antes da assinatura, sem surpresa.</div></details>
+<details class="faq"><summary>Preciso pagar algo adiantado para liberar o crédito?</summary><div class="a">Não. Nenhuma instituição séria pede depósito antecipado para aprovar empréstimo. Os custos do processo (avaliação, cartório) acontecem dentro do contrato, com comprovante. Se alguém pedir um PIX "para liberar o dinheiro", é golpe.</div></details>
+<details class="faq"><summary>Existe valor mínimo de crédito ou de imóvel?</summary><div class="a">Sim. Cada instituição define um crédito mínimo (comumente a partir de R$ 50 mil) e um valor mínimo de avaliação do imóvel. Na simulação verificamos se o seu caso se encaixa.</div></details>
+<details class="faq"><summary>Posso quitar antes do fim do contrato?</summary><div class="a">Pode. A quitação antecipada — total ou parcial — dá direito à redução proporcional dos juros, conforme o Código de Defesa do Consumidor. É comum usar o 13º ou uma entrada de caixa para amortizar e encurtar o contrato.</div></details>
+<details class="faq"><summary>Estou negativado. Ainda consigo?</summary><div class="a">Pode ser possível. Como existe uma garantia real, a análise costuma ser mais flexível que a de um empréstimo comum. O que atrapalha são restrições graves, como execuções judiciais ou dívidas que recaiam sobre o próprio imóvel. Vale simular e verificar.</div></details>
+<details class="faq"><summary>O imóvel pode estar alugado?</summary><div class="a">Sim. Você continua recebendo o aluguel normalmente — dar o imóvel em garantia não interfere no contrato de locação nem obriga o inquilino a sair.</div></details>
 </div></section>
 
 <section class="block" style="padding-top:0"><div class="wrap">
