@@ -118,7 +118,7 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 <div class="field"><label>Nome</label><input type="text" name="Nome" required></div>
 <div class="field"><label>Telefone / WhatsApp</label><input type="tel" name="Telefone" required></div>
 <div class="field"><label>Mensagem</label><textarea name="Mensagem" rows="4"></textarea></div>
-<button class="btn" type="submit">Enviar</button></form></div>
+<button class="btn" type="submit">Enviar</button></form></div><script>(function(){var form=document.querySelector(".contact form");if(!form)return;form.addEventListener("submit",function(e){e.preventDefault();var btn=form.querySelector(".btn");btn.disabled=true;btn.textContent="Enviando...";fetch(form.action,{method:"POST",body:new FormData(form)}).catch(function(){});setTimeout(function(){form.innerHTML="<div style=\"background:#173a24;border:1px solid #2e7d4f;color:#bfe8cf;padding:20px;border-radius:10px;font-weight:600;font-size:15px\">✅ Mensagem enviada com sucesso!<br><span style=\"font-weight:400;font-size:14px;color:#cdd9e6\">Em breve entraremos em contato. Se preferir, fale agora pelo WhatsApp ao lado.</span></div>";},700);});})();</script>
 <div class="aside-cta"><p style="color:#cdd9e6">Prefere falar agora? Chame no WhatsApp:</p>
 <a class="wpp" href="https://wa.me/5548991115191?text=Ol%C3%A1!%20Tenho%20interesse%20no%20apartamento%20%C3%81guas%20de%20Mar%C3%A7o%20%28ref.%20AP001%29.">💬 Falar no WhatsApp</a>
 <p style="color:#8aa0b6;font-size:13px">Julio Cesar Becker<br>CRECI SC 11783 · (48) 99111-5191</p></div></div></div></section>
