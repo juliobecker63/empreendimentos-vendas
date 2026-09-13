@@ -81,63 +81,21 @@ footer{background:#06101d;color:#9fb1c4;text-align:center;padding:28px 20px;font
 <div class="sechead"><span class="ic">👤</span> Sobre Você</div>
 <div class="grid g3">
 <div class="f col2"><label>Nome <span class="rq">*</span></label><input type="text" name="Nome" required></div>
-<div class="f"><label>Como conheceu nosso site?</label><select name="Como conheceu"><option value="">Escolha uma opção</option><option>Amigos</option><option>Facebook</option><option>Google</option><option>Instagram</option><option>Jornal</option><option>OLX</option><option>Placa no imóvel</option><option>Plantão</option><option>Recebi um e-mail</option><option>Recebi um telefonema</option><option>Stand</option><option>Outros</option></select></div>
-<div class="f col2"><label>E-mail <span class="rq">*</span></label><input type="email" name="E-mail" required></div>
-<div class="f"><label>Telefone</label><input type="text" name="Telefone" placeholder="(48) 99123-4567"></div>
 <div class="f"><label>Celular / WhatsApp <span class="rq">*</span></label><input type="text" name="Celular" placeholder="(48) 99123-4567" required></div>
 <div class="f"><label translate="no" class="notranslate">CEP</label><input type="text" name="CEP"></div>
-<div class="f"><label>Número</label><input type="text" name="Numero"></div>
 <div class="f col2"><label>Logradouro</label><input type="text" name="Logradouro"></div>
 <div class="f"><label>Complemento</label><input type="text" name="Complemento"></div>
 <div class="f"><label>Bairro</label><input type="text" name="Bairro"></div>
 <div class="f"><label>Cidade</label><input type="text" name="Cidade"></div>
-<div class="f"><label>Estado</label><select name="Estado"><option>SC</option><option>AC</option><option>AL</option><option>AM</option><option>AP</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MG</option><option>MS</option><option>MT</option><option>PA</option><option>PB</option><option>PE</option><option>PI</option><option>PR</option><option>RJ</option><option>RN</option><option>RO</option><option>RR</option><option>RS</option><option>SE</option><option>SP</option><option>TO</option></select></div>
 </div>
-<div class="grid"><div class="f"><label>Observações</label><textarea name="Observacoes" rows="3"></textarea></div></div>
 
 <div class="sechead"><span class="ic">🏠</span> Sobre o Imóvel</div>
-<div class="grid g3">
+<div class="grid g2">
 <div class="f"><label>Tipo de Imóvel <span class="rq">*</span></label><select name="Tipo de Imovel" required><option value="">Escolha o tipo</option><option>Apartamento</option><option>Apartamento Duplex</option><option>Apartamento Garden</option><option>Apartamento Loft</option><option>Casa</option><option>Casa de Vila</option><option>Casa Duplex</option><option>Casa em Condomínio</option><option>Chácara</option><option>Cobertura</option><option>Estúdio</option><option>Fazenda</option><option>Flat</option><option>Galpão</option><option>Kitnet</option><option>Lançamento</option><option>Loja</option><option>Lote</option><option>Mansão</option><option>Pousada</option><option>Prédio</option><option>Sala Comercial</option><option>Sítio</option><option>Sobrado</option><option>Terreno</option><option>Terreno em Condomínio</option></select></div>
-<div class="f"><label>Perfil de Utilização <span class="rq">*</span></label><select name="Utilizacao" required><option value="">Escolha uma opção</option><option>Comercial</option><option>Industrial</option><option>Residencial</option><option>Residencial/Comercial</option><option>Rural Comercial</option><option>Rural Residencial</option></select></div>
-<div class="f"><label>Transação</label><select name="Transacao"><option value="">Escolha</option><option>Venda</option><option>Aluguel</option><option>Venda e Aluguel</option><option>Venda, Aluguel e Temporada</option><option>Temporada</option></select></div>
-<div class="f col2"><label>Já está sendo negociado por outros corretores? <span class="rq">*</span></label><select name="Exclusividade" required><option value="">Escolha</option><option>Sim</option><option>Não</option></select></div>
 <div class="f"><label>O imóvel pode ser financiado? <span class="rq">*</span></label><select name="Financiamento" required><option value="">Escolha</option><option>Sim</option><option>Não</option></select></div>
 </div>
 
-<div class="subhead">🛏 Cômodos</div>
-<div class="grid g4 rooms">
-<div class="f"><label>Quartos</label><select name="Quartos"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option></select></div>
-<div class="f"><label>sendo Suíte(s)</label><select name="Suites"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option></select></div>
-<div class="f"><label>Salas</label><select name="Salas"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option></select></div>
-<div class="f"><label>Banheiros</label><select name="Banheiros"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option></select></div>
-<div class="f"><label>Cozinha</label><select name="Cozinha"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option></select></div>
-<div class="f"><label>Sala de Jantar</label><select name="Sala de Jantar"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option></select></div>
-<div class="f"><label>Copa</label><select name="Copa"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option></select></div>
-<div class="f"><label>Área de Serviço</label><select name="Area de Servico"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option></select></div>
-<div class="f"><label>Garagem Coberta</label><select name="Garagem Coberta"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option></select></div>
-<div class="f"><label>Garagem Descoberta</label><select name="Garagem Descoberta"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option></select></div>
-<div class="f"><label>Dep. Empregada</label><select name="Dep Empregada"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option></select></div>
-</div>
-
-<div class="subhead">📍 Endereço do imóvel</div>
-<div class="grid"><div class="f"><label>O imóvel fica no mesmo endereço que você informou acima? <span class="rq">*</span></label>
-<select name="Endereco do imovel" id="end_local" required><option value="">Escolha</option><option value="Mesmo endereço informado acima">Sim — é o mesmo endereço informado acima</option><option value="Em outro lugar">Não — fica em outro lugar (preencher abaixo)</option></select>
-<span class="hint">Se for o mesmo endereço, não precisa preencher os campos abaixo.</span></div></div>
-<div id="loc_block" style="display:none">
-<div class="subhead">📍 Localização do Imóvel</div>
-<div class="grid g3">
-<div class="f"><label translate="no" class="notranslate">CEP</label><input type="text" name="Imovel CEP" data-locreq></div>
-<div class="f col2"><label>Logradouro <span class="rq">*</span></label><input type="text" name="Imovel Logradouro" data-locreq></div>
-<div class="f"><label>Número</label><input type="text" name="Imovel Numero" data-locreq></div>
-<div class="f col2"><label>Complemento</label><input type="text" name="Imovel Complemento"></div>
-<div class="f"><label>Bairro <span class="rq">*</span></label><input type="text" name="Imovel Bairro" data-locreq></div>
-<div class="f"><label>Cidade <span class="rq">*</span></label><input type="text" name="Imovel Cidade" data-locreq></div>
-<div class="f"><label>Estado</label><select name="Imovel Estado"><option>SC</option><option>AC</option><option>AL</option><option>AM</option><option>AP</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MG</option><option>MS</option><option>MT</option><option>PA</option><option>PB</option><option>PE</option><option>PI</option><option>PR</option><option>RJ</option><option>RN</option><option>RO</option><option>RR</option><option>RS</option><option>SE</option><option>SP</option><option>TO</option></select></div>
-<div class="f col2"><label>Ponto de referência</label><input type="text" name="Ponto de referencia"></div>
-</div>
-</div>
-<script>(function(){var s=document.getElementById('end_local'),b=document.getElementById('loc_block');function u(){var o=s.value==='Em outro lugar';b.style.display=o?'block':'none';b.querySelectorAll('[data-locreq]').forEach(function(f){if(o)f.setAttribute('required','required');else f.removeAttribute('required');});}s.addEventListener('change',u);u();})();</script>
-<div class="grid"><div class="f"><label>Mais informações sobre o imóvel</label><textarea name="Mais informacoes" rows="4"></textarea></div></div>
+<div class="grid" style="margin-top:14px"><div class="f"><label>Observações</label><textarea name="Observacoes" rows="4" placeholder="Se quiser, deixe uma mensagem para nós"></textarea></div></div>
 
 <div class="submit"><button class="btn-cad" type="submit">Cadastrar</button></div>
 </form>
