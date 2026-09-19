@@ -133,14 +133,14 @@ function popularFiltro(){
   var sel=document.getElementById('filtroImovel');
   var atual=sel.value;
   var imoveis=[];
-  _dados.forEach(function(r){if(imoveis.indexOf(r.imovel)<0)imoveis.push(r.imovel);});
+  _dados.forEach(function(r){if(imoveis.indexOf(r.negocio)<0)imoveis.push(r.negocio);});
   sel.innerHTML='<option value="">Todos os imóveis</option>'+imoveis.map(function(m){return '<option value="'+esc(m)+'">'+esc(m)+'</option>';}).join('');
   sel.value=atual;
 }
 function render(){
   popularFiltro();
   var filtro=document.getElementById('filtroImovel').value;
-  var l=filtro?_dados.filter(function(r){return r.imovel===filtro;}):_dados;
+  var l=filtro?_dados.filter(function(r){return r.negocio===filtro;}):_dados;
   var totValor=l.reduce(function(s,r){return s+(Number(r.valor)||0);},0);
   var ofertas=[];_dados.forEach(function(r){if(ofertas.indexOf(r.oferta)<0)ofertas.push(r.oferta);});
   document.getElementById('kPessoas').textContent=l.length;
@@ -151,24 +151,24 @@ function render(){
   l.forEach(function(r,i){
     var tr=document.createElement('tr');
     var tel=(r.telefone||'').replace(/\D/g,'');
-    var tipoTxt=(r.tipo==='sozinho')?'Comprar sozinho':'Participar em cotas';
+    var tipoTxt=r.tipo_label||((r.tipo==='sozinho')?'Comprar sozinho':'Participar em cotas');
     var tipoCls=(r.tipo==='sozinho')?'pillsozinho':'pillcotas';
     tr.innerHTML='<td>'+(i+1)+'</td>'+
       '<td><span class="nm">'+esc(r.nome)+'</span></td>'+
-      '<td><span class="mvpill">'+esc(r.imovel)+'</span></td>'+
+      '<td><span class="mvpill">'+esc(r.negocio)+'</span></td>'+
       '<td><span class="ipill '+tipoCls+'">'+esc(tipoTxt)+(r.cotas?' · '+r.cotas+' cota(s)':'')+'</span></td>'+
       '<td><a href="https://wa.me/55'+tel+'" target="_blank">'+esc(r.telefone)+'</a></td>'+
       '<td><a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a></td>'+
       '<td>'+esc(r.endereco)+'</td>'+
       '<td>'+fmt(r.valor)+'</td>'+
-      '<td>'+dataBR(r.criado_em)+'</td>';
+      '<td>'+dataBR(r.created_at)+'</td>';
     rows.appendChild(tr);
   });
 }
 function toCSV(){
   var h=['Nome','Imovel','Interesse','WhatsApp','Email','Endereco','Valor','Data'];
   var lines=[h.join(';')];
-  _dados.forEach(function(r){lines.push([r.nome,r.imovel,r.tipo,r.telefone,r.email,(r.endereco||'').replace(/\n/g,' '),r.valor,dataBR(r.criado_em)].map(function(x){return '"'+String(x==null?'':x).replace(/"/g,'""')+'"';}).join(';'));});
+  _dados.forEach(function(r){lines.push([r.nome,r.negocio,r.tipo,r.telefone,r.email,(r.endereco||'').replace(/\n/g,' '),r.valor,dataBR(r.created_at)].map(function(x){return '"'+String(x==null?'':x).replace(/"/g,'""')+'"';}).join(';'));});
   return lines.join('\n');
 }
 function baixarCSV(){

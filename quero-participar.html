@@ -168,7 +168,7 @@ function enviar(e){
   var tipoLabel=(tipo==='sozinho')?'Comprar sozinho (imóvel inteiro)':'Participar em cotas';
   if(!nome||!tel||!email||!end)return false;
 
-  var registro={site:location.hostname,oferta:OFERTA,imovel:IMOVEL,tipo:tipo,cotas:cotas,valor:valor,nome:nome,telefone:tel,email:email,endereco:end};
+  var registro={site:location.hostname,oferta:OFERTA,negocio:IMOVEL,tipo:tipo,tipo_label:tipoLabel,cotas:cotas,valor:valor,nome:nome,telefone:tel,email:email,endereco:end};
   fetch(SUPABASE_URL+'/rest/v1/cadastros_investidores',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON,'Authorization':'Bearer '+SUPABASE_ANON,'Prefer':'return=minimal'},body:JSON.stringify(registro)}).catch(function(){});
 
   // monta mensagem de WhatsApp para o Julio
