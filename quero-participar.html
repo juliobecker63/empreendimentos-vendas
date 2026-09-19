@@ -125,6 +125,12 @@ footer{background:#08111c;color:#9fb1c4;text-align:center;padding:30px 20px;font
 <script>
 var VALOR_COTA=200000, RENDA_COTA=1400, VALOR_TOTAL=2000000, WPP='5548991115191';
 var tipo='cotas';
+var SUPABASE_URL='https://ljxijsfumxrstixkimyg.supabase.co';
+var SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxqeGlqc2Z1bXhyc3RpeGtpbXlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3ODE3MzgsImV4cCI6MjA5NzM1NzczOH0._aECk1delZGRuxXBSa75JA7Z43w-uQ1gL2yFoU2kNr0';
+// identifica a oferta/imovel deste formulario (mais de uma oferta usara ?oferta=slug&nome=Nome+do+Imovel)
+var OFERTA=getParam2('oferta')||'edificio-renda-studios';
+var IMOVEL=getParam2('nome')||'Edifício de Renda — Studios Mobiliados';
+function getParam2(k){var m=location.search.match(new RegExp(k+'=([^&]+)'));return m?decodeURIComponent(m[1].replace(/\+/g,' ')):null;}
 function fmt(n){return 'R$ '+n.toLocaleString('pt-BR');}
 function getParam(k){var m=location.search.match(new RegExp(k+'=([^&]+)'));return m?decodeURIComponent(m[1]):null;}
 function getCotasParam(){var v=parseInt(getParam('cotas'));return v?Math.min(10,Math.max(1,v)):1;}
@@ -162,9 +168,8 @@ function enviar(e){
   var tipoLabel=(tipo==='sozinho')?'Comprar sozinho (imóvel inteiro)':'Participar em cotas';
   if(!nome||!tel||!email||!end)return false;
 
-  var registro={nome:nome,tel:tel,email:email,endereco:end,tipo:tipo,tipoLabel:tipoLabel,cotas:cotas,valor:valor,data:new Date().toISOString()};
-  // Fase 1: guarda localmente para o Painel Secreto exibir
-  try{var lista=JSON.parse(localStorage.getItem('cadastros_investidores')||'[]');lista.push(registro);localStorage.setItem('cadastros_investidores',JSON.stringify(lista));}catch(err){}
+  var registro={site:location.hostname,oferta:OFERTA,imovel:IMOVEL,tipo:tipo,cotas:cotas,valor:valor,nome:nome,telefone:tel,email:email,endereco:end};
+  fetch(SUPABASE_URL+'/rest/v1/cadastros_investidores',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON,'Authorization':'Bearer '+SUPABASE_ANON,'Prefer':'return=minimal'},body:JSON.stringify(registro)}).catch(function(){});
 
   // monta mensagem de WhatsApp para o Julio
   var detalhe=(tipo==='sozinho')?'*Compra do imóvel inteiro* ('+encodeURIComponent(fmt(VALOR_TOTAL))+')':'*Cotas:* '+cotas+' ('+encodeURIComponent(fmt(valor))+')';
@@ -175,7 +180,7 @@ function enviar(e){
     '%0A*E-mail:* '+encodeURIComponent(email)+
     '%0A*Endereço:* '+encodeURIComponent(end)+
     '%0A'+detalhe+
-    '%0A%0AEdifício de Renda — Studios Mobiliados';
+    '%0A%0A'+encodeURIComponent(IMOVEL);
   var url='https://wa.me/'+WPP+'?text='+msg;
 
   document.getElementById('doneNome').textContent=nome.split(' ')[0];
