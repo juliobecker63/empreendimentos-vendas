@@ -85,7 +85,7 @@ td a{color:var(--green);font-weight:600}
 
   <div class="tablebox">
     <table id="tbl">
-      <thead><tr><th>#</th><th>Nome</th><th>Imóvel</th><th>Interesse</th><th>WhatsApp</th><th>E-mail</th><th>Endereço</th><th>Valor</th><th>Data</th></tr></thead>
+      <thead><tr><th>#</th><th>Nome</th><th>Imóvel</th><th>Interesse</th><th>WhatsApp</th><th>E-mail</th><th>Endereço</th><th>Valor</th><th>Data</th><th>Ações</th></tr></thead>
       <tbody id="rows"></tbody>
     </table>
     <div class="empty" id="empty" style="display:none">Nenhum cadastro ainda. Os interessados aparecem aqui assim que preenchem o formulário.</div>
@@ -161,7 +161,8 @@ function render(){
       '<td><a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a></td>'+
       '<td>'+esc(r.endereco)+'</td>'+
       '<td>'+fmt(r.valor)+'</td>'+
-      '<td>'+dataBR(r.created_at)+'</td>';
+      '<td>'+dataBR(r.created_at)+'</td>'+
+      '<td><button class="btn o" onclick="remover(\''+r.id+'\')">Remover</button></td>';
     rows.appendChild(tr);
   });
 }
@@ -176,6 +177,17 @@ function baixarCSV(){
   var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='cadastros-investidores.csv';a.click();
 }
 function copiar(){navigator.clipboard.writeText(toCSV()).then(function(){alert('Lista copiada!');},function(){alert('Não foi possível copiar.');});}
+function remover(id){
+  if(!confirm('Remover este cadastro da lista? Essa ação não pode ser desfeita.'))return;
+  var senha=sessionStorage.getItem('painel_senha');
+  fetch(FN_URL+'?id='+encodeURIComponent(id),{method:'DELETE',headers:{'x-senha':senha}})
+    .then(function(r){return r.json();})
+    .then(function(res){
+      if(res.ok){carregar(senha,function(){});}
+      else{alert('Não foi possível remover: '+(res.error||'erro desconhecido'));}
+    })
+    .catch(function(){alert('Não foi possível remover. Tente novamente.');});
+}
 
 var salvo=sessionStorage.getItem('painel_senha');
 if(salvo){carregar(salvo,function(ok){if(ok)mostrar();else sessionStorage.removeItem('painel_senha');});}
