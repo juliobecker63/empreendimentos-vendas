@@ -166,7 +166,7 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 </tbody></table></div></div></section>
 <section class="block" style="padding-top:0"><div class="wrap"><div class="info">
 <h3 class="ih">MONTE SUA PRÓPRIA FORMA DE PAGAMENTO</h3>
-<p class="ip">Escolha a unidade, ajuste a entrada, as parcelas mensais e os reforços semestrais, informe se tem FGTS — a calculadora já mostra quanto fica pra financiar no banco (limitado ao teto de 50% do valor do imóvel; se o total não fechar com esse teto, a diferença aparece como saldo a cobrir com mais entrada, parcelas ou reforço).</p>
+<p class="ip">Escolha a unidade e digite os valores em reais (entrada, parcelas, reforços, chaves) — a calculadora já mostra quanto fica pra financiar no banco (limitado ao teto de 50% do valor do imóvel; se o total não fechar com esse teto, a diferença aparece como saldo a cobrir com mais entrada, parcelas ou reforço).</p>
 <div class="calc-grid">
 <div class="cfield" style="grid-column:1/-1"><label>Unidade</label><select id="calcValor">
 <option value="1379666.25" data-ato="206949.94" data-fcto="689833.12">Bloco 1 · Unidade 213 — Garden 2d · 97m² — R$ 1.379.666,25</option>
@@ -249,22 +249,22 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 <option value="2223534.6" data-ato="333530.19" data-fcto="1111767.3">Bloco 3 · Unidade 933 — Cobertura 3d · 146m² — R$ 2.223.534,60</option>
 <option value="2232843.2" data-ato="334926.48" data-fcto="1116421.6">Bloco 3 · Unidade 934 — Cobertura 3d · 146m² — R$ 2.232.843,20</option>
 </select></div>
-<div class="cfield"><label>Entrada / ATO (mín. 15%)</label><input type="number" id="calcEntrada" min="15" max="90" step="1" value="15"></div>
+<div class="cfield"><label>Entrada / ATO em R$ (mín. 15% do imóvel)</label><input type="text" inputmode="numeric" id="calcEntrada" value="0"></div>
 <div class="cfield"><label>Parcelas mensais (qtd.)</label><input type="number" id="calcMensalQtd" min="0" max="24" step="1" value="18"></div>
-<div class="cfield"><label>Valor de cada parcela mensal</label><input type="number" id="calcMensalValor" min="0" step="10" value="0"></div>
+<div class="cfield"><label>Valor de cada parcela mensal (R$)</label><input type="text" inputmode="numeric" id="calcMensalValor" value="0"></div>
 <div class="cfield"><label>Reforços semestrais (qtd.)</label><input type="number" id="calcReforcoQtd" min="0" max="6" step="1" value="3"></div>
-<div class="cfield"><label>Valor de cada reforço</label><input type="number" id="calcReforcoValor" min="0" step="100" value="0"></div>
-<div class="cfield"><label>Chaves (padrão 10% · pode dar mais na entrega)</label><input type="number" id="calcChaves" min="0" step="100" value="0"></div>
+<div class="cfield"><label>Valor de cada reforço (R$)</label><input type="text" inputmode="numeric" id="calcReforcoValor" value="0"></div>
+<div class="cfield"><label>Chaves em R$ (padrão 10% · pode dar mais na entrega)</label><input type="text" inputmode="numeric" id="calcChaves" value="0"></div>
 </div>
 <div style="margin:4px 0 16px">
 <label style="display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-weight:700;color:#15202b;font-size:15px"><input type="checkbox" id="calcFgts" style="width:18px;height:18px"> Tenho FGTS pra usar como parte do pagamento</label>
 <div id="calcFgtsWrap" style="display:none;margin:14px 0 0;max-width:280px">
 <label style="display:block;font-size:12px;color:#5b6b7b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Valor do FGTS</label>
-<input type="number" id="calcFgtsValor" min="0" step="500" value="0" style="width:100%;padding:11px 12px;border:1px solid #e6e9ee;border-radius:8px;font-size:15px;font-family:inherit;color:#15202b">
+<input type="text" inputmode="numeric" id="calcFgtsValor" value="0" style="width:100%;padding:11px 12px;border:1px solid #e6e9ee;border-radius:8px;font-size:15px;font-family:inherit;color:#15202b">
 </div>
 </div>
 <div class="calc-grid" style="margin-top:0">
-<div class="cfield" style="grid-column:1/-1"><label>Financiamento bancário (máx. 50% do imóvel — ajusta sozinho, você também pode editar)</label><input type="number" id="calcFinanciamento" min="0" step="100" value="0"></div>
+<div class="cfield" style="grid-column:1/-1"><label>Financiamento bancário em R$ (máx. 50% do imóvel — ajusta sozinho, você também pode editar)</label><input type="text" inputmode="numeric" id="calcFinanciamento" value="0"></div>
 </div>
 <div class="calc-result">
 <div class="cr"><span class="k">Entrada</span><span class="v" id="rEntrada">-</span></div>
@@ -289,6 +289,10 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 </div></div></section>
 <script>(function(){
 function brl(n){n=Number(n)||0;return 'R$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtInt(n){n=Math.round(Number(n)||0);return n.toLocaleString('pt-BR');}
+function numFromMasked(el){return Number((el.value||'0').replace(/\./g,''))||0;}
+function setMasked(el,n){el.value=fmtInt(n);}
+function maskLive(el){el.addEventListener('input',function(){var digits=el.value.replace(/\D/g,'');el.value=digits?Number(digits).toLocaleString('pt-BR'):'';el.setSelectionRange(el.value.length,el.value.length);});}
 var valorEl=document.getElementById('calcValor'),entradaEl=document.getElementById('calcEntrada'),
 mensalQtdEl=document.getElementById('calcMensalQtd'),mensalValorEl=document.getElementById('calcMensalValor'),
 reforcoQtdEl=document.getElementById('calcReforcoQtd'),reforcoValorEl=document.getElementById('calcReforcoValor'),
@@ -296,43 +300,43 @@ chavesEl=document.getElementById('calcChaves'),fgtsEl=document.getElementById('c
 fgtsValorEl=document.getElementById('calcFgtsValor'),fgtsWrap=document.getElementById('calcFgtsWrap'),
 financiamentoEl=document.getElementById('calcFinanciamento'),resumoEl=document.getElementById('calcResumo'),
 warnEl=document.getElementById('calcWarn');
-var MIN_ENTRADA=15,CHAVES_PCT=10,TETO_PCT=50;
+[entradaEl,mensalValorEl,reforcoValorEl,chavesEl,fgtsValorEl,financiamentoEl].forEach(maskLive);
+var CHAVES_PCT=10,TETO_PCT=50;
 var financManual=false;
 function valor(){return Number(valorEl.value)||0;}
 function tetoFinanciamento(){return valor()*TETO_PCT/100;}
+function minEntrada(){return valor()*0.15;}
 function setDefaults(){
 var v=valor();
-entradaEl.value=MIN_ENTRADA;
+setMasked(entradaEl,minEntrada());
 mensalQtdEl.value=18;
-mensalValorEl.value=Math.round((v*0.10/18)*100)/100;
+setMasked(mensalValorEl,v*0.10/18);
 reforcoQtdEl.value=3;
-reforcoValorEl.value=Math.round((v*0.15/3)*100)/100;
-chavesEl.value=Math.round((v*CHAVES_PCT/100)*100)/100;
+setMasked(reforcoValorEl,v*0.15/3);
+setMasked(chavesEl,v*CHAVES_PCT/100);
 financManual=false;
 calc(true);
 }
 function calc(resetFinanciamento){
 var v=valor();
-var entradaPct=Number(entradaEl.value)||MIN_ENTRADA;
-if(entradaPct<MIN_ENTRADA)entradaPct=MIN_ENTRADA;
-if(entradaPct>90)entradaPct=90;
-entradaEl.value=entradaPct;
-var entradaVal=v*entradaPct/100;
+var minEnt=minEntrada();
+var entradaVal=numFromMasked(entradaEl);
+if(entradaVal<minEnt){entradaVal=minEnt;setMasked(entradaEl,entradaVal);}
 var mensalQtd=Math.max(0,Math.floor(Number(mensalQtdEl.value)||0));
-var mensalValorUnit=Math.max(0,Number(mensalValorEl.value)||0);
+var mensalValorUnit=numFromMasked(mensalValorEl);
 var mensalTotal=mensalQtd*mensalValorUnit;
 var reforcoQtd=Math.max(0,Math.floor(Number(reforcoQtdEl.value)||0));
-var reforcoValorUnit=Math.max(0,Number(reforcoValorEl.value)||0);
+var reforcoValorUnit=numFromMasked(reforcoValorEl);
 var reforcoTotal=reforcoQtd*reforcoValorUnit;
-var chavesVal=Math.max(0,Number(chavesEl.value)||0);
-var fgtsVal=fgtsEl.checked?Math.max(0,Number(fgtsValorEl.value)||0):0;
+var chavesVal=numFromMasked(chavesEl);
+var fgtsVal=fgtsEl.checked?numFromMasked(fgtsValorEl):0;
 var teto=tetoFinanciamento();
 var restante=Math.max(0,v-entradaVal-mensalTotal-reforcoTotal-chavesVal-fgtsVal);
 if(resetFinanciamento||!financManual){
-financiamentoEl.value=Math.round(Math.min(restante,teto)*100)/100;
+setMasked(financiamentoEl,Math.min(restante,teto));
 }
-var financVal=Math.max(0,Number(financiamentoEl.value)||0);
-if(financVal>teto){financVal=teto;financiamentoEl.value=Math.round(teto*100)/100;}
+var financVal=numFromMasked(financiamentoEl);
+if(financVal>teto){financVal=teto;setMasked(financiamentoEl,teto);}
 var falta=restante-financVal;
 if(falta>1){warnEl.style.display='block';document.getElementById('rFalta').textContent=brl(falta);}else{warnEl.style.display='none';}
 var totalSimulado=entradaVal+mensalTotal+reforcoTotal+chavesVal+fgtsVal+financVal;
@@ -343,7 +347,7 @@ document.getElementById('rChaves').textContent=brl(chavesVal);
 document.getElementById('rFgts').textContent=fgtsVal>0?brl(fgtsVal):'Não utilizado';
 document.getElementById('rFinanciamento').textContent=brl(financVal);
 document.getElementById('rTotal').textContent=brl(totalSimulado);
-resumoEl.value='Unidade: '+valorEl.options[valorEl.selectedIndex].text+' | Entrada: '+entradaPct+'% ('+brl(entradaVal)+') | Parcelas mensais: '+mensalQtd+'x de '+brl(mensalValorUnit)+' | Reforços: '+reforcoQtd+'x de '+brl(reforcoValorUnit)+' | Chaves: '+brl(chavesVal)+' | FGTS: '+brl(fgtsVal)+' | Financiamento: '+brl(financVal)+(falta>1?' | Saldo não coberto: '+brl(falta):'');
+resumoEl.value='Unidade: '+valorEl.options[valorEl.selectedIndex].text+' | Entrada: '+brl(entradaVal)+' | Parcelas mensais: '+mensalQtd+'x de '+brl(mensalValorUnit)+' | Reforços: '+reforcoQtd+'x de '+brl(reforcoValorUnit)+' | Chaves: '+brl(chavesVal)+' | FGTS: '+brl(fgtsVal)+' | Financiamento: '+brl(financVal)+(falta>1?' | Saldo não coberto: '+brl(falta):'');
 document.querySelectorAll('#condTable tbody tr').forEach(function(tr){tr.style.display=(Number(tr.getAttribute('data-price'))===v)?'':'none';});
 }
 valorEl.addEventListener('change',function(){setDefaults();});
@@ -358,7 +362,7 @@ fgtsEl.addEventListener('change',function(){fgtsWrap.style.display=fgtsEl.checke
 fgtsValorEl.addEventListener('input',function(){calc(true);});
 financiamentoEl.addEventListener('input',function(){
 var teto=tetoFinanciamento();
-if(Number(financiamentoEl.value)>teto){financiamentoEl.value=Math.round(teto*100)/100;}
+if(numFromMasked(financiamentoEl)>teto){setMasked(financiamentoEl,teto);}
 financManual=true;
 calc(false);
 });
