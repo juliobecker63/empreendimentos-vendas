@@ -65,6 +65,8 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 .utable th{text-align:left;color:#5b6b7b;font-size:12px;text-transform:uppercase;letter-spacing:.5px;padding:8px 10px;border-bottom:2px solid #e6e9ee}.utable td{padding:10px;border-bottom:1px solid #e6e9ee;color:#15202b}.utable tr:last-child td{border-bottom:none}
 .wpp-pag{background:#1b263b;color:#fff;padding:7px 14px;border-radius:20px;font-weight:700;font-size:13px;display:inline-flex;gap:6px;align-items:center;white-space:nowrap}.wpp-pag:hover{background:#0d1b2a}
 .calc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:16px 0}
+.calc-row{margin:0 0 16px}
+.calc-row-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
 .cfield label{display:block;font-size:12px;color:#5b6b7b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
 .cfield select,.cfield input{width:100%;padding:11px 12px;border:1px solid #e6e9ee;border-radius:8px;font-size:15px;font-family:inherit;color:#15202b;background:#fff}
 .cfield.readonly input{background:#f6f7f9;color:#5b6b7b}
@@ -167,8 +169,7 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 <section class="block" style="padding-top:0"><div class="wrap"><div class="info">
 <h3 class="ih">MONTE SUA PRÓPRIA FORMA DE PAGAMENTO</h3>
 <p class="ip">Escolha a unidade e digite os valores em reais (entrada, parcelas, reforços, chaves) — a calculadora já mostra quanto fica pra financiar no banco (limitado ao teto de 50% do valor do imóvel; se o total não fechar com esse teto, a diferença aparece como saldo a cobrir com mais entrada, parcelas ou reforço).</p>
-<div class="calc-grid">
-<div class="cfield" style="grid-column:1/-1"><label>Unidade</label><select id="calcValor">
+<div class="calc-row"><div class="cfield"><label>Unidade</label><select id="calcValor">
 <option value="1379666.25" data-ato="206949.94" data-fcto="689833.12">Bloco 1 · Unidade 213 — Garden 2d · 97m² — R$ 1.379.666,25</option>
 <option value="1480831.49" data-ato="222124.72" data-fcto="740415.75">Bloco 1 · Unidade 214 — Garden 2d · 103m² — R$ 1.480.831,49</option>
 <option value="900062.05" data-ato="135009.31" data-fcto="450031.03">Bloco 1 · Unidade 215 — Garden 1d · 63m² — R$ 900.062,05</option>
@@ -248,24 +249,22 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 <option value="2232843.2" data-ato="334926.48" data-fcto="1116421.6">Bloco 3 · Unidade 932 — Cobertura 3d · 146m² — R$ 2.232.843,20</option>
 <option value="2223534.6" data-ato="333530.19" data-fcto="1111767.3">Bloco 3 · Unidade 933 — Cobertura 3d · 146m² — R$ 2.223.534,60</option>
 <option value="2232843.2" data-ato="334926.48" data-fcto="1116421.6">Bloco 3 · Unidade 934 — Cobertura 3d · 146m² — R$ 2.232.843,20</option>
-</select></div>
-<div class="cfield"><label>Entrada / ATO em R$ (mín. 15% do imóvel)</label><input type="text" inputmode="numeric" id="calcEntrada" value="0"></div>
+</select></div></div>
+<div class="calc-row"><div class="cfield" style="max-width:340px"><label>Entrada / ATO em R$ (mín. 15% do imóvel)</label><input type="text" inputmode="numeric" id="calcEntrada" value="0"></div></div>
+<div class="calc-row calc-row-pair">
 <div class="cfield"><label>Parcelas mensais (qtd.)</label><input type="number" id="calcMensalQtd" min="0" max="24" step="1" value="18"></div>
 <div class="cfield"><label>Valor de cada parcela mensal (R$)</label><input type="text" inputmode="numeric" id="calcMensalValor" value="0"></div>
+</div>
+<div class="calc-row calc-row-pair">
 <div class="cfield"><label>Reforços semestrais (qtd.)</label><input type="number" id="calcReforcoQtd" min="0" max="6" step="1" value="3"></div>
 <div class="cfield"><label>Valor de cada reforço (R$)</label><input type="text" inputmode="numeric" id="calcReforcoValor" value="0"></div>
-<div class="cfield"><label>Chaves em R$ (padrão 10% · pode dar mais na entrega)</label><input type="text" inputmode="numeric" id="calcChaves" value="0"></div>
 </div>
-<div style="margin:4px 0 16px">
+<div class="calc-row"><div class="cfield" style="max-width:340px"><label>Chaves em R$ (padrão 10% · pode dar mais na entrega)</label><input type="text" inputmode="numeric" id="calcChaves" value="0"></div></div>
+<div class="calc-row">
 <label style="display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-weight:700;color:#15202b;font-size:15px"><input type="checkbox" id="calcFgts" style="width:18px;height:18px"> Tenho FGTS pra usar como parte do pagamento</label>
-<div id="calcFgtsWrap" style="display:none;margin:14px 0 0;max-width:280px">
-<label style="display:block;font-size:12px;color:#5b6b7b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Valor do FGTS</label>
-<input type="text" inputmode="numeric" id="calcFgtsValor" value="0" style="width:100%;padding:11px 12px;border:1px solid #e6e9ee;border-radius:8px;font-size:15px;font-family:inherit;color:#15202b">
+<div id="calcFgtsWrap" style="display:none;margin:14px 0 0"><div class="cfield" style="max-width:340px"><label>Valor do FGTS (R$)</label><input type="text" inputmode="numeric" id="calcFgtsValor" value="0"></div></div>
 </div>
-</div>
-<div class="calc-grid" style="margin-top:0">
-<div class="cfield" style="grid-column:1/-1"><label>Financiamento bancário em R$ (máx. 50% do imóvel — ajusta sozinho, você também pode editar)</label><input type="text" inputmode="numeric" id="calcFinanciamento" value="0"></div>
-</div>
+<div class="calc-row"><div class="cfield" style="max-width:420px"><label>Financiamento bancário em R$ (máx. 50% do imóvel — ajusta sozinho, você também pode editar)</label><input type="text" inputmode="numeric" id="calcFinanciamento" value="0"></div></div>
 <div class="calc-result">
 <div class="cr"><span class="k">Entrada</span><span class="v" id="rEntrada">-</span></div>
 <div class="cr"><span class="k">Parcelas mensais</span><span class="v" id="rMensal">-</span></div>
