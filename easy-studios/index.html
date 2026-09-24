@@ -99,6 +99,54 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 <p class="ip">Obra por administração a preço de custo (Associação Civil; arts. 53 e ss. da Lei 10.406/02).</p>
 <p class="ip">Prazos e orçamentos estimados, podendo haver variações.</p>
 <br></div></div></section>
+<section class="block" style="padding-top:0"><div class="wrap"><h2>Simule seu pagamento</h2><div class="sub">Escolha a unidade e ajuste entrada e parcelas</div>
+<div class="info">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:28px" id="calcGrid">
+<div>
+<div class="field"><label>Unidade</label><select id="calcUnid" style="width:100%;padding:13px 14px;border:1px solid #d8dee5;border-radius:10px;font-size:15px;font-family:inherit">
+<option value="103">Cota 103 · Stúdio 18,49 m² · R$ 274.000,00</option>
+<option value="107">Cota 107 · Stúdio c/ sacada 20,33 m² · R$ 268.000,00</option>
+</select></div>
+<div class="field"><label>Entrada (R$)</label><input type="number" id="calcEntrada" step="100" style="border:1px solid #d8dee5;color:var(--ink);background:#fff"></div>
+<div class="field"><label>Parcela mensal (R$)</label><input type="number" id="calcParcela" step="50" style="border:1px solid #d8dee5;color:var(--ink);background:#fff"></div>
+<div class="field" style="margin-bottom:0"><label>Quantidade de parcelas mensais</label><input type="number" id="calcMeses" step="1" style="border:1px solid #d8dee5;color:var(--ink);background:#fff"></div>
+</div>
+<div style="background:var(--bg);border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:14px;justify-content:center">
+<div><span style="color:var(--muted);font-size:12.5px;letter-spacing:.4px">VALOR TOTAL DO STUDIO</span><br><b id="rTotal" style="font-size:23px;color:var(--navy)">—</b></div>
+<div><span style="color:var(--muted);font-size:12.5px;letter-spacing:.4px">ENTRADA</span><br><b id="rEntrada" style="font-size:18px;color:var(--navy)">—</b></div>
+<div><span style="color:var(--muted);font-size:12.5px;letter-spacing:.4px">TOTAL EM PARCELAS MENSAIS</span><br><b id="rParcelas" style="font-size:18px;color:var(--navy)">—</b></div>
+<div><span style="color:var(--muted);font-size:12.5px;letter-spacing:.4px">SALDO PARA REFORÇOS PERIÓDICOS*</span><br><b id="rSaldo" style="font-size:18px;color:#b3841c">—</b></div>
+</div>
+</div>
+<p style="color:#8aa0b6;font-size:12.5px;margin-top:18px">*Simulação com base nas condições informadas pela incorporadora para as cotas 103 e 107 (entrada + parcelas mensais fixas). O saldo restante é complementado por reforços periódicos definidos em contrato, conforme o cronograma da obra por administração a preço de custo — fale com o corretor para as condições e datas atualizadas. Valores sujeitos a alteração.</p>
+</div></div></section>
+<script>(function(){
+var units={"103":{total:274000,entrada:111932.05,parcela:500,meses:28},"107":{total:268000,entrada:106000,parcela:500,meses:24}};
+function $(id){return document.getElementById(id);}
+function brl(n){n=Number(n)||0;return 'R$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function loadUnit(){
+var u=units[$('calcUnid').value];
+$('calcEntrada').value=u.entrada;
+$('calcParcela').value=u.parcela;
+$('calcMeses').value=u.meses;
+calc();
+}
+function calc(){
+var u=units[$('calcUnid').value];
+var entrada=Number($('calcEntrada').value)||0;
+var parcela=Number($('calcParcela').value)||0;
+var meses=Number($('calcMeses').value)||0;
+var totalParcelas=parcela*meses;
+var saldo=Math.max(u.total-entrada-totalParcelas,0);
+$('rTotal').textContent=brl(u.total);
+$('rEntrada').textContent=brl(entrada);
+$('rParcelas').textContent=brl(totalParcelas)+' ('+meses+'x de '+brl(parcela)+')';
+$('rSaldo').textContent=brl(saldo);
+}
+$('calcUnid').addEventListener('change',loadUnit);
+['calcEntrada','calcParcela','calcMeses'].forEach(function(id){$(id).addEventListener('input',calc);});
+loadUnit();
+})();</script>
 <section class="block" style="padding-top:0"><div class="wrap"><div class="contact">
 <div><h2>Tenho interesse</h2><div class="sub">Preencha e eu entro em contato com valores, plantas e condições.</div>
 <form action="https://ljxijsfumxrstixkimyg.supabase.co/functions/v1/enviar-contato" method="POST">
