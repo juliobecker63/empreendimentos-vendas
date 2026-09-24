@@ -107,9 +107,9 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 <option value="103">Cota 103 · Stúdio 18,49 m² · R$ 274.000,00</option>
 <option value="107">Cota 107 · Stúdio c/ sacada 20,33 m² · R$ 268.000,00</option>
 </select></div>
+<div class="field"><label>Entrada: <b id="calcEntradaLbl">R$ 0,00</b></label><input type="range" id="calcEntrada" min="0" max="274000" step="500" value="111932.05" style="width:100%;accent-color:#c9a227"></div>
 <div class="field"><label>Parcelas mensais: <b id="calcMesesLbl">27</b> (máximo 27)</label><input type="range" id="calcMeses" min="1" max="27" step="1" value="27" style="width:100%;accent-color:#c9a227"><small id="calcNota" style="display:none;color:#b3841c;margin-top:4px"></small></div>
 <div class="field"><label>Reforços semestrais: <b id="calcReforcosLbl">4</b> (máximo 4)</label><input type="range" id="calcReforcos" min="0" max="4" step="1" value="4" style="width:100%;accent-color:#c9a227"></div>
-<div class="field"><label>Entrada (R$)</label><input type="number" id="calcEntrada" step="100" style="border:1px solid #d8dee5;color:var(--ink);background:#fff"></div>
 <div class="field" style="margin-bottom:0"><label>Parcela mensal (R$)</label><input type="number" id="calcParcela" step="50" style="border:1px solid #d8dee5;color:var(--ink);background:#fff"></div>
 </div>
 <div style="background:var(--bg);border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:14px;justify-content:center">
@@ -139,7 +139,8 @@ var u=units[$('calcUnid').value];
 var nota=[];
 var entrada=Number($('calcEntrada').value)||0;
 if(entrada<0){entrada=0;}
-if(entrada>u.total){entrada=u.total;$('calcEntrada').value=entrada;nota.push('Entrada ajustada para não ultrapassar o valor à vista.');}
+if(entrada>u.total){entrada=u.total;$('calcEntrada').value=entrada;}
+$('calcEntradaLbl').textContent=brl(entrada);
 var parcela=Number($('calcParcela').value)||0;
 if(parcela<0){parcela=0;}
 var meses=Number($('calcMeses').value)||0;
