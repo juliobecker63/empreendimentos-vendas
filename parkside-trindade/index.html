@@ -119,13 +119,14 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 </select></div>
 <div class="field"><label>Entrada: <b id="calcEntradaLbl">R$ 0,00</b></label><input type="range" id="calcEntrada" min="0" max="399000" step="500" value="399000" style="width:100%;accent-color:#c9a227"></div>
 <div class="field"><label>Parcelas mensais: <b id="calcMesesLbl">0</b> (sugestão até 24)</label><input type="range" id="calcMeses" min="0" max="24" step="1" value="0" style="width:100%;accent-color:#c9a227"><small id="calcNota" style="display:none;color:#b3841c;margin-top:4px"></small></div>
+<div class="field"><label>Reforços semestrais: <b id="calcReforcosLbl">0</b> (sugestão até 2)</label><input type="range" id="calcReforcos" min="0" max="2" step="1" value="0" style="width:100%;accent-color:#c9a227"></div>
 <div class="field" style="margin-bottom:0"><label>Parcela mensal (R$)</label><input type="number" id="calcParcela" step="50" value="1000" style="border:1px solid #d8dee5;color:var(--ink);background:#fff"></div>
 </div>
 <div style="background:var(--bg);border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:14px;justify-content:center">
 <div><span style="color:var(--muted);font-size:12.5px;letter-spacing:.4px">VALOR TOTAL DA UNIDADE</span><br><b id="rTotal" style="font-size:23px;color:var(--navy)">—</b></div>
 <div><span style="color:var(--muted);font-size:12.5px;letter-spacing:.4px">ENTRADA</span><br><b id="rEntrada" style="font-size:18px;color:var(--navy)">—</b></div>
 <div><span style="color:var(--muted);font-size:12.5px;letter-spacing:.4px">TOTAL EM PARCELAS MENSAIS</span><br><b id="rParcelas" style="font-size:18px;color:var(--navy)">—</b></div>
-<div><span style="color:var(--muted);font-size:12.5px;letter-spacing:.4px">SALDO DEVEDOR*</span><br><b id="rSaldo" style="font-size:18px;color:#b3841c">—</b></div>
+<div><span style="color:var(--muted);font-size:12.5px;letter-spacing:.4px">REFORÇOS SEMESTRAIS*</span><br><b id="rReforcos" style="font-size:18px;color:#b3841c">—</b></div>
 </div>
 </div>
 </div></div></section>
@@ -139,6 +140,7 @@ var u=units[$('calcUnid').value];
 $('calcEntrada').max=u.total;
 $('calcEntrada').value=u.entrada;
 $('calcMeses').value=0;
+$('calcReforcos').value=0;
 calc();
 }
 function calc(){
@@ -155,18 +157,26 @@ var restante=u.total-entrada;
 var mesesPermitido=parcela>0?Math.min(MAXM,Math.floor(restante/parcela)):0;
 if(meses>mesesPermitido){meses=mesesPermitido;$('calcMeses').value=meses;nota.push('Reduzi para '+meses+' parcela'+(meses===1?'':'s')+' para não ultrapassar o valor à vista.');}
 $('calcMesesLbl').textContent=meses;
+var reforcos=Number($('calcReforcos').value)||0;
+$('calcReforcosLbl').textContent=reforcos;
 var totalParcelas=parcela*meses;
 var saldo=u.total-entrada-totalParcelas;
 if(saldo<0)saldo=0;
 $('rTotal').textContent=brl(u.total);
 $('rEntrada').textContent=brl(entrada);
 $('rParcelas').textContent=brl(totalParcelas)+' ('+meses+'x de '+brl(parcela)+')';
-$('rSaldo').textContent=saldo<=0?'Nenhum saldo devedor':brl(saldo)+' — a combinar com o corretor';
+if(saldo<=0){
+$('rReforcos').textContent='Nenhum reforço necessário';
+}else if(reforcos>0){
+$('rReforcos').textContent=reforcos+'x de '+brl(saldo/reforcos)+' (semestral)';
+}else{
+$('rReforcos').textContent='Saldo de '+brl(saldo)+' sem reforços marcados — aumente entrada/parcelas ou marque reforços';
+}
 var notaEl=$('calcNota');
 if(nota.length){notaEl.textContent=nota.join(' ');notaEl.style.display='block';}else{notaEl.style.display='none';}
 }
 $('calcUnid').addEventListener('change',loadUnit);
-['calcEntrada','calcParcela','calcMeses'].forEach(function(id){$(id).addEventListener('input',calc);});
+['calcEntrada','calcParcela','calcMeses','calcReforcos'].forEach(function(id){$(id).addEventListener('input',calc);});
 loadUnit();
 })();</script>
 <section class="block" style="padding-top:0"><div class="wrap"><div class="info">
@@ -186,7 +196,7 @@ loadUnit();
 <div class="field" style="margin-top:16px;margin-bottom:0"><label>Mensagem (opcional)</label><textarea name="Mensagem" rows="3" placeholder="Se quiser explicar alguma coisa sobre a simulação..." style="border:1px solid #d8dee5;color:var(--ink);background:#fff"></textarea></div>
 <button class="btn" type="submit" style="margin-top:16px">Enviar simulação</button>
 </form>
-<p style="color:#8aa0b6;font-size:12.5px;margin-top:22px;border-top:1px solid var(--line);padding-top:16px">*Este imóvel está pronto e entregue e é vendido oficialmente à vista (entrada de 100% do valor, sem parcelas ou reforços definidos pela incorporadora). Esta simulação é apenas um exercício de negociação (até 24 parcelas sugeridas) e depende da aprovação do proprietário/incorporadora — fale com o corretor antes de fechar qualquer condição parcelada. Valores sujeitos a alteração.</p>
+<p style="color:#8aa0b6;font-size:12.5px;margin-top:22px;border-top:1px solid var(--line);padding-top:16px">*Este imóvel está pronto e entregue e é vendido oficialmente à vista (entrada de 100% do valor, sem parcelas ou reforços definidos pela incorporadora). Esta simulação é apenas um exercício de negociação (até 24 parcelas mensais e 2 reforços semestrais sugeridos) e depende da aprovação do proprietário/incorporadora — fale com o corretor antes de fechar qualquer condição parcelada. Valores sujeitos a alteração.</p>
 </div></div></section>
 <script>(function(){
 var f=document.getElementById('calcLeadForm');
@@ -196,9 +206,9 @@ var u=document.getElementById('calcUnid');
 var uni=u?u.options[u.selectedIndex].text:'';
 var entrada=document.getElementById('rEntrada');
 var parcelas=document.getElementById('rParcelas');
-var saldo=document.getElementById('rSaldo');
+var reforcos=document.getElementById('rReforcos');
 var total=document.getElementById('rTotal');
-var txt=uni+' | Entrada '+(entrada?entrada.textContent:'')+' | Parcelas '+(parcelas?parcelas.textContent:'')+' | Saldo '+(saldo?saldo.textContent:'')+' | Total '+(total?total.textContent:'');
+var txt=uni+' | Entrada '+(entrada?entrada.textContent:'')+' | Parcelas '+(parcelas?parcelas.textContent:'')+' | Reforços '+(reforcos?reforcos.textContent:'')+' | Total '+(total?total.textContent:'');
 var h=document.getElementById('calcSimHidden');
 if(h)h.value=txt;
 });
