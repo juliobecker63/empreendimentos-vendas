@@ -170,7 +170,6 @@ $('calcUnid').addEventListener('change',loadUnit);
 loadUnit();
 })();</script>
 <section class="block" style="padding-top:0"><div class="wrap"><div class="info">
-<h3 class="ih" style="margin-top:0">Quer essa simulação no seu WhatsApp?</h3>
 <p class="ip" style="margin-bottom:18px">Deixe seu nome e telefone que a gente confirma os valores certinho com você.</p>
 <form id="calcLeadForm" action="https://ljxijsfumxrstixkimyg.supabase.co/functions/v1/enviar-contato" method="POST">
 <input type="hidden" name="_subject" value="Simulação de pagamento - Easy Studios (site)">
@@ -181,10 +180,10 @@ loadUnit();
 <input type="hidden" name="Simulacao" id="calcSimHidden" value="">
 <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true">
 <div style="display:flex;flex-wrap:wrap;gap:16px">
-<div class="field" style="flex:1;min-width:200px;margin-bottom:0"><label>Nome</label><input type="text" name="Nome" required></div>
-<div class="field" style="flex:1;min-width:200px;margin-bottom:0"><label>Telefone / WhatsApp</label><input type="tel" name="Telefone" required></div>
+<div class="field" style="flex:1;min-width:200px;margin-bottom:0"><label>Nome</label><input type="text" name="Nome" required style="border:1px solid #d8dee5;color:var(--ink);background:#fff"></div>
+<div class="field" style="flex:1;min-width:200px;margin-bottom:0"><label>Telefone / WhatsApp</label><input type="tel" name="Telefone" required style="border:1px solid #d8dee5;color:var(--ink);background:#fff"></div>
 </div>
-<div class="field" style="margin-top:16px;margin-bottom:0"><label>Mensagem (opcional)</label><textarea name="Mensagem" rows="3" placeholder="Se quiser explicar alguma coisa sobre a simulação..."></textarea></div>
+<div class="field" style="margin-top:16px;margin-bottom:0"><label>Mensagem (opcional)</label><textarea name="Mensagem" rows="3" placeholder="Se quiser explicar alguma coisa sobre a simulação..." style="border:1px solid #d8dee5;color:var(--ink);background:#fff"></textarea></div>
 <button class="btn" type="submit" style="margin-top:16px">Enviar simulação</button>
 </form>
 <p style="color:#8aa0b6;font-size:12.5px;margin-top:22px;border-top:1px solid var(--line);padding-top:16px">*Simulação com base nas condições informadas pela incorporadora para as cotas 103 e 107: máximo de 27 parcelas mensais e 4 reforços semestrais. O valor de cada reforço é calculado dividindo o saldo restante (total − entrada − parcelas) pela quantidade de reforços escolhida — datas e condições exatas são definidas em contrato; fale com o corretor para confirmar. Valores sujeitos a alteração.</p>
