@@ -170,6 +170,39 @@ $('calcUnid').addEventListener('change',loadUnit);
 ['calcEntrada','calcParcela','calcMeses','calcReforcos'].forEach(function(id){$(id).addEventListener('input',calc);});
 loadUnit();
 })();</script>
+<section class="block" style="padding-top:0"><div class="wrap"><div class="info" style="max-width:680px;margin:0 auto">
+<h3 class="ih" style="margin-top:0">Quer essa simulação no seu WhatsApp?</h3>
+<p class="ip" style="margin-bottom:18px">Deixe seu nome e telefone que a gente confirma os valores certinho com você.</p>
+<form id="calcLeadForm" action="https://ljxijsfumxrstixkimyg.supabase.co/functions/v1/enviar-contato" method="POST">
+<input type="hidden" name="_subject" value="Simulação de pagamento - Easy Studios (site)">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_next" value="https://vendas.investirimoveisemflorianopolis.com/obrigado.html">
+<input type="hidden" name="Empreendimento" value="Easy Studios">
+<input type="hidden" name="Simulacao" id="calcSimHidden" value="">
+<input type="text" name="_honey" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true">
+<div style="display:flex;flex-wrap:wrap;gap:16px">
+<div class="field" style="flex:1;min-width:200px;margin-bottom:0"><label>Nome</label><input type="text" name="Nome" required></div>
+<div class="field" style="flex:1;min-width:200px;margin-bottom:0"><label>Telefone / WhatsApp</label><input type="tel" name="Telefone" required></div>
+</div>
+<button class="btn" type="submit" style="margin-top:16px">Enviar simulação</button>
+</form>
+</div></div></section>
+<script>(function(){
+var f=document.getElementById('calcLeadForm');
+if(!f)return;
+f.addEventListener('submit',function(){
+var u=document.getElementById('calcUnid');
+var uni=u?u.options[u.selectedIndex].text:'';
+var entrada=document.getElementById('rEntrada');
+var parcelas=document.getElementById('rParcelas');
+var reforcos=document.getElementById('rReforcos');
+var total=document.getElementById('rTotal');
+var txt=uni+' | Entrada '+(entrada?entrada.textContent:'')+' | Parcelas '+(parcelas?parcelas.textContent:'')+' | Reforços '+(reforcos?reforcos.textContent:'')+' | Total '+(total?total.textContent:'');
+var h=document.getElementById('calcSimHidden');
+if(h)h.value=txt;
+});
+})();</script>
 <section class="block" style="padding-top:0"><div class="wrap"><div class="contact">
 <div><h2>Tenho interesse</h2><div class="sub">Preencha e eu entro em contato com valores, plantas e condições.</div>
 <form action="https://ljxijsfumxrstixkimyg.supabase.co/functions/v1/enviar-contato" method="POST">
