@@ -72,7 +72,7 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 </header>
 <div class="hero" style="background-image:linear-gradient(180deg,rgba(13,27,42,.15),rgba(13,27,42,.85)),url('parkside-trindade-01.jpg')"><div class="wrap">
 <div class="badges"><span class="badge">Pronto e Entregue</span><span class="badge alt">Preço de Custo</span><span class="badge alt">100% Mobiliado</span></div>
-<h1>Parkside Trindade</h1><div class="loc">📍 Trindade, Florianópolis, SC</div><div class="price">A partir de R$ 415 mil</div></div></div>
+<h1>Parkside Trindade</h1><div class="loc">📍 Trindade, Florianópolis, SC</div><div class="price">A partir de R$ 399 mil</div></div></div>
 <div class="facts"><div class="wrap"><div class="grid"><div class="fact"><b>20.3m²</b><span>Área</span></div><div class="fact"><b>Pronto e Entregue</b><span>Imóvel</span></div></div></div></div>
 <section class="block" style="padding-bottom:0"><div class="wrap"><h2>Galeria</h2><div class="sub">Imagens do empreendimento</div><div class="gallery" id="gallery"></div></div></section>
 <section class="block"><div class="wrap"><h2>Vídeo</h2><div class="sub">Conheça o Parkside Trindade</div><div style="position:relative;padding-bottom:56.25%;height:0;border-radius:14px;overflow:hidden;background:#000"><iframe src="https://www.youtube.com/embed/SbevznzX-RU" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allowfullscreen loading="lazy" title="Vídeo Parkside Trindade"></iframe></div></div></section>
@@ -93,7 +93,7 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 <h3 class="ih">VISÃO GERAL</h3>
 <hr style="border:none;border-top:1px solid #2c3e52;margin:14px 0">
 <p class="ip">Unidade-tipo: 20,3 m² · 1 dormitório</p>
-<p class="ip">A partir de R$ 415 mil</p>
+<p class="ip">A partir de R$ 399 mil</p>
 <p class="ip">Demais unidades e plantas sob consulta.</p>
 <br>
 <hr style="border:none;border-top:1px solid #2c3e52;margin:14px 0">
@@ -109,17 +109,105 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 <p class="ip">Prazos e orçamentos estimados, podendo haver variações.</p>
 <br>
 </div></div></section>
-<section class="block" style="padding-top:0"><div class="wrap"><div class="contact">
-<div><h2>Tenho interesse</h2><div class="sub">Preencha e eu entro em contato com valores, plantas e condições.</div>
-<form action="https://ljxijsfumxrstixkimyg.supabase.co/functions/v1/enviar-contato" method="POST">
-<input type="hidden" name="_subject" value="Novo contato - Parkside Trindade (site)"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="_template" value="table"><input type="hidden" name="_next" value="https://vendas.investirimoveisemflorianopolis.com/obrigado.html"><input type="hidden" name="Empreendimento" value="Parkside Trindade"><input type="text" name="_honey" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true">
-<div class="field"><label>Nome</label><input type="text" name="Nome" required></div>
-<div class="field"><label>Telefone / WhatsApp</label><input type="tel" name="Telefone" required></div>
-<div class="field"><label>Mensagem</label><textarea name="Mensagem" rows="4"></textarea></div>
-<button class="btn" type="submit">Enviar</button></form></div>
+<section class="block" style="padding-top:0"><div class="wrap"><h2>Simule seu pagamento</h2><div class="sub">Escolha a unidade e ajuste entrada e parcelas</div>
+<div class="info">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:28px" id="calcGrid">
+<div>
+<div class="field"><label>Unidade</label><select id="calcUnid" style="width:100%;padding:13px 14px;border:1px solid #d8dee5;border-radius:10px;font-size:15px;font-family:inherit">
+<option value="307">Cota 307 · Studio 20,3 m² · R$ 399.000,00</option>
+<option value="311">Cota 311 · Studio 20,3 m² · R$ 399.000,00</option>
+</select></div>
+<div class="field"><label>Entrada: <b id="calcEntradaLbl">R$ 0,00</b></label><input type="range" id="calcEntrada" min="0" max="399000" step="500" value="399000" style="width:100%;accent-color:#c9a227"></div>
+<div class="field"><label>Parcelas mensais: <b id="calcMesesLbl">0</b> (sugestão até 24)</label><input type="range" id="calcMeses" min="0" max="24" step="1" value="0" style="width:100%;accent-color:#c9a227"><small id="calcNota" style="display:none;color:#b3841c;margin-top:4px"></small></div>
+<div class="field" style="margin-bottom:0"><label>Parcela mensal (R$)</label><input type="number" id="calcParcela" step="50" value="1000" style="border:1px solid #d8dee5;color:var(--ink);background:#fff"></div>
+</div>
+<div style="background:var(--bg);border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:14px;justify-content:center">
+<div><span style="color:var(--muted);font-size:12.5px;letter-spacing:.4px">VALOR TOTAL DA UNIDADE</span><br><b id="rTotal" style="font-size:23px;color:var(--navy)">—</b></div>
+<div><span style="color:var(--muted);font-size:12.5px;letter-spacing:.4px">ENTRADA</span><br><b id="rEntrada" style="font-size:18px;color:var(--navy)">—</b></div>
+<div><span style="color:var(--muted);font-size:12.5px;letter-spacing:.4px">TOTAL EM PARCELAS MENSAIS</span><br><b id="rParcelas" style="font-size:18px;color:var(--navy)">—</b></div>
+<div><span style="color:var(--muted);font-size:12.5px;letter-spacing:.4px">SALDO DEVEDOR*</span><br><b id="rSaldo" style="font-size:18px;color:#b3841c">—</b></div>
+</div>
+</div>
+</div></div></section>
+<script>(function(){
+var units={"307":{total:399000,entrada:399000},"311":{total:399000,entrada:399000}};
+var MAXM=24;
+function $(id){return document.getElementById(id);}
+function brl(n){n=Number(n)||0;return 'R$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function loadUnit(){
+var u=units[$('calcUnid').value];
+$('calcEntrada').max=u.total;
+$('calcEntrada').value=u.entrada;
+$('calcMeses').value=0;
+calc();
+}
+function calc(){
+var u=units[$('calcUnid').value];
+var nota=[];
+var entrada=Number($('calcEntrada').value)||0;
+if(entrada<0){entrada=0;}
+if(entrada>u.total){entrada=u.total;$('calcEntrada').value=entrada;}
+$('calcEntradaLbl').textContent=brl(entrada);
+var parcela=Number($('calcParcela').value)||0;
+if(parcela<0){parcela=0;}
+var meses=Number($('calcMeses').value)||0;
+var restante=u.total-entrada;
+var mesesPermitido=parcela>0?Math.min(MAXM,Math.floor(restante/parcela)):0;
+if(meses>mesesPermitido){meses=mesesPermitido;$('calcMeses').value=meses;nota.push('Reduzi para '+meses+' parcela'+(meses===1?'':'s')+' para não ultrapassar o valor à vista.');}
+$('calcMesesLbl').textContent=meses;
+var totalParcelas=parcela*meses;
+var saldo=u.total-entrada-totalParcelas;
+if(saldo<0)saldo=0;
+$('rTotal').textContent=brl(u.total);
+$('rEntrada').textContent=brl(entrada);
+$('rParcelas').textContent=brl(totalParcelas)+' ('+meses+'x de '+brl(parcela)+')';
+$('rSaldo').textContent=saldo<=0?'Nenhum saldo devedor':brl(saldo)+' — a combinar com o corretor';
+var notaEl=$('calcNota');
+if(nota.length){notaEl.textContent=nota.join(' ');notaEl.style.display='block';}else{notaEl.style.display='none';}
+}
+$('calcUnid').addEventListener('change',loadUnit);
+['calcEntrada','calcParcela','calcMeses'].forEach(function(id){$(id).addEventListener('input',calc);});
+loadUnit();
+})();</script>
+<section class="block" style="padding-top:0"><div class="wrap"><div class="info">
+<p class="ip" style="margin-bottom:18px">Deixe seu nome e telefone que a gente confirma os valores certinho com você.</p>
+<form id="calcLeadForm" action="https://ljxijsfumxrstixkimyg.supabase.co/functions/v1/enviar-contato" method="POST">
+<input type="hidden" name="_subject" value="Simulação de pagamento - Parkside Trindade (site)">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_next" value="https://vendas.investirimoveisemflorianopolis.com/obrigado.html">
+<input type="hidden" name="Empreendimento" value="Parkside Trindade">
+<input type="hidden" name="Simulacao" id="calcSimHidden" value="">
+<input type="text" name="_honey" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true">
+<div style="display:flex;flex-wrap:wrap;gap:16px">
+<div class="field" style="flex:1;min-width:200px;margin-bottom:0"><label>Nome</label><input type="text" name="Nome" required style="border:1px solid #d8dee5;color:var(--ink);background:#fff"></div>
+<div class="field" style="flex:1;min-width:200px;margin-bottom:0"><label>Telefone / WhatsApp</label><input type="tel" name="Telefone" required style="border:1px solid #d8dee5;color:var(--ink);background:#fff"></div>
+</div>
+<div class="field" style="margin-top:16px;margin-bottom:0"><label>Mensagem (opcional)</label><textarea name="Mensagem" rows="3" placeholder="Se quiser explicar alguma coisa sobre a simulação..." style="border:1px solid #d8dee5;color:var(--ink);background:#fff"></textarea></div>
+<button class="btn" type="submit" style="margin-top:16px">Enviar simulação</button>
+</form>
+<p style="color:#8aa0b6;font-size:12.5px;margin-top:22px;border-top:1px solid var(--line);padding-top:16px">*Este imóvel está pronto e entregue e é vendido oficialmente à vista (entrada de 100% do valor, sem parcelas ou reforços definidos pela incorporadora). Esta simulação é apenas um exercício de negociação (até 24 parcelas sugeridas) e depende da aprovação do proprietário/incorporadora — fale com o corretor antes de fechar qualquer condição parcelada. Valores sujeitos a alteração.</p>
+</div></div></section>
+<script>(function(){
+var f=document.getElementById('calcLeadForm');
+if(!f)return;
+f.addEventListener('submit',function(){
+var u=document.getElementById('calcUnid');
+var uni=u?u.options[u.selectedIndex].text:'';
+var entrada=document.getElementById('rEntrada');
+var parcelas=document.getElementById('rParcelas');
+var saldo=document.getElementById('rSaldo');
+var total=document.getElementById('rTotal');
+var txt=uni+' | Entrada '+(entrada?entrada.textContent:'')+' | Parcelas '+(parcelas?parcelas.textContent:'')+' | Saldo '+(saldo?saldo.textContent:'')+' | Total '+(total?total.textContent:'');
+var h=document.getElementById('calcSimHidden');
+if(h)h.value=txt;
+});
+})();</script>
+<section class="block" style="padding-top:0"><div class="wrap"><div class="contact" style="grid-template-columns:1fr;max-width:460px;margin:0 auto;text-align:center">
 <div class="aside-cta"><p style="color:#cdd9e6">Prefere falar agora? Chame no WhatsApp:</p>
 <a class="wpp" href="https://wa.me/5548991115191?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Parkside%20Trindade.">💬 Falar no WhatsApp</a>
-<p style="color:#8aa0b6;font-size:13px">Julio Cesar Becker<br>CRECI SC 11783 · (48) 99111-5191</p></div></div></div></section>
+<p style="color:#8aa0b6;font-size:13px">Julio Cesar Becker<br>CRECI SC 11783 · (48) 99111-5191</p></div>
+</div></div></section>
 <footer><img src="/logo.png" class="flogo" alt="Investir Imóveis em Florianópolis"><br><b>CRECI SC 11783</b><br>Florianópolis e São José · (48) 99111-5191<br><a href="mailto:contato@investirimoveisemflorianopolis.com" translate="no" class="notranslate">contato@investirimoveisemflorianopolis.com</a><span class="razao" style="display:block;margin:8px 0 4px;font-size:12px;color:#8fa2b6">JULIO BECKER CORRETOR DE IMOVEIS E EMPREENDEDOR VIRTUAL LTDA · CNPJ 51.377.378/0001-40</span><span class="copy">Todos os direitos reservados a Investir Imóveis em Florianópolis · 2026 · <a href="/politica-privacidade.html" style="color:#9fb1c4">Política de Privacidade</a></span></footer>
 <div class="lb" id="lb"><span class="x" onclick="closeLb()">×</span><span class="nav prev" onclick="move(-1)">‹</span><img id="lbImg"><span class="nav next" onclick="move(1)">›</span></div>
 <script>const photos=["parkside-trindade-01.jpg","parkside-trindade-08.jpg","parkside-trindade-02.jpg","parkside-trindade-03.jpg","parkside-trindade-04.jpg","parkside-trindade-05.jpg","parkside-trindade-06.jpg","parkside-trindade-07.jpg","parkside-trindade-09.jpg","parkside-trindade-10.jpg"];const g=document.getElementById('gallery');
