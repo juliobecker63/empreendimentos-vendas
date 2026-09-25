@@ -26,7 +26,7 @@ section.block{padding:44px 0}h2{font-size:24px;color:#fff;margin-bottom:6px}h2+.
 video{width:100%;border-radius:14px;background:#000}
 .info{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:26px}.info .ih{color:var(--navy);font-size:15px;margin:16px 0 6px}
 .info .ir{padding:2px 0}.info .ir .k{color:var(--muted)}.info .ir .v{font-weight:600}.info .ip{color:#3a4856;margin:4px 0}
-.tags{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}.tag{background:#eef2f6;color:#27384a;font-size:13.5px;font-weight:600;padding:7px 13px;border-radius:20px;border:1px solid #dde3ea}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}.tag{background:#eef2f6;color:#27384a;font-size:13.5px;font-weight:600;padding:7px 13px;border-radius:20px;border:1px solid #dde3ea}.calc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:16px 0}.calc-row{margin:0 0 16px}.cfield label{display:block;font-size:12px;color:#5b6b7b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}.cfield select,.cfield input{width:100%;padding:11px 12px;border:1px solid #e6e9ee;border-radius:8px;font-size:15px;font-family:inherit;color:#15202b;background:#fff}.calc-result{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;background:#f6f7f9;border-radius:10px;padding:16px}.calc-result .k{display:block;font-size:11px;color:#5b6b7b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}.calc-result .v{display:block;font-size:17px;font-weight:700;color:#15202b}.calc-warn{background:#fdecea;border:1px solid #f5b5ad;color:#8a2418;border-radius:10px;padding:12px 16px;margin-top:14px;font-size:14px;font-weight:600;display:none}.chip{background:#fff;border:1.5px solid #d8dee5;color:var(--ink);font-weight:600;font-size:14px;padding:10px 18px;border-radius:24px;cursor:pointer;display:inline-flex;gap:6px;align-items:center;transition:.15s}.chip.on{background:var(--gold);border-color:var(--gold);color:#1b1b1b}.chip.small{padding:8px 14px;font-size:13px}
 .contact{background:var(--navy);color:#fff;border-radius:18px;padding:36px;display:grid;grid-template-columns:1fr 1fr;gap:34px}.contact h2{color:#fff}.contact .sub{color:#aebccd}
 .field{margin-bottom:14px}.field label{display:block;font-size:13px;margin-bottom:6px;color:#cdd9e6}
 .field input,.field textarea{width:100%;padding:13px 14px;border:1px solid #2c3e52;border-radius:10px;background:#0a1622;color:#fff;font-size:15px;font-family:inherit}
@@ -111,6 +111,91 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 <p class="ip">Agende sua visita e conheça pessoalmente.</p>
 <br>
 </div></div></section>
+<section class="block" style="padding-top:0"><div class="wrap"><h2>Simule sua forma de pagamento</h2><div class="sub">Monte com entrada, FGTS, permuta e financiamento até chegar nos R$ 1.500.000</div>
+<div class="info">
+<div class="calc-row"><div class="cfield" style="max-width:340px"><label>Entrada em R$</label><input type="text" inputmode="numeric" id="calcEntrada" value="0"></div></div>
+<div class="calc-row">
+<label style="display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-weight:700;color:#15202b;font-size:15px"><input type="checkbox" id="calcFgts" style="width:18px;height:18px"> Tenho FGTS pra usar como parte do pagamento</label>
+<div id="calcFgtsWrap" style="display:none;margin:14px 0 0"><div class="cfield" style="max-width:340px"><label>Valor do FGTS (R$)</label><input type="text" inputmode="numeric" id="calcFgtsValor" value="0"></div></div>
+</div>
+<div class="calc-row">
+<label style="display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-weight:700;color:#15202b;font-size:15px"><input type="checkbox" id="calcPermuta" style="width:18px;height:18px"> Tenho imóvel ou carro pra dar de permuta</label>
+<div id="calcPermutaWrap" style="display:none;margin:14px 0 0">
+<div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" id="calcPermutaImovel" class="chip small on">🏠 Imóvel</button><button type="button" id="calcPermutaCarro" class="chip small">🚗 Carro</button></div>
+<div class="cfield" style="max-width:340px"><label>Valor da permuta (R$)</label><input type="text" inputmode="numeric" id="calcPermutaValor" value="0"></div>
+</div>
+</div>
+<div class="calc-row"><div class="cfield" style="max-width:420px"><label>Financiamento bancário em R$ (estimativa até 70% do imóvel — ajusta sozinho, você também pode editar)</label><input type="text" inputmode="numeric" id="calcFinanciamento" value="0"></div></div>
+<div class="calc-result">
+<div class="cr"><span class="k">Entrada</span><span class="v" id="rEntrada">-</span></div>
+<div class="cr"><span class="k">FGTS</span><span class="v" id="rFgts">-</span></div>
+<div class="cr"><span class="k">Permuta</span><span class="v" id="rPermuta">-</span></div>
+<div class="cr"><span class="k">Financiamento bancário</span><span class="v" id="rFinanciamento">-</span></div>
+<div class="cr"><span class="k">Total simulado</span><span class="v" id="rTotal">-</span></div>
+</div>
+<div class="calc-warn" id="calcWarn">Com esses valores ainda falta <span id="rFalta">-</span> pra fechar o valor do imóvel — aumente a entrada, o FGTS, a permuta ou o financiamento.</div>
+<hr style="border:none;border-top:1px solid #e6e9ee;margin:20px 0">
+<p class="ip">Preencha seus dados que a gente te chama com essa simulação:</p>
+<form action="https://ljxijsfumxrstixkimyg.supabase.co/functions/v1/enviar-contato" method="POST">
+<input type="hidden" name="_subject" value="Simulação de pagamento - Apartamento Águas de Março (AP001)"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="_template" value="table"><input type="hidden" name="_next" value="https://vendas.investirimoveisemflorianopolis.com/obrigado.html"><input type="hidden" name="Empreendimento" value="Apartamento Edifício Águas de Março (AP001)"><input type="hidden" name="Simulação" id="calcResumo" value=""><input type="text" name="_honey" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true">
+<div class="calc-grid" style="margin-top:0">
+<div class="cfield"><label>Nome</label><input type="text" name="Nome" required></div>
+<div class="cfield"><label>Telefone / WhatsApp</label><input type="tel" name="Telefone" required></div>
+</div>
+<button class="btn" type="submit">Enviar simulação por e-mail</button>
+</form>
+</div></div></section>
+<script>(function(){
+function brl(n){n=Number(n)||0;return 'R$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtInt(n){n=Math.round(Number(n)||0);return n.toLocaleString('pt-BR');}
+function numFromMasked(el){return Number((el.value||'0').replace(/\./g,''))||0;}
+function setMasked(el,n){el.value=fmtInt(n);}
+function maskLive(el){el.addEventListener('input',function(){var digits=el.value.replace(/\D/g,'');el.value=digits?Number(digits).toLocaleString('pt-BR'):'';el.setSelectionRange(el.value.length,el.value.length);});}
+var VALOR=1500000,TETO_PCT=70;
+var entradaEl=document.getElementById('calcEntrada'),
+fgtsEl=document.getElementById('calcFgts'),fgtsValorEl=document.getElementById('calcFgtsValor'),fgtsWrap=document.getElementById('calcFgtsWrap'),
+permutaEl=document.getElementById('calcPermuta'),permutaValorEl=document.getElementById('calcPermutaValor'),permutaWrap=document.getElementById('calcPermutaWrap'),
+permutaImovelBtn=document.getElementById('calcPermutaImovel'),permutaCarroBtn=document.getElementById('calcPermutaCarro'),
+financiamentoEl=document.getElementById('calcFinanciamento'),resumoEl=document.getElementById('calcResumo'),warnEl=document.getElementById('calcWarn');
+[entradaEl,fgtsValorEl,permutaValorEl,financiamentoEl].forEach(maskLive);
+var financManual=false,permutaTipo='Imóvel';
+function tetoFinanciamento(){return VALOR*TETO_PCT/100;}
+function calc(resetFinanciamento){
+var entradaVal=numFromMasked(entradaEl);
+var fgtsVal=fgtsEl.checked?numFromMasked(fgtsValorEl):0;
+var permutaVal=permutaEl.checked?numFromMasked(permutaValorEl):0;
+var teto=tetoFinanciamento();
+var restante=Math.max(0,VALOR-entradaVal-fgtsVal-permutaVal);
+if(resetFinanciamento||!financManual){setMasked(financiamentoEl,Math.min(restante,teto));}
+var financVal=numFromMasked(financiamentoEl);
+if(financVal>teto){financVal=teto;setMasked(financiamentoEl,teto);}
+var falta=restante-financVal;
+if(falta>1){warnEl.style.display='block';document.getElementById('rFalta').textContent=brl(falta);}else{warnEl.style.display='none';}
+var totalSimulado=entradaVal+fgtsVal+permutaVal+financVal;
+document.getElementById('rEntrada').textContent=brl(entradaVal);
+document.getElementById('rFgts').textContent=fgtsVal>0?brl(fgtsVal):'Não utilizado';
+document.getElementById('rPermuta').textContent=permutaVal>0?(brl(permutaVal)+' ('+permutaTipo+')'):'Não utilizado';
+document.getElementById('rFinanciamento').textContent=brl(financVal);
+document.getElementById('rTotal').textContent=brl(totalSimulado);
+resumoEl.value='Entrada: '+brl(entradaVal)+' | FGTS: '+brl(fgtsVal)+' | Permuta ('+permutaTipo+'): '+brl(permutaVal)+' | Financiamento: '+brl(financVal)+(falta>1?' | Saldo não coberto: '+brl(falta):'');
+}
+entradaEl.addEventListener('input',function(){calc(false);});
+entradaEl.addEventListener('blur',function(){calc(true);});
+fgtsEl.addEventListener('change',function(){fgtsWrap.style.display=fgtsEl.checked?'':'none';calc(true);});
+fgtsValorEl.addEventListener('input',function(){calc(true);});
+permutaEl.addEventListener('change',function(){permutaWrap.style.display=permutaEl.checked?'':'none';calc(true);});
+permutaValorEl.addEventListener('input',function(){calc(true);});
+permutaImovelBtn.addEventListener('click',function(){permutaTipo='Imóvel';permutaImovelBtn.classList.add('on');permutaCarroBtn.classList.remove('on');calc(true);});
+permutaCarroBtn.addEventListener('click',function(){permutaTipo='Carro';permutaCarroBtn.classList.add('on');permutaImovelBtn.classList.remove('on');calc(true);});
+financiamentoEl.addEventListener('input',function(){
+var teto=tetoFinanciamento();
+if(numFromMasked(financiamentoEl)>teto){setMasked(financiamentoEl,teto);}
+financManual=true;
+calc(false);
+});
+setMasked(entradaEl,300000);
+calc(true);
+})();</script>
 <section class="block" style="padding-top:0"><div class="wrap"><div class="contact">
 <div><h2>Tenho interesse</h2><div class="sub">Preencha e eu entro em contato com mais detalhes, fotos e para agendar uma visita.</div>
 <form action="https://ljxijsfumxrstixkimyg.supabase.co/functions/v1/enviar-contato" method="POST">
