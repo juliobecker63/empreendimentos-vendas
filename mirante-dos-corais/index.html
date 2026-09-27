@@ -85,7 +85,7 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 .calc-row{margin:0 0 16px}
 .calc-row-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
 .cfield label{display:block;font-size:12px;color:#5b6b7b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
-.cfield select,.cfield input{width:100%;padding:11px 12px;border:1px solid #e6e9ee;border-radius:8px;font-size:15px;font-family:inherit;color:#15202b;background:#fff}
+.cfield select,.cfield input,.cfield textarea{width:100%;padding:11px 12px;border:1px solid #e6e9ee;border-radius:8px;font-size:15px;font-family:inherit;color:#15202b;background:#fff}
 .cfield.readonly input{background:#f6f7f9;color:#5b6b7b}
 .calc-result{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;background:#f6f7f9;border-radius:10px;padding:16px}
 .calc-result .k{display:block;font-size:11px;color:#5b6b7b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
@@ -154,6 +154,7 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 <div class="cfield"><label>Nome</label><input type="text" name="Nome" required></div>
 <div class="cfield"><label>Telefone / WhatsApp</label><input type="tel" name="Telefone" required></div>
 </div>
+<div class="cfield" style="margin-bottom:16px"><label>Mensagem (opcional)</label><textarea name="Mensagem" rows="3" placeholder="Se quiser deixar alguma observação..."></textarea></div>
 <button class="btn" type="submit">Enviar simulação por e-mail</button>
 </form>
 </div></div></section>
