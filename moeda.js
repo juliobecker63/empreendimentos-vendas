@@ -96,12 +96,14 @@ var a=document.querySelector('#calcEntrada')||document.querySelector('input[type
 if(!a)return;
 var host=a.closest('.info')||a.closest('section');
 findMoneyInputs();
+/* tabelas com coluna "Financiamento": marca as celulas p/ sumirem fora do pais */
+[].forEach.call(document.querySelectorAll("table"),function(t){[].forEach.call(t.querySelectorAll("thead th"),function(th,i){if(/^s*Financiamento/i.test(th.textContent))[].forEach.call(t.rows,function(r){if(r.cells[i])r.cells[i].classList.add("col-banco");});});});
 bar=document.createElement('div');
 bar.className='notranslate';bar.setAttribute('translate','no');
 bar.style.cssText='display:none;gap:8px;align-items:center;margin-bottom:16px;font-size:14px';
 bar.innerHTML='<style>#moedaBar button{border:1px solid #c9a227;background:#fff;color:#0a1626;border-radius:8px;padding:7px 16px;font-weight:700;cursor:pointer}#moedaBar button.on{background:#c9a227;color:#fff}</style><button data-c="BRL">R$</button><button data-c="USD">US$</button><button data-c="EUR">€</button>';
 bar.id='moedaBar';
-document.head.insertAdjacentHTML('beforeend','<style>html.sem-banco .mode[data-m=banco],html.sem-banco .calc-row:has(#calcFgts),html.sem-banco .calc-row:has(#calcFinanciamento),html.sem-banco .cr:has(#rFgts),html.sem-banco .cr:has(#rFinanciamento){display:none!important}html.sem-banco .modes{grid-template-columns:1fr}.so-ext{display:none}html.sem-banco .so-ext{display:inline}html.sem-banco .so-br{display:none}</style>');/* fora do pais nao ha financiamento bancario/FGTS: esconde e zera */
+document.head.insertAdjacentHTML('beforeend','<style>html.sem-banco .mode[data-m=banco],html.sem-banco .calc-row:has(#calcFgts),html.sem-banco .calc-row:has(#calcFinanciamento),html.sem-banco .cr:has(#rFgts),html.sem-banco .cr:has(#rFinanciamento){display:none!important}html.sem-banco .modes{grid-template-columns:1fr}.so-ext{display:none}html.sem-banco .so-ext{display:inline}html.sem-banco .so-br{display:none}html.sem-banco .col-banco{display:none!important}</style>');/* fora do pais nao ha financiamento bancario/FGTS: esconde e zera */
 bar.addEventListener('click',function(e){var c=e.target.dataset&&e.target.dataset.c;if(c)set(c);});
 host.insertBefore(bar,host.firstChild);
 ['click','change'].forEach(function(ev){document.addEventListener(ev,function(){if(cur!=='BRL')setTimeout(function(){syncTw();},0);});});
