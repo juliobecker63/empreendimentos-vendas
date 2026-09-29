@@ -134,7 +134,7 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 <div class="cr"><span class="k">Financiamento bancário</span><span class="v" id="rFinanciamento">-</span></div>
 <div class="cr"><span class="k">Total simulado</span><span class="v" id="rTotal">-</span></div>
 </div>
-<div class="calc-warn" id="calcWarn">Com esses valores ainda falta <span id="rFalta">-</span> pra fechar o valor do imóvel — aumente a entrada, o FGTS, a permuta ou o financiamento.</div>
+<div class="calc-warn" id="calcWarn">Com esses valores ainda falta <span id="rFalta">-</span> pra fechar o valor do imóvel — aumente a entrada<span class="so-br">, o FGTS</span><span class="so-br">, a permuta ou o financiamento</span><span class="so-ext"> ou a permuta</span>.</div>
 <hr style="border:none;border-top:1px solid #e6e9ee;margin:20px 0">
 <p class="ip">Preencha seus dados que a gente te chama com essa simulação:</p>
 <form action="https://ljxijsfumxrstixkimyg.supabase.co/functions/v1/enviar-contato" method="POST">
@@ -161,7 +161,7 @@ permutaImovelBtn=document.getElementById('calcPermutaImovel'),permutaCarroBtn=do
 financiamentoEl=document.getElementById('calcFinanciamento'),resumoEl=document.getElementById('calcResumo'),warnEl=document.getElementById('calcWarn');
 [entradaEl,fgtsValorEl,permutaValorEl,financiamentoEl].forEach(maskLive);
 var financManual=false,permutaTipo='Imóvel';
-function tetoFinanciamento(){return VALOR*TETO_PCT/100;}
+function tetoFinanciamento(){return window.semBanco?0:VALOR*TETO_PCT/100;}
 function calc(resetFinanciamento){
 var entradaVal=numFromMasked(entradaEl);
 var fgtsVal=fgtsEl.checked?numFromMasked(fgtsValorEl):0;

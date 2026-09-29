@@ -101,6 +101,7 @@ bar.className='notranslate';bar.setAttribute('translate','no');
 bar.style.cssText='display:none;gap:8px;align-items:center;margin-bottom:16px;font-size:14px';
 bar.innerHTML='<style>#moedaBar button{border:1px solid #c9a227;background:#fff;color:#0a1626;border-radius:8px;padding:7px 16px;font-weight:700;cursor:pointer}#moedaBar button.on{background:#c9a227;color:#fff}</style><button data-c="BRL">R$</button><button data-c="USD">US$</button><button data-c="EUR">€</button>';
 bar.id='moedaBar';
+document.head.insertAdjacentHTML('beforeend','<style>html.sem-banco .mode[data-m=banco],html.sem-banco .calc-row:has(#calcFgts),html.sem-banco .calc-row:has(#calcFinanciamento),html.sem-banco .cr:has(#rFgts),html.sem-banco .cr:has(#rFinanciamento){display:none!important}html.sem-banco .modes{grid-template-columns:1fr}.so-ext{display:none}html.sem-banco .so-ext{display:inline}html.sem-banco .so-br{display:none}</style>');/* fora do pais nao ha financiamento bancario/FGTS: esconde e zera */
 bar.addEventListener('click',function(e){var c=e.target.dataset&&e.target.dataset.c;if(c)set(c);});
 host.insertBefore(bar,host.firstChild);
 ['click','change'].forEach(function(ev){document.addEventListener(ev,function(){if(cur!=='BRL')setTimeout(function(){syncTw();},0);});});
@@ -111,6 +112,13 @@ var l=(document.documentElement.lang||'pt').slice(0,2).toLowerCase();
 var want=l==='en'?'USD':l==='es'?'EUR':'BRL';
 bar.style.display=want==='BRL'?'none':'flex';
 if(bar.dataset.l!==l){
+var era=window.semBanco;
+window.semBanco=l!=='pt';
+document.documentElement.classList.toggle('sem-banco',window.semBanco);
+if(window.semBanco||era){/* recalcula sem FGTS/financiamento (ou volta ao normal) */
+var f=document.getElementById('calcFgts');if(f){f.checked=false;f.dispatchEvent(new Event('change',{bubbles:true}));}
+var d=document.querySelector('.mode[data-m=direto]');if(d&&window.semBanco)d.click();
+}
 bar.dataset.l=l;set(want);
 /* o Google ainda reescreve textos depois de trocar o idioma: repinta ate assentar */
 [1200,3500,7000].forEach(function(ms){setTimeout(paint,ms);});

@@ -274,7 +274,7 @@ footer a{color:#cdd9e6}footer a:hover{color:#fff}
 <div class="cr"><span class="k">Financiamento bancário</span><span class="v" id="rFinanciamento">-</span></div>
 <div class="cr"><span class="k">Total simulado</span><span class="v" id="rTotal">-</span></div>
 </div>
-<div class="calc-warn" id="calcWarn">Com esses valores, o financiamento bancário (teto de 50%) não cobre o restante. Falta <span id="rFalta">-</span> — aumente a entrada ou os reforços.</div>
+<div class="calc-warn" id="calcWarn">Com esses valores ainda falta <span id="rFalta">-</span> pra fechar o valor do imóvel — aumente a entrada ou os reforços.</div>
 <hr style="border:none;border-top:1px solid #e6e9ee;margin:20px 0">
 <p class="ip">Preencha seus dados que a gente te chama com essa simulação:</p>
 <form action="https://ljxijsfumxrstixkimyg.supabase.co/functions/v1/enviar-contato" method="POST">
@@ -303,7 +303,7 @@ warnEl=document.getElementById('calcWarn');
 var CHAVES_PCT=10,TETO_PCT=50;
 var financManual=false;
 function valor(){return Number(valorEl.value)||0;}
-function tetoFinanciamento(){return valor()*TETO_PCT/100;}
+function tetoFinanciamento(){return window.semBanco?0:valor()*TETO_PCT/100;}
 function minEntrada(){return valor()*0.15;}
 function setDefaults(){
 var v=valor();
