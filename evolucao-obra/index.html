@@ -16,6 +16,8 @@ input[type=range]{width:100%;accent-color:var(--gold)}
 table{width:100%;border-collapse:collapse;font-size:15px}th,td{padding:7px 8px;text-align:right;border-bottom:1px solid var(--line)}th:first-child,td:first-child{text-align:left}
 th{background:var(--navy);color:#fff;font-weight:600;position:sticky;top:0}tr.hl td{background:#fff7da;font-weight:700}
 .note{font-size:13px;color:var(--muted);margin-top:10px}
+button.pr{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#fff;border:0;border-radius:8px;padding:12px 22px;font-size:15px;font-weight:700;letter-spacing:.5px;cursor:pointer;text-transform:uppercase;margin-bottom:24px}
+@media print{header{background:#fff;border-bottom:2px solid var(--gold)}header img{padding:0}.noprint,button.pr{display:none}body{background:#fff}.card{border:0;padding:6px 0;break-inside:avoid}.res div{background:#fff;color:#000;border:1px solid #999}.res small,.res i{color:#333}.res b{color:#000}th{background:#eee;color:#000;position:static}tr.hl td{background:#eee}table{font-size:12px}th,td{padding:3px 6px}}
 @media(max-width:480px){.res{grid-template-columns:1fr}}
 </style></head><body>
 <header><div class="wrap"><img src="/logo.png" alt="Logo"></div></header>
@@ -30,6 +32,7 @@ th{background:var(--navy);color:#fff;font-weight:600;position:sticky;top:0}tr.hl
 </div>
 <div class="card"><table><thead><tr><th>Mês</th><th>% da obra</th><th>Paga à Caixa</th></tr></thead><tbody id="tb"></tbody></table>
 <p class="note">Cálculo: a cada mês o cliente paga à Caixa o percentual da prestação igual ao avanço acumulado da obra (evolução linear: 100% ÷ prazo por mês). Base de estimativa de despesa; o valor real depende do cronograma medido pela Caixa.</p></div>
+<button class="pr" onclick="window.print()">🖨 Imprimir</button>
 </div>
 <script>
 const $=id=>document.getElementById(id),brl=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
