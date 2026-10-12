@@ -8,56 +8,21 @@ header{background:var(--navy);border-bottom:3px solid var(--gold);padding:12px 0
 h1{font-size:clamp(21px,4vw,28px);margin:20px 0 6px}h2{font-size:19px;margin:26px 0 10px}.sub{color:var(--muted);margin-bottom:14px}
 .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
 .banner{border-radius:12px;padding:16px 18px;margin:14px 0;font-size:17px}.banner.ok{background:var(--okbg);color:#0f5c38}.banner.warn{background:var(--warnbg);color:var(--warn)}
-.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:10px}.kv div{background:#f4f6f9;border-radius:8px;padding:8px 10px}.kv small{display:block;color:var(--muted);font-size:11.5px;text-transform:uppercase}.kv b{font-size:16px}
+.aviso{background:#eef2f7;border-left:4px solid var(--navy);border-radius:8px;padding:10px 14px;font-size:13.5px;color:#2b3a4a;margin:12px 0}
+.alt{background:#fff7da;border:1px solid var(--gold);border-radius:12px;padding:14px 16px;margin:12px 0}
 .emp h3{font-size:18px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline}.emp h3 span{font-size:13px;font-weight:600;color:var(--ok)}
-.tw{overflow-x:auto;margin-top:8px}table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:520px}th,td{padding:6px 8px;text-align:right;border-bottom:1px solid var(--line)}th:first-child,td:first-child{text-align:left}th{background:var(--navy);color:#fff;font-weight:600}
-td small{color:var(--warn);display:block;font-size:12px}td small.bl{display:inline;color:var(--muted)}tr.aj td:first-child{border-left:3px solid var(--gold)}
+.tw{overflow-x:auto;margin-top:8px}table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:480px}th,td{padding:6px 8px;text-align:right;border-bottom:1px solid var(--line)}th:first-child,td:first-child{text-align:left}th{background:var(--navy);color:#fff;font-weight:600}
+td small{color:var(--warn);display:block;font-size:12px}td small.bl{display:inline;color:var(--muted)}tr.aj td:first-child{border-left:3px solid var(--gold)}tr.hl td{background:#fff7da;font-weight:700}
+.res{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}.res div{background:var(--navy);color:#fff;border-radius:10px;padding:12px}.res small{display:block;color:#aebccd;font-size:12px;text-transform:uppercase}.res b{font-size:clamp(19px,5vw,25px);color:var(--gold2)}
+input[type=range]{width:100%;accent-color:var(--gold)}
 button,.btn{display:inline-block;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#fff;border:0;border-radius:8px;padding:12px 20px;font-size:15px;font-weight:700;letter-spacing:.4px;cursor:pointer;text-transform:uppercase;text-decoration:none;margin-top:10px}
 .lite{background:#fff;color:var(--ink);border:1px solid var(--line);text-transform:none;font-weight:600;padding:8px 14px;font-size:14px}.btn.green{background:#1f9d55}
-.note{font-size:12.5px;color:var(--muted);margin-top:18px}
-@media print{header{background:#fff}.noprint,button,.btn{display:none}body{background:#fff}}
+.note{font-size:12.5px;color:var(--muted);margin-top:10px}
+@media(max-width:480px){.res{grid-template-columns:1fr}}
+@media print{header{background:#fff}.noprint,button,.btn{display:none}body{background:#fff}.res div{background:#fff;color:#000;border:1px solid #999}.res small{color:#333}.res b{color:#000}th{background:#eee;color:#000}}
 </style></head><body>
 <header><div class="wrap"><img src="/logo.png" alt="Logo"></div></header>
 <div class="wrap" id="app" data-wa="5548991480285"></div>
 <script src="/evolucao-obra/dados.js"></script><script src="/evolucao-obra/simulador.js"></script>
-<script>
-(function(){
-var S=SIM,app=document.getElementById('app'),wa=app.dataset.wa,esc=function(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
-var f=null;try{f=JSON.parse(sessionStorage.getItem('simViva'))}catch(e){}
-if(!f){app.innerHTML='<h1>Preencha a simulação primeiro</h1><p class="sub">Não encontramos seus dados.</p><a class="btn" href="/evolucao-obra/">Fazer a simulação</a>';return}
-var p=S.perfil(f),primeiro=esc(f.nome.split(' ')[0]),all=S.todos(p),sel=all.filter(function(r){return r.key===f.emp})[0],outros=all.filter(function(r){return r.key!==f.emp});
-var qtd=function(r){return r.cabe.length+r.ajuste.length},total=all.reduce(function(a,r){return a+qtd(r)},0),algum=total>0;
-var msgs={idade:'A idade informada não permite o financiamento.',prazo:'Pela idade, o prazo de financiamento ficaria muito curto.',renda_baixa:'Sua renda está abaixo das faixas desta simulação (a partir de R$ 5.000,01).',renda_alta:'Sua renda está acima do limite do Minha Casa Minha Vida (R$ 13.000,00).'};
-var waLink=function(t){return 'https://wa.me/'+wa+'?text='+encodeURIComponent(t)};
-function linha(x){
-  return '<tr class="'+(x.a.st==='ajuste'?'aj':'')+'"><td>'+esc(x.u[1].replace(/ da (Torre|Bloco) \w+$/,''))+(x.u[0]?' <small class="bl">'+esc(x.u[0])+'</small>':'')+'</td><td>'+x.u[2].toFixed(2).replace('.',',')+' m²</td><td>'+S.fmt(x.u[3])+'</td><td>'+S.fmt(x.u[5])+'</td><td>'+S.fmt(x.a.entrada)+(x.a.st==='ajuste'?'<small>inclui '+S.fmt(x.a.falta)+' a mais de entrada (pode usar o FGTS)</small>':'')+'</td></tr>';
-}
-function tabela(r){
-  var rows=r.cabe.concat(r.ajuste).sort(function(a,b){return a.u[3]-b.u[3]}),LIM=10,id='t'+r.key;
-  var h='<div class="tw"><table><thead><tr><th>Apartamento</th><th>Área</th><th>Valor</th><th>Financiamento</th><th>Entrada (ato)</th></tr></thead><tbody>'+rows.slice(0,LIM).map(linha).join('')+'</tbody>';
-  if(rows.length>LIM) h+='<tbody id="'+id+'" hidden>'+rows.slice(LIM).map(linha).join('')+'</tbody>';
-  h+='</table></div>';
-  if(rows.length>LIM) h+='<button class="lite noprint" data-more="'+id+'">Mostrar todos os '+rows.length+' apartamentos</button>';
-  return h;
-}
-function bloco(r){var n=qtd(r);return '<div class="card emp"><h3>'+esc(r.nome)+'<span>'+n+' apartamento'+(n>1?'s':'')+' no seu perfil</span></h3>'+tabela(r)+'</div>'}
-var h='<h1>'+primeiro+', este é o seu resultado</h1><p class="sub">Simulação preliminar do Minha Casa Minha Vida.</p>';
-if(p.erro){
-  h+='<div class="banner warn">'+msgs[p.erro]+'<br>Queremos conversar com você pessoalmente: temos opções para reformular a forma de pagamento e tentar viabilizar a compra do seu novo imóvel.</div>';
-}else{
-  var pc=function(x){return (x*100).toFixed(2).replace('.',',')+'% a.a.'},cen=S.cenarios(p);
-  h+='<div class="card"><b>Seu financiamento estimado</b><p class="sub" style="margin:4px 0 8px">Renda familiar de '+S.fmt(f.renda)+' (parcela até 30% da renda). A faixa muda conforme o valor do imóvel.</p><div class="tw"><table><thead><tr><th>Valor do imóvel</th><th>Faixa</th><th>Sem redutor<br><small>(menos de 36 meses de FGTS)</small></th><th>Com redutor<br><small>(36 meses ou mais de FGTS)</small></th></tr></thead><tbody>'+cen.map(function(c){var a=c.sem.fin===c.com.fin;return '<tr><td>'+c.rotulo+'</td><td>Faixa '+c.faixa+'</td><td'+(!p.cotista?' style="background:#fff7da;font-weight:700"':'')+'>'+S.fmt(c.sem.fin)+'<small class="bl"> '+pc(c.sem.taxa)+'</small></td><td'+(p.cotista?' style="background:#fff7da;font-weight:700"':'')+'>'+(a?'<small class="bl">igual (Faixa 4 não tem redutor)</small><br>':'')+S.fmt(c.com.fin)+'<small class="bl"> '+pc(c.com.taxa)+'</small></td></tr>'}).join('')+'</tbody></table></div><p class="note" style="margin-top:8px">Destacado: o seu caso ('+(p.cotista?'com':'sem')+' redutor).'+(f.fgtsInformado?(p.cotista?' FGTS informado: '+S.fmt(f.fgtsInformado)+', que pode ajudar na entrada.':' O FGTS só pode ser usado na compra com 36 meses ou mais de contribuição, por isso não foi considerado.'):'')+'</p></div>';
-  if(!algum) h+='<div class="banner warn"><b>Ainda não encontramos um apartamento que caiba direto no seu perfil.</b><br>Mas isso tem solução: queremos uma <b>entrevista pessoal</b> com você, porque temos algumas opções de reformular as formas de pagamento e tentar conseguir a aquisição do seu novo imóvel.</div>';
-  else if(qtd(sel)) h+='<div class="banner ok">Boa notícia! No <b>'+esc(sel.nome)+'</b> você se encaixa em <b>'+qtd(sel)+'</b> apartamento'+(qtd(sel)>1?'s':'')+'.</div>';
-  else h+='<div class="banner warn">No <b>'+esc(sel.nome)+'</b> ainda não encontramos apartamento que caiba direto no seu perfil — mas veja as opções abaixo em outros empreendimentos.</div>';
-  if(qtd(sel)) h+='<h2>Empreendimento que você escolheu</h2>'+bloco(sel);
-  var op=outros.filter(function(r){return qtd(r)>0});
-  if(op.length) h+='<h2>'+(qtd(sel)?'Outros empreendimentos que você também pode escolher':'Opções para você')+'</h2>'+op.map(bloco).join('');
-  h+='<p class="note">Estimativa preliminar com base nas taxas e faixas do MCMV e nos valores informados pela construtora. A aprovação final depende da análise de crédito e da avaliação da Caixa. Entrada = ato; linhas com faixa dourada precisam de entrada maior, que pode ser coberta com o FGTS.</p>';
-}
-var nome=DADOS.emp[f.emp].nome,msg=algum?'Olá! Sou '+f.nome+'. Fiz a simulação no site e quero falar sobre os apartamentos do meu perfil (interesse: '+nome+').':'Olá! Sou '+f.nome+'. Fiz a simulação no site (interesse: '+nome+') e quero marcar uma entrevista pessoal para ajustar a compra do meu imóvel.';
-h+='<div class="noprint"><a class="btn green" href="'+waLink(msg)+'">'+(algum?'Falar com o corretor no WhatsApp':'Quero a entrevista pessoal')+'</a> <button class="lite" onclick="window.print()">🖨 Imprimir</button> <a class="btn lite" href="/evolucao-obra/?emp='+esc(f.emp)+'">Refazer simulação</a></div>';
-app.innerHTML=h;
-app.addEventListener('click',function(e){var b=e.target.closest('[data-more]');if(b){document.getElementById(b.dataset.more).hidden=false;b.remove()}});
-})();
-</script></body></html>
+<script src="/evolucao-obra/resultado/resultado.js"></script>
+</body></html>

@@ -72,5 +72,29 @@
   }
   function todos(p){return Object.keys(D.emp).map(function(k){return empreendimento(p,k)})}
 
-  window.SIM={fmt:fmt,perfil:perfil,cenarios:cenarios,empreendimento:empreendimento,todos:todos};
+
+  // --- unidade solicitada a partir do botao do site (emp, un, t=torre/bloco, v=valor mostrado no site) ---
+  var semEsp=function(x){return String(x||'').toLowerCase().replace(/\s+/g,'')};
+  function numDe(u){return semEsp(u[1].replace(/^Apto\s+/i,'').replace(/\s+da\s+(Torre|Bloco)\s+\w+$/i,'').replace(/\s+BL\d+$/i,'').replace(/\s+[A-Z]$/,''))}
+  function torreDe(u){return String(u[0]).replace(/^(Torre|Bloco)\s+/i,'').replace(/^0+/,'').toLowerCase()}
+  var mediana=function(a){a=a.slice().sort(function(x,y){return x-y});return a[Math.floor(a.length/2)]};
+  function acharUnidade(emp,un,t,v){
+    var e=D.emp[emp];if(!e||!un) return null;
+    var n=semEsp(un),tt=String(t||'').replace(/^0+/,'').toLowerCase();
+    for(var i=0;i<e.u.length;i++){if(numDe(e.u[i])===n&&torreDe(e.u[i])===tt) return {u:e.u[i],estimado:false}}
+    v=+v||0;if(!(v>0)) return null; // fora da tabela da construtora: estima pelas proporcoes do empreendimento
+    var rf=mediana(e.u.map(function(x){return x[5]/x[3]})),ra=mediana(e.u.map(function(x){return x[4]/x[3]})),rt=mediana(e.u.map(function(x){return x[6]/x[3]}));
+    return {u:['Torre/Bloco '+(t||''),un,0,v,Math.round(v*ra),Math.round(v*rf),Math.round(v*rt)],estimado:true};
+  }
+
+  // parcela estimada do financiamento de uma unidade (proporcional a relacao parcela/financiamento da tabela)
+  function parcelaDe(p,u){
+    var valor=Math.min(u[3],u[4]),cap=capacidade(p,faixaDe(p,valor),p.cotista);
+    return Math.round(Math.min(u[5],cap.fin)*cap.parcela/cap.fin*100)/100;
+  }
+
+  // campanhas em que a construtora paga as despesas de financiamento/registro (chaves de DADOS.emp). O Julio avisa quais.
+  var PROMO_DESPESAS=[];
+
+  window.SIM={fmt:fmt,perfil:perfil,cenarios:cenarios,avalia:avalia,empreendimento:empreendimento,todos:todos,acharUnidade:acharUnidade,parcelaDe:parcelaDe,promoDespesas:function(k){return PROMO_DESPESAS.indexOf(k)>=0}};
 })();
