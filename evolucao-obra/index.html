@@ -40,18 +40,6 @@ button.pr{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#fff
 <p id="err" class="err" hidden></p>
 <button class="pr" type="submit">Ver meu resultado</button>
 </form>
-<h1 class="noprint2">Evolução da obra × pagamento à Caixa</h1>
-<p class="sub">Digite a prestação do financiamento e veja quanto o cliente paga durante a obra.</p>
-<div class="card">
-<div class="row"><label for="p">Prestação do financiamento (R$)</label><input id="p" type="text" inputmode="decimal" value="2.390,72" autocomplete="off"></div>
-<div class="row"><label for="n">Prazo da obra: <span id="nv">36</span> meses</label><input id="n" type="range" min="12" max="48" value="36"></div>
-<div class="res"><div><small>1ª parcela (mês 1)</small><b id="a"></b><br><i id="ap"></i></div><div><small>Última parcela (mês <span id="nl"></span>)</small><b id="z"></b><br><i>100% da prestação</i></div></div>
-<p class="total">Total pago à Caixa durante a obra: <b id="t"></b></p>
-</div>
-<div class="card"><table><thead><tr><th>Mês</th><th>% da obra</th><th>Paga à Caixa</th></tr></thead><tbody id="tb"></tbody></table>
-<p class="note">Cálculo: a cada mês o cliente paga à Caixa o percentual da prestação igual ao avanço acumulado da obra (evolução linear: 100% ÷ prazo por mês). Base de estimativa de despesa; o valor real depende do cronograma medido pela Caixa.</p></div>
-<button class="pr" onclick="window.print()">🖨 Imprimir</button>
-</div>
 <footer class="rodape"><p><b>Aviso importante</b></p><p>Esta simulação é apenas uma estimativa informativa, calculada pelo sistema SAC com base nas regras públicas do programa Minha Casa, Minha Vida e nos dados que você informou. Não é proposta, oferta, pré-aprovação nem garantia de crédito.</p><p>Os valores reais de parcela, taxa de juros, prazo, cota de financiamento, TR, seguros (MIP e DFI), tarifas e a aprovação do crédito são definidos exclusivamente pela Caixa Econômica Federal, conforme análise de renda, idade, histórico de FGTS, avaliação do imóvel e normas vigentes na data da contratação. Esses itens podem mudar sem aviso prévio, e por isso o resultado pode diferir da simulação oficial.</p><p>Esta ferramenta e quem a disponibiliza não se responsabilizam por diferenças entre esta estimativa e as condições efetivamente oferecidas pela Caixa. Antes de qualquer decisão de compra, faça a simulação oficial e confirme todas as condições diretamente com a Caixa.</p></footer>
 <script src="/evolucao-obra/dados.js"></script><script src="/evolucao-obra/simulador.js"></script>
 <script>
@@ -79,15 +67,4 @@ button.pr{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#fff
     try{sessionStorage.setItem('simViva',JSON.stringify(dados))}catch(x){}
     location.href='/evolucao-obra/resultado/'};
 })();
-const $=id=>document.getElementById(id),brl=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-function calc(){
-  const P=parseFloat($('p').value.replace(/\./g,'').replace(',','.'))||0,N=+$('n').value;
-  $('nv').textContent=$('nl').textContent=N;
-  let rows='',tot=0;
-  for(let m=1;m<=N;m++){const pc=m/N,v=Math.round(P*pc*100)/100;tot+=v;
-    rows+=`<tr${m==1||m==N?' class="hl"':''}><td>${m}</td><td>${(pc*100).toFixed(2).replace('.',',')}%</td><td>${brl(v)}</td></tr>`}
-  $('tb').innerHTML=rows;$('a').textContent=brl(Math.round(P/N*100)/100);$('ap').textContent=(100/N).toFixed(2).replace('.',',')+'% da prestação';
-  $('z').textContent=brl(P);$('t').textContent=brl(tot);
-}
-$('p').addEventListener('input',calc);$('n').addEventListener('input',calc);calc();
 </script></body></html>
