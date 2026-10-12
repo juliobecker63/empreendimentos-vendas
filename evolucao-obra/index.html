@@ -76,7 +76,6 @@ button.pr{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#fff
   g('f').onsubmit=e=>{e.preventDefault();const err=g('err'),renda=num(g('renda').value),tf=document.querySelector('[name=tf]:checked').value==='1',fgts=tf?num(g('fgts').value):0;
     if(renda<=0||(tf&&fgts<=0)){err.textContent='Confira a renda'+(tf?' e o valor do FGTS':'')+'.';err.hidden=false;return}
     const dados={emp:sel.value,nome:g('nome').value.trim(),nasc:g('nasc').value,renda:renda,cotista:document.querySelector('[name=cotista]:checked').value==='1',fgts:fgts,fone:g('fone').value.trim(),un:un,t:tt,v:vv};
-    try{enviar(dados,g('fone').value.trim())}catch(x){}
     try{sessionStorage.setItem('simViva',JSON.stringify(dados))}catch(x){}
     location.href='/evolucao-obra/resultado/'};
 })();

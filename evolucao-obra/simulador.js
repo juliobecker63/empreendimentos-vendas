@@ -58,10 +58,10 @@
     if(p.erro) return null;
     var valor=Math.min(u[3],u[4]);
     if(valor>TETO) return null;
-    var faixa=faixaDe(p,valor),cap=capacidade(p,faixa,p.cotista),falta=Math.max(0,u[5]-cap.fin);
-    var base={faixa:faixa,taxa:cap.taxa,maxFin:cap.fin};
-    if(falta===0) return Object.assign(base,{st:'cabe',falta:0,entrada:u[6]});
-    if(falta<=p.fgts) return Object.assign(base,{st:'ajuste',falta:falta,entrada:u[6]+falta});
+    var faixa=faixaDe(p,valor),cap=capacidade(p,faixa,p.cotista),fnec=Math.round(u[4]*0.8),falta=Math.max(0,fnec-cap.fin),fin=Math.min(fnec,cap.fin);
+    var base={faixa:faixa,taxa:cap.taxa,maxFin:cap.fin,fin:fin};
+    if(falta===0) return Object.assign(base,{st:'cabe',falta:0,entrada:u[3]-fin});
+    if(falta<=p.fgts) return Object.assign(base,{st:'ajuste',falta:falta,entrada:u[3]-fin});
     return null;
   }
 
@@ -90,11 +90,12 @@
   // parcela estimada do financiamento de uma unidade (proporcional a relacao parcela/financiamento da tabela)
   function parcelaDe(p,u){
     var valor=Math.min(u[3],u[4]),cap=capacidade(p,faixaDe(p,valor),p.cotista);
-    return Math.round(Math.min(u[5],cap.fin)*cap.parcela/cap.fin*100)/100;
+    return Math.round(Math.min(Math.round(u[4]*0.8),cap.fin)*cap.parcela/cap.fin*100)/100;
   }
 
   // campanhas em que a construtora paga as despesas de financiamento/registro (chaves de DADOS.emp). O Julio avisa quais.
   var PROMO_DESPESAS=[];
 
-  window.SIM={fmt:fmt,perfil:perfil,cenarios:cenarios,avalia:avalia,empreendimento:empreendimento,todos:todos,acharUnidade:acharUnidade,parcelaDe:parcelaDe,promoDespesas:function(k){return PROMO_DESPESAS.indexOf(k)>=0}};
+  function capacidadeDe(p,u){var valor=Math.min(u[3],u[4]);return capacidade(p,faixaDe(p,valor),p.cotista)}
+  window.SIM={capacidadeDe:capacidadeDe,fmt:fmt,perfil:perfil,cenarios:cenarios,avalia:avalia,empreendimento:empreendimento,todos:todos,acharUnidade:acharUnidade,parcelaDe:parcelaDe,promoDespesas:function(k){return PROMO_DESPESAS.indexOf(k)>=0}};
 })();
