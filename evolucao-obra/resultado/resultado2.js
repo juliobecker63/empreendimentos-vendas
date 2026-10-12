@@ -83,7 +83,7 @@ if(alvo&&PL.FLUXO[f.emp]){
   var padRef=Math.round(valor*0.02);
   box.innerHTML='<div class="card"><b>Monte o pagamento do '+alvoTxt+'</b><p class="sub" style="margin:4px 0 10px">Valor do imóvel: '+S.fmt(valor)+'. O financiamento da Caixa entra na entrega das chaves; o resto é pago à construtora. Ajuste ato, mensais, reforços e pós-chaves: as mensais se acertam sozinhas para fechar o valor do imóvel.</p>'+
    '<div class="ctl"><label>Ato (assinatura), R$</label><input id="pl_ato" type="text" inputmode="decimal" value="1.000,00"></div>'+
-   '<div class="ctl"><label>Mensais até a entrega: <b id="pl_nm_v"></b> meses</label><input id="pl_nm" type="range" min="1" max="'+N+'" value="'+N+'"></div>'+
+   '<div class="ctl"><label>Mensais até a entrega: <b id="pl_nm_v"></b></label><input id="pl_nm" type="range" min="1" max="'+N+'" value="'+N+'"></div>'+
    '<div class="ctl"><label>Reforços</label><select id="pl_fr"><option value="0">Sem reforços</option><option value="S">Semestrais (jun e dez)</option><option value="A">Anuais (dezembro)</option></select></div>'+
    '<div id="pl_refbox" hidden><div class="ctl"><label>Quantidade de reforços: <b id="pl_nr_v"></b></label><input id="pl_nr" type="range" min="1" max="1" value="1"></div><div class="ctl"><label>Valor de cada reforço, R$</label><input id="pl_vr" type="text" inputmode="decimal" value="'+String(padRef).replace(/\B(?=(\d{3})+$)/g,'.')+',00"></div></div>'+
    '<div class="ctl"><label>Pós-chaves: <b id="pl_pp_v"></b>% do valor do imóvel (máx. 6%)</label><input id="pl_pp" type="range" min="0" max="6" step="0.5" value="6"></div>'+
@@ -96,7 +96,7 @@ if(alvo&&PL.FLUXO[f.emp]){
     var fr=g('pl_fr').value,nObra=PL.mesesObra(f.emp,new Date()).filter(function(x){return fr==='A'?x.m===12:fr==='S'?(x.m===6||x.m===12):false}).length;
     g('pl_refbox').hidden=fr==='0';var nr=g('pl_nr');nr.max=Math.max(1,nObra);if(+nr.value>nObra)nr.value=Math.max(1,nObra);
     g('pl_nm_v').textContent=g('pl_nm').value;g('pl_nr_v').textContent=nr.value;g('pl_pp_v').textContent=g('pl_pp').value.replace('.',',');g('pl_pn_v').textContent=g('pl_pn').value;
-    var pl=PL.calcula(p,alvo,f.emp,opts());planoAtual=pl;var fm=S.fmt;g('pl_pn_v').textContent=g('pl_pn').value+' de '+fm(pl.pos/pl.posN);
+    var pl=PL.calcula(p,alvo,f.emp,opts());planoAtual=pl;var fm=S.fmt;g('pl_pn_v').textContent=g('pl_pn').value+' de '+fm(pl.pos/pl.posN);g('pl_nm_v').textContent=g('pl_nm').value+' meses de '+fm(pl.mensal);
     var alerta='';
     if(pl.excede) alerta+='<div class="banner warn" style="font-size:15px">Os valores escolhidos passam do valor do imóvel em '+fm(-pl.restante)+'. Reduza o ato, os reforços ou o pós-chaves.</div>';
     else if(pl.mensal<0) alerta+='';
