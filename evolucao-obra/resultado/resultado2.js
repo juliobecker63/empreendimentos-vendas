@@ -111,7 +111,7 @@ if(alvo&&PL.FLUXO[f.emp]){
       tr('Mensais ('+pl.inicio+' em diante)',pl.nMensais,fm(pl.mensal),fm(pl.mensal*pl.nMensais)+' ('+pct(pl.mensal*pl.nMensais)+')')+
       (pl.reforcos?tr('Reforços',pl.reforcos,fm(pl.vRef),fm(pl.totRef)+' ('+pct(pl.totRef)+')'):'')+
       (pl.fgts?tr('FGTS na entrega ('+pl.chaves+')',1,fm(pl.fgts),fm(pl.fgts)+' ('+pct(pl.fgts)+')'):'')+
-      tr('Financiamento Caixa ('+pl.chaves+')',1,fm(pl.fin),fm(pl.fin)+' ('+pct(pl.fin)+')')+
+      tr('Financiamento Caixa',1,fm(pl.fin),fm(pl.fin)+' ('+pct(pl.fin)+')')+
       tr('Pós-chaves',pl.posN,fm(pl.pos/pl.posN),fm(pl.pos)+' ('+pct(pl.pos)+')')+
       '</tbody></table></div>';
     var cap=S.capacidadeDe(p,alvo);var cards='<h3 style="margin:0 0 4px;font-size:18px">2. Financiamento da Caixa</h3><p class="note" style="margin:0 0 6px">Pago a partir das chaves ('+pl.chaves+'), em até '+p.prazo+' meses.</p><div class="res"><div><small>Valor financiado</small><b>'+fm(pl.fin)+'</b></div><div><small>Prestação do financiamento</small><b>'+fm(pl.prestacao)+'</b></div></div><p class="note">Taxa de juros: '+pc(cap.taxa)+'. Estimativa; a prestação real é definida pela Caixa.</p>';
