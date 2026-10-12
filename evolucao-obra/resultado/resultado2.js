@@ -36,10 +36,8 @@ if(p.erro){
     if(a&&a.st==='cabe'){
       h+='<div class="banner ok">Boa notícia! O apartamento <b>'+uLabel+'</b> do <b>'+esc(sel.nome)+'</b> cabe no seu financiamento.'+' O restante, '+S.fmt(a.entrada)+', é pago à construtora (ato, mensais e pós-chaves): ajuste abaixo.</div>';
     }else{
-      var acima=Math.min(u[3],u[4])>600000;
-      h+='<div class="banner warn">O apartamento <b>'+uLabel+'</b> do <b>'+esc(sel.nome)+'</b> '+(acima?'tem valor acima do limite do Minha Casa Minha Vida (R$ 600 mil).':'ficou acima do financiamento que estimamos para o seu perfil.')+'</div>';
-      if(fit.length){var m=fit[0];h+='<div class="banner ok"><b>Mas há opção no mesmo empreendimento!</b> O apartamento de menor valor que você consegue financiar no '+esc(sel.nome)+' é o <b>'+curto(m.u)+'</b> ('+esc(m.u[0])+'), de '+S.fmt(m.u[3])+'. Veja abaixo as opções.</div>'}
-      h+='<div class="alt"><b>Dá para comprar o apartamento que você escolheu mesmo assim.</b> A construtora permite pagar a parte que o financiamento não cobre em ato, mensais, reforços e pós-chaves. O plano abaixo mostra como ficaria; ajuste e fale com o corretor.</div>';
+      if(fit.length){var m=fit[0];h+='<div class="banner ok"><b>Opção no mesmo empreendimento:</b> o apartamento de menor valor que você consegue financiar no '+esc(sel.nome)+' é o <b>'+curto(m.u)+'</b> ('+esc(m.u[0])+'), de '+S.fmt(m.u[3])+'. Veja abaixo as opções.</div>'}
+      h+='<div class="alt"><b>Podemos ajustar a compra do apartamento que você escolheu.</b> A construtora permite pagar a parte que o financiamento não cobre em ato, mensais, reforços e pós-chaves. O plano abaixo mostra como ficaria; ajuste e fale com o corretor.</div>';
     }
   }else if(f.un&&sel){h+='<div class="card"><b>Apartamento solicitado</b><p style="margin-top:4px">'+esc(sel.nome)+' – apartamento '+uLabel+' (valor sob consulta). Veja abaixo o que cabe no seu perfil.</p></div>'}
   if(!ach&&sel&&fit.length){alvo=fit[0].u;alvoTxt='apartamento '+curto(fit[0].u)+' ('+esc(fit[0].u[0])+'), o de menor valor que cabe no seu perfil'}
