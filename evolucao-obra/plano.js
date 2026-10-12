@@ -24,7 +24,8 @@
   // o: {ato, nMensais, freq:'0'|'S'|'A', nRef, vRef, posPct, posN, usarFgts}
   function calcula(p,u,emp,o,hoje){
     hoje=hoje||new Date();
-    var valor=u[3],cap=S.capacidadeDe(p,u),finMax=Math.round(u[4]*0.8),fin=Math.min(finMax,cap.fin);
+    var valor=u[3],cap=S.capacidadeDe(p,u),finMax=Math.round(u[4]*0.8),finTeto=Math.min(finMax,cap.fin),fin=finTeto;
+    if(o.fin!=null) fin=Math.max(0,Math.min(finTeto,o.fin));
     var prestacao=r2(fin*cap.parcela/cap.fin),obra=mesesObra(emp,hoje),N=obra.length;
     var nMen=Math.max(0,Math.min(o.nMensais,N)),pos=r2(valor*o.posPct/100),posN=Math.max(1,Math.min(24,o.posN));
     var fgts=(o.usarFgts&&p.cotista)?p.fgts:0;
@@ -36,7 +37,7 @@
       return {mes:rotulo(x),pct:pct,evolucao:ev,mensal:men,reforco:ref,total:r2(ev+men+ref)};
     });
     var posRows=posMeses(emp,posN).map(function(x){return {mes:rotulo(x),prestacao:prestacao,pos:r2(pos/posN),total:r2(prestacao+pos/posN)}});
-    return {valor:valor,ato:ato,fin:fin,finMax:finMax,limitado:fin<finMax,prestacao:prestacao,nMensais:nMen,mensal:mensal,restante:restante,
+    return {valor:valor,ato:ato,fin:fin,finMax:finMax,limitado:fin<finMax,finTeto:finTeto,prestacao:prestacao,nMensais:nMen,mensal:mensal,restante:restante,
       reforcos:refMeses.length,vRef:o.vRef,totRef:totRef,pos:pos,posN:posN,posPct:o.posPct,fgts:fgts,obraMeses:N,chaves:rotulo(FLUXO[emp]),
       inicio:N?rotulo(obra[0]):'',rows:rows,posRows:posRows,excede:restante<0,maxMensal:N>0?Math.max.apply(null,rows.map(function(r){return r.total})):0};
   }

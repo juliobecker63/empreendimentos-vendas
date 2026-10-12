@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Seus dados – Viva Corp</title>
+<link rel="stylesheet" href="/evolucao-obra/estilo.css"></head><body>
+<header><div class="wrap"><img src="/logo.png" alt="Logo"></div></header>
+<div class="wrap">
+<h1>Conte um pouco sobre você</h1>
+<p class="sub">Com estes dados calculamos o seu financiamento.</p>
+<form class="card" id="f" autocomplete="off">
+<div class="row"><label for="nome">Nome completo</label><input id="nome" type="text" required></div>
+<div class="g2"><div class="row"><label for="nasc">Data de nascimento</label><input id="nasc" type="date" required max="2010-12-31"></div>
+<div class="row"><label>Sua idade</label><div class="idade" id="idade">—</div></div></div>
+<div class="row"><label for="fone">WhatsApp com DDD</label><input id="fone" type="tel" inputmode="tel" placeholder="(48) 99999-9999" required minlength="10"></div>
+<div class="row"><label>Você possui 36 meses de contribuição de FGTS na sua carteira de trabalho?</label>
+<div class="opt"><input type="radio" name="cotista" id="c1" value="1" required><label for="c1">Sim</label><input type="radio" name="cotista" id="c0" value="0"><label for="c0">Não</label></div></div>
+<div class="row"><label>Você tem saldo de FGTS?</label>
+<div class="opt"><input type="radio" name="tf" id="f1" value="1" required><label for="f1">Sim</label><input type="radio" name="tf" id="f0" value="0"><label for="f0">Não</label></div></div>
+<div class="row" id="fgtsrow" hidden><label for="fgts">Valor aproximado do FGTS (R$)</label><input id="fgts" type="text" inputmode="decimal" placeholder="Ex.: 25.000,00"></div>
+<div class="row"><label for="renda">Qual sua renda bruta familiar? (R$)</label><input id="renda" type="text" inputmode="decimal" placeholder="Ex.: 9.500,00" required><p class="note">Você pode somar a renda de mais de duas pessoas, mesmo que não sejam da família.</p></div>
+<p id="err" class="err" hidden></p>
+<button type="submit">Ver minha calculadora</button>
+</form>
+</div>
+<script src="/evolucao-obra/comum.js"></script>
+<script>
+(function(){
+  var g=function(i){return document.getElementById(i)};
+  g('nasc').addEventListener('input',function(){var i=C.idade(g('nasc').value);g('idade').textContent=i?i.anos+' anos e '+i.meses+(i.meses===1?' mês':' meses'):'—'});
+  [].forEach.call(document.querySelectorAll('[name=tf]'),function(r){r.addEventListener('change',function(){g('fgtsrow').hidden=document.querySelector('[name=tf]:checked').value!=='1'})});
+  g('f').addEventListener('submit',function(e){
+    e.preventDefault();var err=g('err'),renda=C.num(g('renda').value),tf=document.querySelector('[name=tf]:checked').value==='1',fgts=tf?C.num(g('fgts').value):0;
+    if(renda<=0||(tf&&fgts<=0)){err.textContent='Confira a renda'+(tf?' e o valor do FGTS':'')+'.';err.hidden=false;return}
+    C.set('simViva',{emp:C.Q.get('emp')||'',nome:g('nome').value.trim(),nasc:g('nasc').value,renda:renda,cotista:document.querySelector('[name=cotista]:checked').value==='1',fgts:fgts,fgtsInformado:fgts,fone:g('fone').value.trim(),un:C.Q.get('un')||'',t:C.Q.get('t')||'',v:+C.Q.get('v')||0});
+    location.href=(C.Q.get('un')?'/evolucao-obra/calculadora/':'/evolucao-obra/resultado/')+C.qs();
+  });
+})();
+</script>
+</body></html>

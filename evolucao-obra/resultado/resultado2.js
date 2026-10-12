@@ -9,13 +9,13 @@ var waLink=function(t){return 'https://wa.me/'+wa+'?text='+encodeURIComponent(t)
 var porValor=function(a,b){return a.u[3]-b.u[3]};
 var curto=function(u){return esc(u[1].replace(/ da (Torre|Bloco) [A-Za-z0-9]+$/,''))};
 var num=function(v){return parseFloat(String(v).replace(/\./g,'').replace(',','.'))||0};
-function linha(x){
-  return '<tr><td>'+curto(x.u)+(x.u[0]?' <small class="bl">'+esc(x.u[0])+'</small>':'')+'</td><td>'+(x.u[2]?x.u[2].toFixed(2).replace('.',',')+' m²':'-')+'</td><td>'+S.fmt(x.u[3])+'</td><td>'+S.fmt(x.a.fin)+'</td></tr>';
+function linha(x,k){
+  return '<tr><td>'+curto(x.u)+(x.u[0]?' <small class="bl">'+esc(x.u[0])+'</small>':'')+'</td><td>'+(x.u[2]?x.u[2].toFixed(2).replace('.',',')+' m²':'-')+'</td><td>'+S.fmt(x.u[3])+'</td><td>'+S.fmt(x.a.fin)+'</td><td><a href="/evolucao-obra/calculadora/?emp='+k+'&un='+encodeURIComponent(S.paramsUnidade(x.u).un)+'&t='+encodeURIComponent(S.paramsUnidade(x.u).t)+'">Simular</a></td></tr>';
 }
 function tabela(r){
   var rows=r.cabe.slice().sort(porValor),LIM=10,id='t'+r.key;
-  var h='<div class="tw"><table><thead><tr><th>Apartamento</th><th>Área</th><th>Valor</th><th>Financiamento</th></tr></thead><tbody>'+rows.slice(0,LIM).map(linha).join('')+'</tbody>';
-  if(rows.length>LIM) h+='<tbody id="'+id+'" hidden>'+rows.slice(LIM).map(linha).join('')+'</tbody>';
+  var h='<div class="tw"><table><thead><tr><th>Apartamento</th><th>Área</th><th>Valor</th><th>Financiamento</th><th></th></tr></thead><tbody>'+rows.slice(0,LIM).map(function(x){return linha(x,r.key)}).join('')+'</tbody>';
+  if(rows.length>LIM) h+='<tbody id="'+id+'" hidden>'+rows.slice(LIM).map(function(x){return linha(x,r.key)}).join('')+'</tbody>';
   h+='</table></div>';
   if(rows.length>LIM) h+='<button class="lite noprint" data-more="'+id+'">Mostrar todos os '+rows.length+' apartamentos</button>';
   return h;

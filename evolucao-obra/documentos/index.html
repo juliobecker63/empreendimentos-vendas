@@ -1,0 +1,21 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Envio de documentos – Viva Corp</title>
+<link rel="stylesheet" href="/evolucao-obra/estilo.css"></head><body>
+<header><div class="wrap"><img src="/logo.png" alt="Logo"></div></header>
+<div class="wrap" id="app" data-wa="5548991480285">
+<h1>Envie seus documentos</h1>
+<p class="sub">Vamos começar agora o processo de financiamento do seu apartamento.</p>
+<div class="card">
+<h3>Documentos necessários</h3>
+<p style="margin-top:6px">Em breve você verá aqui a lista de documentos e como enviá-los. Enquanto isso, fale com o corretor pelo WhatsApp que ele orienta o envio.</p>
+<a class="btn green" id="a_wa" href="#">Falar com o corretor no WhatsApp</a>
+</div>
+</div>
+<script src="/evolucao-obra/comum.js"></script>
+<script>
+(function(){
+  var f=C.get('simViva')||{},wa=document.getElementById('app').dataset.wa;
+  document.getElementById('a_wa').href='https://wa.me/'+wa+'?text='+encodeURIComponent('Olá! Sou '+(f.nome||'cliente')+'. Fiz a simulação no site e quero enviar meus documentos para iniciar o financiamento.');
+})();
+</script>
+</body></html>

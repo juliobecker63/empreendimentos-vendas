@@ -97,5 +97,5 @@
   var PROMO_DESPESAS=[];
 
   function capacidadeDe(p,u){var valor=Math.min(u[3],u[4]);return capacidade(p,faixaDe(p,valor),p.cotista)}
-  window.SIM={capacidadeDe:capacidadeDe,fmt:fmt,perfil:perfil,cenarios:cenarios,avalia:avalia,empreendimento:empreendimento,todos:todos,acharUnidade:acharUnidade,parcelaDe:parcelaDe,promoDespesas:function(k){return PROMO_DESPESAS.indexOf(k)>=0}};
+  window.SIM={paramsUnidade:function(u){return {un:numDe(u),t:torreDe(u)}},capacidadeDe:capacidadeDe,fmt:fmt,perfil:perfil,cenarios:cenarios,avalia:avalia,empreendimento:empreendimento,todos:todos,acharUnidade:acharUnidade,parcelaDe:parcelaDe,promoDespesas:function(k){return PROMO_DESPESAS.indexOf(k)>=0}};
 })();
