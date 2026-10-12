@@ -16,13 +16,29 @@ input[type=range]{width:100%;accent-color:var(--gold)}
 table{width:100%;border-collapse:collapse;font-size:15px}th,td{padding:7px 8px;text-align:right;border-bottom:1px solid var(--line)}th:first-child,td:first-child{text-align:left}
 th{background:var(--navy);color:#fff;font-weight:600;position:sticky;top:0}tr.hl td{background:#fff7da;font-weight:700}
 .note{font-size:13px;color:var(--muted);margin-top:10px}
+select,input[type=date]{width:100%;font-size:17px;padding:10px 12px;border:2px solid var(--line);border-radius:8px;font-family:inherit;background:#fff}input[type=text]#nome,input[type=text]#renda,input[type=text]#fgts{font-size:17px}.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.opt{display:flex;gap:22px}.opt label{font-weight:500;display:flex;align-items:center;gap:6px}.err{color:#b3261e;font-weight:600;margin-bottom:12px}.noprint2{margin-top:34px}
 button.pr{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#fff;border:0;border-radius:8px;padding:12px 22px;font-size:15px;font-weight:700;letter-spacing:.5px;cursor:pointer;text-transform:uppercase;margin-bottom:24px}
 @media print{header{background:#fff;border-bottom:2px solid var(--gold)}header img{padding:0}.noprint,button.pr{display:none}body{background:#fff}.card{border:0;padding:6px 0;break-inside:avoid}.res div{background:#fff;color:#000;border:1px solid #999}.res small,.res i{color:#333}.res b{color:#000}th{background:#eee;color:#000;position:static}tr.hl td{background:#eee}table{font-size:12px}th,td{padding:3px 6px}}
-@media(max-width:480px){.res{grid-template-columns:1fr}}
+@media(max-width:480px){.g2{grid-template-columns:1fr}.res{grid-template-columns:1fr}}
 </style></head><body>
 <header><div class="wrap"><img src="/logo.png" alt="Logo"></div></header>
 <div class="wrap">
-<h1>Evolução da obra × pagamento à Caixa</h1>
+<h1>Simule sua compra pelo Minha Casa Minha Vida</h1>
+<p class="sub">Preencha os dados abaixo e veja em segundos quais apartamentos cabem no seu financiamento.</p>
+<form class="card noprint" id="f" autocomplete="off">
+<div class="row"><label for="emp">Empreendimento de interesse</label><select id="emp"></select></div>
+<div class="row"><label for="nome">Nome completo</label><input id="nome" type="text" required></div>
+<div class="g2"><div class="row"><label for="nasc">Data de nascimento</label><input id="nasc" type="date" required max="2010-12-31"></div>
+<div class="row"><label for="renda">Renda bruta familiar (R$)</label><input id="renda" type="text" inputmode="decimal" placeholder="Ex.: 9.500,00" required></div></div>
+<div class="row"><label>Trabalhou mais de 36 meses com carteira assinada (somando todos os empregos)?</label>
+<div class="opt"><label><input type="radio" name="cotista" value="1" required> Sim</label><label><input type="radio" name="cotista" value="0"> Não</label></div></div>
+<div class="row"><label>Tem saldo de FGTS?</label>
+<div class="opt"><label><input type="radio" name="tf" value="1" required> Sim</label><label><input type="radio" name="tf" value="0"> Não</label></div></div>
+<div class="row" id="fgtsrow" hidden><label for="fgts">Valor aproximado do FGTS (R$)</label><input id="fgts" type="text" inputmode="decimal" placeholder="Ex.: 25.000,00"></div>
+<p id="err" class="err" hidden></p>
+<button class="pr" type="submit">Ver meu resultado</button>
+</form>
+<h1 class="noprint2">Evolução da obra × pagamento à Caixa</h1>
 <p class="sub">Digite a prestação do financiamento e veja quanto o cliente paga durante a obra.</p>
 <div class="card">
 <div class="row"><label for="p">Prestação do financiamento (R$)</label><input id="p" type="text" inputmode="decimal" value="2.390,72" autocomplete="off"></div>
@@ -34,7 +50,19 @@ button.pr{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#fff
 <p class="note">Cálculo: a cada mês o cliente paga à Caixa o percentual da prestação igual ao avanço acumulado da obra (evolução linear: 100% ÷ prazo por mês). Base de estimativa de despesa; o valor real depende do cronograma medido pela Caixa.</p></div>
 <button class="pr" onclick="window.print()">🖨 Imprimir</button>
 </div>
+<script src="/evolucao-obra/dados.js"></script><script src="/evolucao-obra/simulador.js"></script>
 <script>
+(function(){
+  const g=id=>document.getElementById(id),num=v=>parseFloat(String(v).replace(/\./g,'').replace(',','.'))||0;
+  const sel=g('emp'),q=new URLSearchParams(location.search).get('emp');
+  Object.keys(DADOS.emp).forEach(k=>sel.add(new Option(DADOS.emp[k].nome,k)));
+  const norm=x=>(x||'').toLowerCase().replace(/-/g,'_');if(DADOS.emp[norm(q)]) sel.value=norm(q);
+  document.querySelectorAll('[name=tf]').forEach(r=>r.onchange=()=>{g('fgtsrow').hidden=r.value!=='1'||!r.checked});
+  g('f').onsubmit=e=>{e.preventDefault();const err=g('err'),renda=num(g('renda').value),tf=document.querySelector('[name=tf]:checked').value==='1',fgts=tf?num(g('fgts').value):0;
+    if(renda<=0||(tf&&fgts<=0)){err.textContent='Confira a renda'+(tf?' e o valor do FGTS':'')+'.';err.hidden=false;return}
+    try{sessionStorage.setItem('simViva',JSON.stringify({emp:sel.value,nome:g('nome').value.trim(),nasc:g('nasc').value,renda:renda,cotista:document.querySelector('[name=cotista]:checked').value==='1',fgts:fgts}))}catch(x){}
+    location.href='/evolucao-obra/resultado/'};
+})();
 const $=id=>document.getElementById(id),brl=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 function calc(){
   const P=parseFloat($('p').value.replace(/\./g,'').replace(',','.'))||0,N=+$('n').value;
