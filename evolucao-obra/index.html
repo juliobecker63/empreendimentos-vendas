@@ -32,6 +32,7 @@ button.pr{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#fff
 <div class="row"><label for="renda">Renda bruta familiar (R$)</label><input id="renda" type="text" inputmode="decimal" placeholder="Ex.: 9.500,00" required></div></div>
 <div class="row"><label>Tem 36 meses ou mais de contribuição ao FGTS (carteira assinada, somando todos os empregos)?</label>
 <div class="opt"><label><input type="radio" name="cotista" value="1" required> Sim</label><label><input type="radio" name="cotista" value="0"> Não</label></div></div>
+<div class="row"><label for="fone">WhatsApp com DDD (opcional)</label><input id="fone" type="text" inputmode="tel" placeholder="(48) 99999-9999"></div>
 <div class="row"><label>Tem saldo de FGTS?</label>
 <div class="opt"><label><input type="radio" name="tf" value="1" required> Sim</label><label><input type="radio" name="tf" value="0"> Não</label></div></div>
 <div class="row" id="fgtsrow" hidden><label for="fgts">Valor aproximado do FGTS (R$)</label><input id="fgts" type="text" inputmode="decimal" placeholder="Ex.: 25.000,00"></div>
@@ -58,9 +59,21 @@ button.pr{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#fff
   Object.keys(DADOS.emp).forEach(k=>sel.add(new Option(DADOS.emp[k].nome,k)));
   const norm=x=>(x||'').toLowerCase().replace(/-/g,'_');if(DADOS.emp[norm(q)]) sel.value=norm(q);
   document.querySelectorAll('[name=tf]').forEach(r=>r.onchange=()=>{g('fgtsrow').hidden=r.value!=='1'||!r.checked});
+  function enviar(d,fone){ // e-mail ao corretor a cada simulacao (Edge Function enviar-contato; sendBeacon sobrevive a troca de pagina)
+    const S=SIM,p=S.perfil(d),all=S.todos(p),n=r=>r.cabe.length+r.ajuste.length,L=[];
+    L.push('Empreendimento de interesse: '+DADOS.emp[d.emp].nome,'Renda bruta familiar: '+S.fmt(d.renda),'36 meses de FGTS: '+(d.cotista?'Sim':'Não'),'FGTS informado: '+(d.fgts?S.fmt(d.fgts):'Não tem'));
+    if(p.erro) L.push('Resultado: fora do enquadramento ('+p.erro+') - chamar para entrevista pessoal');
+    else{L.push('Idade: '+p.idade+' anos');S.cenarios(p).forEach(c=>L.push(c.rotulo+' (Faixa '+c.faixa+'): sem redutor '+S.fmt(c.sem.fin)+' | com redutor '+S.fmt(c.com.fin)));
+      L.push('Apartamentos no perfil: '+all.map(r=>r.nome+' '+n(r)).join(' | '));
+      if(!all.some(r=>n(r)>0)) L.push('Resultado: NENHUM apartamento - chamar para entrevista pessoal')}
+    const b=new URLSearchParams({_subject:'Nova simulação MCMV - '+d.nome,_captcha:'false',_honey:'',Nome:d.nome,Nascimento:d.nasc,WhatsApp:fone||'(não informado)',Simulacao:L.join('\n')});
+    navigator.sendBeacon('https://ljxijsfumxrstixkimyg.supabase.co/functions/v1/enviar-contato',b);
+  }
   g('f').onsubmit=e=>{e.preventDefault();const err=g('err'),renda=num(g('renda').value),tf=document.querySelector('[name=tf]:checked').value==='1',fgts=tf?num(g('fgts').value):0;
     if(renda<=0||(tf&&fgts<=0)){err.textContent='Confira a renda'+(tf?' e o valor do FGTS':'')+'.';err.hidden=false;return}
-    try{sessionStorage.setItem('simViva',JSON.stringify({emp:sel.value,nome:g('nome').value.trim(),nasc:g('nasc').value,renda:renda,cotista:document.querySelector('[name=cotista]:checked').value==='1',fgts:fgts}))}catch(x){}
+    const dados={emp:sel.value,nome:g('nome').value.trim(),nasc:g('nasc').value,renda:renda,cotista:document.querySelector('[name=cotista]:checked').value==='1',fgts:fgts};
+    try{enviar(dados,g('fone').value.trim())}catch(x){}
+    try{sessionStorage.setItem('simViva',JSON.stringify(dados))}catch(x){}
     location.href='/evolucao-obra/resultado/'};
 })();
 const $=id=>document.getElementById(id),brl=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
