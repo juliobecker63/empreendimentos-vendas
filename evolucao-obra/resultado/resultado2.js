@@ -3,17 +3,17 @@ var S=SIM,PL=PLANO,app=document.getElementById('app'),wa=app.dataset.wa,esc=func
 var f=null;try{f=JSON.parse(sessionStorage.getItem('simViva'))}catch(e){}
 if(!f){app.innerHTML='<h1>Preencha a simulação primeiro</h1><p class="sub">Não encontramos seus dados.</p><a class="btn" href="/evolucao-obra/">Fazer a simulação</a>';return}
 var p=S.perfil(f),primeiro=esc(f.nome.split(' ')[0]),all=S.todos(p),sel=all.filter(function(r){return r.key===f.emp})[0],outros=all.filter(function(r){return r.key!==f.emp});
-var qtd=function(r){return r?r.cabe.length+r.ajuste.length:0},algum=all.some(function(r){return qtd(r)>0});
+var qtd=function(r){return r?r.cabe.length:0},algum=all.some(function(r){return qtd(r)>0});
 var msgs={idade:'A idade informada não permite o financiamento.',prazo:'Pela idade, o prazo de financiamento ficaria muito curto.',renda_baixa:'Sua renda está abaixo das faixas desta simulação (a partir de R$ 5.000,01).',renda_alta:'Sua renda está acima do limite do Minha Casa Minha Vida (R$ 13.000,00).'};
 var waLink=function(t){return 'https://wa.me/'+wa+'?text='+encodeURIComponent(t)},pc=function(x){return (x*100).toFixed(2).replace('.',',')+'% a.a.'};
 var porValor=function(a,b){return a.u[3]-b.u[3]};
 var curto=function(u){return esc(u[1].replace(/ da (Torre|Bloco) [A-Za-z0-9]+$/,''))};
 var num=function(v){return parseFloat(String(v).replace(/\./g,'').replace(',','.'))||0};
 function linha(x){
-  return '<tr class="'+(x.a.st==='ajuste'?'aj':'')+'"><td>'+curto(x.u)+(x.u[0]?' <small class="bl">'+esc(x.u[0])+'</small>':'')+'</td><td>'+(x.u[2]?x.u[2].toFixed(2).replace('.',',')+' m²':'-')+'</td><td>'+S.fmt(x.u[3])+'</td><td>'+S.fmt(x.a.fin)+(x.a.st==='ajuste'?'<small>o FGTS cobre '+S.fmt(x.a.falta)+' da diferença do financiamento</small>':'')+'</td></tr>';
+  return '<tr><td>'+curto(x.u)+(x.u[0]?' <small class="bl">'+esc(x.u[0])+'</small>':'')+'</td><td>'+(x.u[2]?x.u[2].toFixed(2).replace('.',',')+' m²':'-')+'</td><td>'+S.fmt(x.u[3])+'</td><td>'+S.fmt(x.a.fin)+'</td></tr>';
 }
 function tabela(r){
-  var rows=r.cabe.concat(r.ajuste).sort(porValor),LIM=10,id='t'+r.key;
+  var rows=r.cabe.slice().sort(porValor),LIM=10,id='t'+r.key;
   var h='<div class="tw"><table><thead><tr><th>Apartamento</th><th>Área</th><th>Valor</th><th>Financiamento</th></tr></thead><tbody>'+rows.slice(0,LIM).map(linha).join('')+'</tbody>';
   if(rows.length>LIM) h+='<tbody id="'+id+'" hidden>'+rows.slice(LIM).map(linha).join('')+'</tbody>';
   h+='</table></div>';
@@ -24,7 +24,7 @@ function bloco(r){var n=qtd(r);return '<div class="card emp"><h3>'+esc(r.nome)+'
 
 var nome=DADOS.emp[f.emp]?DADOS.emp[f.emp].nome:(f.emp==='viva_urban'?'Viva Urban':'(simulação geral)'),h='<h1>'+primeiro+', este é o seu resultado</h1><p class="sub">Simulação preliminar do Minha Casa Minha Vida.</p>';
 var ach=f.un&&sel?S.acharUnidade(f.emp,f.un,f.t,f.v):null,uLabel=f.un?esc(f.un)+(f.t?' (torre/bloco '+esc(f.t.toUpperCase())+')':''):'';
-var alvo=null,alvoTxt='',fit=sel?sel.cabe.concat(sel.ajuste).sort(porValor):[];
+var alvo=null,alvoTxt='',fit=sel?sel.cabe.slice().sort(porValor):[];
 if(p.erro){
   h+='<div class="banner warn">'+msgs[p.erro]+'<br>Queremos conversar com você pessoalmente: temos opções para reformular a forma de pagamento e tentar viabilizar a compra do seu novo imóvel.</div>';
 }else{
@@ -33,8 +33,8 @@ if(p.erro){
     var u=ach.u,a=S.avalia(p,u);
     h+='<div class="card"><b>Apartamento solicitado</b><p style="margin-top:4px">'+esc(sel.nome)+' – apartamento '+uLabel+' – '+S.fmt(u[3])+(ach.estimado?' <small class="bl">(valor de avaliação estimado)</small>':'')+'</p></div>';
     alvo=u;alvoTxt='apartamento '+uLabel;
-    if(a){
-      h+='<div class="banner ok">Boa notícia! O apartamento <b>'+uLabel+'</b> do <b>'+esc(sel.nome)+'</b> cabe no seu financiamento'+(a.st==='ajuste'?', usando o FGTS para cobrir parte da diferença.':'.')+' O restante, '+S.fmt(a.entrada)+', é pago à construtora (ato, mensais e pós-chaves): ajuste abaixo.</div>';
+    if(a&&a.st==='cabe'){
+      h+='<div class="banner ok">Boa notícia! O apartamento <b>'+uLabel+'</b> do <b>'+esc(sel.nome)+'</b> cabe no seu financiamento.'+' O restante, '+S.fmt(a.entrada)+', é pago à construtora (ato, mensais e pós-chaves): ajuste abaixo.</div>';
     }else{
       var acima=Math.min(u[3],u[4])>600000;
       h+='<div class="banner warn">O apartamento <b>'+uLabel+'</b> do <b>'+esc(sel.nome)+'</b> '+(acima?'tem valor acima do limite do Minha Casa Minha Vida (R$ 600 mil).':'ficou acima do financiamento que estimamos para o seu perfil.')+'</div>';
@@ -55,7 +55,7 @@ if(p.erro){
   else if(qtd(sel)) h+='<h2>Outros apartamentos que cabem no '+esc(sel.nome)+'</h2>'+bloco(sel);
   var op=outros.filter(function(r){return qtd(r)>0});
   if(op.length) h+='<h2>'+(qtd(sel)?'Outros empreendimentos que você também pode escolher':'Opções para você')+'</h2>'+op.map(bloco).join('');
-  h+='<p class="note">Financiamento = cota de 80% da avaliação, limitada ao seu perfil. Linhas com faixa dourada usam o FGTS para cobrir parte da diferença do financiamento.</p>';
+  h+='<p class="note">Financiamento = cota de 80% da avaliação, limitada ao seu perfil.</p>';
 }
 var apt=f.un?'o apartamento '+f.un+' do '+nome:nome,msg=algum?'Olá! Sou '+f.nome+'. Fiz a simulação no site e quero falar sobre '+apt+' e os apartamentos do meu perfil.':'Olá! Sou '+f.nome+'. Fiz a simulação no site (interesse: '+apt+') e quero marcar uma entrevista pessoal para ajustar a compra do meu imóvel.';
 h+='<div class="noprint"><a class="btn green" href="'+waLink(msg)+'">'+(algum?'Falar com o corretor no WhatsApp':'Quero a entrevista pessoal')+'</a> <button class="lite" onclick="window.print()">🖨 Imprimir tudo</button> <a class="btn lite" href="/evolucao-obra/?emp='+esc(f.emp)+'">Refazer simulação</a></div>';
