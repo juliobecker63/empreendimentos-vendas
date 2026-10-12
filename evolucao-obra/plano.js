@@ -47,7 +47,7 @@
       'Mensais: '+pl.nMensais+' x '+f(pl.mensal)+(pl.nMensais?' (início '+pl.inicio+')':''),
       'Reforços: '+(pl.reforcos?pl.reforcos+' x '+f(pl.vRef):'nenhum'),
       'FGTS na entrega: '+f(pl.fgts),'Financiamento Caixa: '+f(pl.fin)+(pl.limitado?' (limitado pela capacidade do cliente; máximo da cota 80% avaliação '+f(pl.finMax)+')':''),
-      'Prestação do financiamento: '+f(pl.prestacao),'Pós-chaves ('+pl.posPct+'% do imóvel, corrigido pelo IGP-M + 1% de juros; valores sem correção): '+pl.posN+' x '+f(pl.pos/pl.posN)+' = '+f(pl.pos),
+      'Prestação do financiamento: '+f(pl.prestacao),'Pós-chaves ('+pl.posPct+'% do imóvel, corrigido pelo IGP-M mais juros de 1%): '+pl.posN+' x '+f(pl.pos/pl.posN)+' = '+f(pl.pos),
       'Chaves/financiamento: '+pl.chaves+(pl.excede?' | ATENÇÃO: o plano excede o valor do imóvel':''),'','EVOLUÇÃO DA OBRA (mês | % obra | evolução Caixa | mensal | reforço | total)');
     pl.rows.forEach(function(r){L.push(r.mes+' | '+(r.pct*100).toFixed(1)+'% | '+f(r.evolucao)+' | '+f(r.mensal)+' | '+f(r.reforco)+' | '+f(r.total))});
     L.push('','APÓS AS CHAVES (mês | prestação | pós-chaves | total)');

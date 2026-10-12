@@ -88,7 +88,7 @@ if(alvo&&PL.FLUXO[f.emp]){
    '<div class="ctl"><label>Reforços</label><select id="pl_fr"><option value="0">Sem reforços</option><option value="S">Semestrais (jun e dez)</option><option value="A">Anuais (dezembro)</option></select></div>'+
    '<div id="pl_refbox" hidden><div class="ctl"><label>Quantidade de reforços: <b id="pl_nr_v"></b></label><input id="pl_nr" type="range" min="1" max="1" value="1"></div><div class="ctl"><label>Valor de cada reforço, R$</label><input id="pl_vr" type="text" inputmode="decimal" value="'+String(padRef).replace(/\B(?=(\d{3})+$)/g,'.')+',00"></div></div>'+
    '<div class="ctl"><label>Pós-chaves: <b id="pl_pp_v"></b>% do valor do imóvel (máx. 6%)</label><input id="pl_pp" type="range" min="0" max="6" step="0.5" value="6"></div>'+
-   '<div class="ctl"><label>Parcelas pós-chaves: <b id="pl_pn_v"></b></label><input id="pl_pn" type="range" min="1" max="24" value="24"><p class="note" style="margin:4px 0 0">Máximo de 24 parcelas, corrigidas pelo IGP-M + 1% de juros. Os valores abaixo estão sem a correção.</p></div>'+
+   '<div class="ctl"><label>Parcelas pós-chaves: <b id="pl_pn_v"></b></label><input id="pl_pn" type="range" min="1" max="24" value="24"><p class="note" style="margin:4px 0 0">Máximo de 24 parcelas, corrigidas pelo IGP-M mais juros de 1%.</p></div>'+
    ((p.cotista&&p.fgts>0)?'<div class="ctl"><label><input id="pl_fg" type="checkbox" checked> Usar meu FGTS ('+S.fmt(p.fgts)+') na entrega das chaves</label></div>':'')+
    '<div id="pl_out"></div><div class="noprint"><button id="pl_mail" class="lite">✉ Enviar este plano ao corretor por e-mail</button> <span id="pl_ok" class="note"></span></div></div>';
   var g=function(i){return document.getElementById(i)};
@@ -97,7 +97,7 @@ if(alvo&&PL.FLUXO[f.emp]){
     var fr=g('pl_fr').value,nObra=PL.mesesObra(f.emp,new Date()).filter(function(x){return fr==='A'?x.m===12:fr==='S'?(x.m===6||x.m===12):false}).length;
     g('pl_refbox').hidden=fr==='0';var nr=g('pl_nr');nr.max=Math.max(1,nObra);if(+nr.value>nObra)nr.value=Math.max(1,nObra);
     g('pl_nm_v').textContent=g('pl_nm').value;g('pl_nr_v').textContent=nr.value;g('pl_pp_v').textContent=g('pl_pp').value.replace('.',',');g('pl_pn_v').textContent=g('pl_pn').value;
-    var pl=PL.calcula(p,alvo,f.emp,opts());planoAtual=pl;var fm=S.fmt;
+    var pl=PL.calcula(p,alvo,f.emp,opts());planoAtual=pl;var fm=S.fmt;g('pl_pn_v').textContent=g('pl_pn').value+' de '+fm(pl.pos/pl.posN);
     var alerta='';
     if(pl.excede) alerta+='<div class="banner warn" style="font-size:15px">Os valores escolhidos passam do valor do imóvel em '+fm(-pl.restante)+'. Reduza o ato, os reforços ou o pós-chaves.</div>';
     else if(pl.mensal<0) alerta+='';
@@ -116,7 +116,7 @@ if(alvo&&PL.FLUXO[f.emp]){
     var cards='<div class="res"><div><small>Prestação do financiamento</small><b>'+fm(pl.prestacao)+'</b></div><div><small>Chaves previstas</small><b>'+pl.chaves+'</b></div></div>';
     var evo='<h3 style="margin:16px 0 4px;font-size:16px">Evolução da obra: quanto você paga mês a mês</h3><p class="note" style="margin:0 0 6px">Durante a obra você paga à Caixa a evolução (percentual da obra × prestação de '+fm(pl.prestacao)+') junto com a mensal da construtora. 1ª parcela da evolução: <b>'+fm(pl.rows[0].evolucao)+'</b> · última: <b>'+fm(pl.rows[pl.rows.length-1].evolucao)+'</b>.</p><div class="tw"><table><thead><tr><th>Mês</th><th>% da obra</th><th>Evolução (Caixa)</th><th>Mensal</th><th>Reforço</th><th>Total do mês</th></tr></thead><tbody>'+
       pl.rows.map(function(r,i){return '<tr'+(i==0||i==pl.rows.length-1?' class="hl"':'')+'><td>'+r.mes+'</td><td>'+(r.pct*100).toFixed(1).replace('.',',')+'%</td><td>'+fm(r.evolucao)+'</td><td>'+fm(r.mensal)+'</td><td>'+(r.reforco?fm(r.reforco):'-')+'</td><td>'+fm(r.total)+'</td></tr>'}).join('')+'</tbody></table></div>';
-    var pos='<h3 style="margin:16px 0 4px;font-size:16px">Depois das chaves</h3><p class="note" style="margin:0 0 6px">Prestação da Caixa + parcela do pós-chaves (pós-chaves corrigido pelo IGP-M + 1% de juros; valores sem a correção).</p><div class="tw"><table><thead><tr><th>Mês</th><th>Prestação Caixa</th><th>Pós-chaves</th><th>Total do mês</th></tr></thead><tbody>'+
+    var pos='<h3 style="margin:16px 0 4px;font-size:16px">Depois das chaves</h3><p class="note" style="margin:0 0 6px">Prestação da Caixa + parcela do pós-chaves (as parcelas do pós-chaves serão corrigidas pelo IGP-M mais juros de 1%).</p><div class="tw"><table><thead><tr><th>Mês</th><th>Prestação Caixa</th><th>Pós-chaves</th><th>Total do mês</th></tr></thead><tbody>'+
       pl.posRows.map(function(r){return '<tr><td>'+r.mes+'</td><td>'+fm(r.prestacao)+'</td><td>'+fm(r.pos)+'</td><td>'+fm(r.total)+'</td></tr>'}).join('')+'</tbody></table></div>';
     g('pl_out').innerHTML=alerta+resumo+cards+evo+pos;
   }
