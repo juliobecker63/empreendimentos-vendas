@@ -26,7 +26,7 @@
     hoje=hoje||new Date();
     var valor=u[3],cap=S.capacidadeDe(p,u),finMax=Math.round(u[4]*0.8),fin=Math.min(finMax,cap.fin);
     var prestacao=r2(fin*cap.parcela/cap.fin),obra=mesesObra(emp,hoje),N=obra.length;
-    var nMen=Math.max(0,Math.min(o.nMensais,N)),pos=r2(valor*o.posPct/100),posN=Math.max(1,o.posN);
+    var nMen=Math.max(0,Math.min(o.nMensais,N)),pos=r2(valor*o.posPct/100),posN=Math.max(1,Math.min(24,o.posN));
     var fgts=(o.usarFgts&&p.cotista)?p.fgts:0;
     var refMeses=obra.filter(function(x){return o.freq==='A'?x.m===12:o.freq==='S'?(x.m===6||x.m===12):false}).slice(0,o.nRef);
     var totRef=r2(refMeses.length*o.vRef),ato=Math.min(o.ato,valor);
@@ -47,7 +47,7 @@
       'Mensais: '+pl.nMensais+' x '+f(pl.mensal)+(pl.nMensais?' (início '+pl.inicio+')':''),
       'Reforços: '+(pl.reforcos?pl.reforcos+' x '+f(pl.vRef):'nenhum'),
       'FGTS na entrega: '+f(pl.fgts),'Financiamento Caixa: '+f(pl.fin)+(pl.limitado?' (limitado pela capacidade do cliente; máximo da cota 80% avaliação '+f(pl.finMax)+')':''),
-      'Prestação do financiamento: '+f(pl.prestacao),'Pós-chaves ('+pl.posPct+'% do imóvel): '+pl.posN+' x '+f(pl.pos/pl.posN)+' = '+f(pl.pos),
+      'Prestação do financiamento: '+f(pl.prestacao),'Pós-chaves ('+pl.posPct+'% do imóvel, corrigido pelo IGP-M + 1% de juros; valores sem correção): '+pl.posN+' x '+f(pl.pos/pl.posN)+' = '+f(pl.pos),
       'Chaves/financiamento: '+pl.chaves+(pl.excede?' | ATENÇÃO: o plano excede o valor do imóvel':''),'','EVOLUÇÃO DA OBRA (mês | % obra | evolução Caixa | mensal | reforço | total)');
     pl.rows.forEach(function(r){L.push(r.mes+' | '+(r.pct*100).toFixed(1)+'% | '+f(r.evolucao)+' | '+f(r.mensal)+' | '+f(r.reforco)+' | '+f(r.total))});
     L.push('','APÓS AS CHAVES (mês | prestação | pós-chaves | total)');
