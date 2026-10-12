@@ -78,6 +78,7 @@ function enviar(assunto){
     navigator.sendBeacon('https://ljxijsfumxrstixkimyg.supabase.co/functions/v1/enviar-contato',b)}catch(e){}
 }
 
+window.addEventListener('beforeprint',function(){[].forEach.call(document.querySelectorAll('details'),function(d){d.open=true})});
 // ---------- plano de pagamento ----------
 if(alvo&&PL.FLUXO[f.emp]){
   var box=document.getElementById('plano'),fx=PL.FLUXO[f.emp],N=PL.mesesObra(f.emp,new Date()).length,valor=alvo[3];
@@ -90,7 +91,7 @@ if(alvo&&PL.FLUXO[f.emp]){
    '<div class="ctl"><label>Pós-chaves: <b id="pl_pp_v"></b>% do valor do imóvel (máx. 6%)</label><input id="pl_pp" type="range" min="0" max="6" step="0.5" value="6"></div>'+
    '<div class="ctl"><label>Parcelas pós-chaves: <b id="pl_pn_v"></b></label><input id="pl_pn" type="range" min="1" max="24" value="24"><p class="note" style="margin:4px 0 0">Máximo de 24 parcelas, corrigidas pelo IGP-M mais juros de 1%.</p></div>'+
    ((p.cotista&&p.fgts>0)?'<div class="ctl"><label><input id="pl_fg" type="checkbox" checked> Usar meu FGTS ('+S.fmt(p.fgts)+') na entrega das chaves</label></div>':'')+
-   '<div id="pl_out"></div><div class="noprint"><button id="pl_mail" class="lite">✉ Enviar este plano ao corretor por e-mail</button> <span id="pl_ok" class="note"></span></div></div>';
+   '<div id="pl_out"></div><div class="noprint"><button id="pl_mail" class="lite">✉ Enviar este plano ao corretor por e-mail</button> <span id="pl_ok" class="note"></span></div></div><div id="pl_fin"></div><div id="pl_evo"></div><div id="pl_pos"></div>';
   var g=function(i){return document.getElementById(i)};
   function opts(){var fr=g('pl_fr').value;return {ato:num(g('pl_ato').value),nMensais:+g('pl_nm').value,freq:fr,nRef:fr==='0'?0:+g('pl_nr').value,vRef:num(g('pl_vr').value),posPct:+g('pl_pp').value,posN:+g('pl_pn').value,usarFgts:!!(g('pl_fg')&&g('pl_fg').checked)}}
   function render(){
@@ -113,12 +114,12 @@ if(alvo&&PL.FLUXO[f.emp]){
       tr('Financiamento Caixa ('+pl.chaves+')',1,fm(pl.fin),fm(pl.fin)+' ('+pct(pl.fin)+')')+
       tr('Pós-chaves',pl.posN,fm(pl.pos/pl.posN),fm(pl.pos)+' ('+pct(pl.pos)+')')+
       '</tbody></table></div>';
-    var cards='<div class="res"><div><small>Prestação do financiamento</small><b>'+fm(pl.prestacao)+'</b></div><div><small>Chaves previstas</small><b>'+pl.chaves+'</b></div></div>';
-    var evo='<h3 style="margin:16px 0 4px;font-size:16px">Evolução da obra: quanto você paga mês a mês</h3><p class="note" style="margin:0 0 6px">Durante a obra você paga à Caixa a evolução (percentual da obra × prestação de '+fm(pl.prestacao)+') junto com a mensal da construtora. 1ª parcela da evolução: <b>'+fm(pl.rows[0].evolucao)+'</b> · última: <b>'+fm(pl.rows[pl.rows.length-1].evolucao)+'</b>.</p><div class="tw"><table><thead><tr><th>Mês</th><th>% da obra</th><th>Evolução (Caixa)</th><th>Mensal</th><th>Reforço</th><th>Total do mês</th></tr></thead><tbody>'+
-      pl.rows.map(function(r,i){return '<tr'+(i==0||i==pl.rows.length-1?' class="hl"':'')+'><td>'+r.mes+'</td><td>'+(r.pct*100).toFixed(1).replace('.',',')+'%</td><td>'+fm(r.evolucao)+'</td><td>'+fm(r.mensal)+'</td><td>'+(r.reforco?fm(r.reforco):'-')+'</td><td>'+fm(r.total)+'</td></tr>'}).join('')+'</tbody></table></div>';
-    var pos='<h3 style="margin:16px 0 4px;font-size:16px">Depois das chaves</h3><p class="note" style="margin:0 0 6px">Prestação da Caixa + parcela do pós-chaves (as parcelas do pós-chaves serão corrigidas pelo IGP-M mais juros de 1%).</p><div class="tw"><table><thead><tr><th>Mês</th><th>Prestação Caixa</th><th>Pós-chaves</th><th>Total do mês</th></tr></thead><tbody>'+
-      pl.posRows.map(function(r){return '<tr><td>'+r.mes+'</td><td>'+fm(r.prestacao)+'</td><td>'+fm(r.pos)+'</td><td>'+fm(r.total)+'</td></tr>'}).join('')+'</tbody></table></div>';
-    g('pl_out').innerHTML=alerta+resumo+cards+evo+pos;
+    var cap=S.capacidadeDe(p,alvo);var cards='<h3 style="margin:0 0 4px;font-size:18px">2. Financiamento da Caixa</h3><p class="note" style="margin:0 0 6px">Pago a partir das chaves ('+pl.chaves+'), em até '+p.prazo+' meses.</p><div class="res"><div><small>Valor financiado</small><b>'+fm(pl.fin)+'</b></div><div><small>Prestação do financiamento</small><b>'+fm(pl.prestacao)+'</b></div></div><p class="note">Taxa de juros: '+pc(cap.taxa)+'. Estimativa; a prestação real é definida pela Caixa.</p>';
+    var evo='<h3 style="margin:0 0 4px;font-size:18px">3. Evolução da obra (até as chaves)</h3><p class="note" style="margin:0 0 6px">Durante a obra você paga à Caixa a evolução (percentual da obra × prestação de '+fm(pl.prestacao)+') junto com a mensal da construtora. 1ª parcela da evolução: <b>'+fm(pl.rows[0].evolucao)+'</b> · última: <b>'+fm(pl.rows[pl.rows.length-1].evolucao)+'</b>.</p><details><summary>Ver mês a mês</summary><div class="tw"><table><thead><tr><th>Mês</th><th>% da obra</th><th>Evolução (Caixa)</th><th>Mensal</th><th>Reforço</th><th>Total do mês</th></tr></thead><tbody>'+
+      pl.rows.map(function(r,i){return '<tr'+(i==0||i==pl.rows.length-1?' class="hl"':'')+'><td>'+r.mes+'</td><td>'+(r.pct*100).toFixed(1).replace('.',',')+'%</td><td>'+fm(r.evolucao)+'</td><td>'+fm(r.mensal)+'</td><td>'+(r.reforco?fm(r.reforco):'-')+'</td><td>'+fm(r.total)+'</td></tr>'}).join('')+'</tbody></table></div></details>';
+    var pos='<h3 style="margin:0 0 4px;font-size:18px">4. Depois das chaves</h3><p class="note" style="margin:0 0 6px">Prestação da Caixa + parcela do pós-chaves (as parcelas do pós-chaves serão corrigidas pelo IGP-M mais juros de 1%).</p><details><summary>Ver mês a mês</summary><div class="tw"><table><thead><tr><th>Mês</th><th>Prestação Caixa</th><th>Pós-chaves</th><th>Total do mês</th></tr></thead><tbody>'+
+      pl.posRows.map(function(r){return '<tr><td>'+r.mes+'</td><td>'+fm(r.prestacao)+'</td><td>'+fm(r.pos)+'</td><td>'+fm(r.total)+'</td></tr>'}).join('')+'</tbody></table></div></details>';
+    g('pl_out').innerHTML=alerta+'<h3 style="margin:12px 0 4px;font-size:18px">1. Pagamento da compra à construtora</h3>'+resumo;g('pl_fin').innerHTML='<div class="card">'+cards+'</div>';g('pl_evo').innerHTML='<div class="card">'+evo+'</div>';g('pl_pos').innerHTML='<div class="card">'+pos+'</div>';
   }
   ['pl_ato','pl_nm','pl_fr','pl_nr','pl_vr','pl_pp','pl_pn','pl_fg'].forEach(function(i){var e=g(i);if(e){e.addEventListener('input',render);e.addEventListener('change',render)}});
   g('pl_mail').addEventListener('click',function(){enviar('Plano ajustado - simulação MCMV');g('pl_ok').textContent='Plano enviado ao corretor.'});
