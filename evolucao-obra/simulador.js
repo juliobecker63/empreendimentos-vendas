@@ -6,6 +6,9 @@
      Faixa 4 com renda < 9.600: extrapola a tabela da Faixa 4 (parcela 30% da renda, mesma inclinacao das linhas da tabela).
    - O FGTS so entra na entrada se o cliente tem 36 meses de contribuicao. */
 (function(){
+  // Viva Urban: lancamento previsto p/ fim do mes, so ha 2 valores de referencia (a partir de). Fica aqui (e nao em dados.js) para o sync.py nao apagar.
+  // Avaliacao assumida = valor; trocar por unidades reais quando a tabela chegar. [bloco, unidade, area, valor, avaliacao, financiamento 80%, ato]
+  if(!window.DADOS.emp.viva_urban) window.DADOS.emp.viva_urban={nome:'Viva Urban',u:[['A partir de','2 dormitórios',0,389000,389000,311200,0],['A partir de','2 dormitórios com suíte',0,464000,464000,371200,0]]};
   var D=window.DADOS, TETO=600000, LIM3=400000, RENDA3=9600, IDADE_MAX_MESES=80*12+6, PRAZO=420;
   var T3=D.tab.filter(function(l){return l[0]===3}), T4=D.tab.filter(function(l){return l[0]===4});
   var fmt=function(v){return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})};

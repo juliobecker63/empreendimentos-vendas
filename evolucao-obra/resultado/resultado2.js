@@ -10,7 +10,7 @@ var porValor=function(a,b){return a.u[3]-b.u[3]};
 var curto=function(u){return esc(u[1].replace(/ da (Torre|Bloco) [A-Za-z0-9]+$/,''))};
 var num=function(v){return parseFloat(String(v).replace(/\./g,'').replace(',','.'))||0};
 function linha(x,k){
-  return '<tr><td>'+curto(x.u)+(x.u[0]?' <small class="bl">'+esc(x.u[0])+'</small>':'')+'</td><td>'+(x.u[2]?x.u[2].toFixed(2).replace('.',',')+' m²':'-')+'</td><td>'+S.fmt(x.u[3])+'</td><td>'+S.fmt(x.a.fin)+'</td><td><a href="/evolucao-obra/calculadora/?emp='+k+'&un='+encodeURIComponent(S.paramsUnidade(x.u).un)+'&t='+encodeURIComponent(S.paramsUnidade(x.u).t)+'">Simular</a></td></tr>';
+  return '<tr><td>'+curto(x.u)+(x.u[0]?' <small class="bl">'+esc(x.u[0])+'</small>':'')+'</td><td>'+(x.u[2]?x.u[2].toFixed(2).replace('.',',')+' m²':'-')+'</td><td>'+S.fmt(x.u[3])+'</td><td>'+S.fmt(x.a.fin)+'</td><td>'+(k==='viva_urban'?'':'<a href="/evolucao-obra/calculadora/?emp='+k+'&un='+encodeURIComponent(S.paramsUnidade(x.u).un)+'&t='+encodeURIComponent(S.paramsUnidade(x.u).t)+'">Simular</a>')+'</td></tr>';
 }
 function tabela(r){
   var rows=r.cabe.slice().sort(porValor),LIM=10,id='t'+r.key;
@@ -46,7 +46,7 @@ if(p.erro){
     if(qtd(sel)) h+='<div class="banner ok">Boa notícia! No <b>'+esc(sel.nome)+'</b> você se encaixa em <b>'+qtd(sel)+'</b> apartamento'+(qtd(sel)>1?'s':'')+'.</div>';
     else if(sel) h+='<div class="banner warn">No <b>'+esc(sel.nome)+'</b> ainda não encontramos apartamento que caiba direto no seu perfil — mas veja as opções abaixo em outros empreendimentos.</div>';
   }
-  if(!sel&&f.emp==='viva_urban') h+='<div class="card"><b>Viva Urban</b><p style="margin-top:4px">O Viva Urban ainda não tem tabela de valores. Veja abaixo o que cabe no seu perfil nos outros empreendimentos Viva Corp, e fale com o corretor sobre o Viva Urban.</p></div>';
+  if(sel&&f.emp==='viva_urban') h+='<div class="card"><b>Viva Urban</b><p style="margin-top:4px">Valores de referência de lançamento (a partir de): 2 dormitórios R$ 389.000 e 2 dormitórios com suíte R$ 464.000. A tabela completa das unidades será divulgada no lançamento, previsto para o fim do mês; fale com o corretor.</p></div>';
   if(alvo&&PL.FLUXO[f.emp]) h+='<div id="plano"></div>';
   h+='<div class="card"><b>Despesas de financiamento e registro</b><p style="margin-top:6px">As despesas de financiamento e de registro do imóvel podem ser pagas pela construtora no dia da assinatura do financiamento junto à Caixa, e você pode pagar essa quantia à construtora <b>parcelada em até 24 vezes</b>.</p>'+(sel&&S.promoDespesas(f.emp)?'<p style="margin-top:8px;background:#e4f5ec;color:#0f5c38;border-radius:8px;padding:8px 12px"><b>Promoção neste empreendimento:</b> a construtora paga essas despesas para você.</p>':'<p class="note">Em algumas campanhas a construtora paga essas despesas. O corretor avisa em quais empreendimentos isso acontece.</p>')+'</div>';
   if(qtd(sel)&&!ach) h+='<h2>Empreendimento que você escolheu</h2>'+bloco(sel);
