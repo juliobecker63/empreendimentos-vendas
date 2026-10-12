@@ -69,7 +69,7 @@ function texto(){return ['Cliente: '+f.nome,'WhatsApp: '+f.fone,'Idade: '+p.idad
 g('b_mail').addEventListener('click',function(){
   var em=g('i_mail').value.trim();if(!/^\S+@\S+\.\S+$/.test(em)){g('m_ok').textContent='Digite um e-mail válido.';return}
   C.enviar('Simulação MCMV - '+f.nome,{Nome:f.nome,Email:em,WhatsApp:f.fone,Nascimento:f.nasc,Simulacao:texto(),_copia_cliente:'sim'});
-  g('m_ok').textContent='Pronto! Enviamos a simulação para '+em+' e para o corretor.';
+  g('m_ok').textContent='Pronto! Enviamos a simulação para '+em+' e para o corretor. Se não encontrar, olhe também a caixa de spam.';
 });
 var sig='calc|'+f.nome+'|'+f.fone+'|'+un+'|'+emp;
 if(C.get('simEnvCalc')!==sig){C.set('simEnvCalc',sig);C.enviar('Nova simulação MCMV - '+f.nome,{Nome:f.nome,WhatsApp:f.fone,Nascimento:f.nasc,Simulacao:texto()})}

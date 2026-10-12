@@ -63,7 +63,7 @@ function enviar(){
   var em=g('i_mail').value.trim(),nome=g('i_nome').value.trim(),fone=g('i_fone').value.trim();
   if(!nome||fone.length<10||!/^\S+@\S+\.\S+$/.test(em)){g('m_ok').textContent='Preencha nome, WhatsApp e um e-mail válido.';return}
   C.enviar('Simulação investidor - '+nome,{Nome:nome,Email:em,WhatsApp:fone,Simulacao:texto(),_copia_cliente:'sim'});
-  g('m_ok').textContent='Pronto! Enviamos a simulação para '+em+' e para o corretor.';
+  g('m_ok').textContent='Pronto! Enviamos a simulação para '+em+' e para o corretor. Se não encontrar, olhe também a caixa de spam.';
 }
 if(alvo) monta(alvo.emp,alvo.u);
 else{
