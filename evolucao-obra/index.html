@@ -20,7 +20,7 @@ select,input[type=date]{width:100%;font-size:17px;padding:10px 12px;border:2px s
 button.pr{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#fff;border:0;border-radius:8px;padding:12px 22px;font-size:15px;font-weight:700;letter-spacing:.5px;cursor:pointer;text-transform:uppercase;margin-bottom:24px}
 @media print{header{background:#fff;border-bottom:2px solid var(--gold)}header img{padding:0}.noprint,button.pr{display:none}body{background:#fff}.card{border:0;padding:6px 0;break-inside:avoid}.res div{background:#fff;color:#000;border:1px solid #999}.res small,.res i{color:#333}.res b{color:#000}th{background:#eee;color:#000;position:static}tr.hl td{background:#eee}table{font-size:12px}th,td{padding:3px 6px}}
 @media(max-width:480px){.g2{grid-template-columns:1fr}.res{grid-template-columns:1fr}}
-</style></head><body>
+.rodape{max-width:860px;margin:10px auto 40px;padding:14px 16px;border-top:2px solid #c9a227;font-size:12.5px;color:#5b6b7b}.rodape p{margin:0 0 8px}</style></head><body>
 <header><div class="wrap"><img src="/logo.png" alt="Logo"></div></header>
 <div class="wrap">
 <h1>Simule sua compra pelo Minha Casa Minha Vida</h1>
@@ -38,7 +38,6 @@ button.pr{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#fff
 <div class="opt"><label><input type="radio" name="tf" value="1" required> Sim</label><label><input type="radio" name="tf" value="0"> Não</label></div></div>
 <div class="row" id="fgtsrow" hidden><label for="fgts">Valor aproximado do FGTS (R$)</label><input id="fgts" type="text" inputmode="decimal" placeholder="Ex.: 25.000,00"></div>
 <p id="err" class="err" hidden></p>
-<p class="aviso">Os resultados são meros cálculos feitos com os dados informados por você. A simulação pode mudar por algum detalhe informado de forma incorreta ou por mudança nas taxas de juros oferecidas pela Caixa.</p>
 <button class="pr" type="submit">Ver meu resultado</button>
 </form>
 <h1 class="noprint2">Evolução da obra × pagamento à Caixa</h1>
@@ -53,6 +52,7 @@ button.pr{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#fff
 <p class="note">Cálculo: a cada mês o cliente paga à Caixa o percentual da prestação igual ao avanço acumulado da obra (evolução linear: 100% ÷ prazo por mês). Base de estimativa de despesa; o valor real depende do cronograma medido pela Caixa.</p></div>
 <button class="pr" onclick="window.print()">🖨 Imprimir</button>
 </div>
+<footer class="rodape"><p><b>Aviso importante</b></p><p>Esta simulação é apenas uma estimativa informativa, calculada pelo sistema SAC com base nas regras públicas do programa Minha Casa, Minha Vida e nos dados que você informou. Não é proposta, oferta, pré-aprovação nem garantia de crédito.</p><p>Os valores reais de parcela, taxa de juros, prazo, cota de financiamento, TR, seguros (MIP e DFI), tarifas e a aprovação do crédito são definidos exclusivamente pela Caixa Econômica Federal, conforme análise de renda, idade, histórico de FGTS, avaliação do imóvel e normas vigentes na data da contratação. Esses itens podem mudar sem aviso prévio, e por isso o resultado pode diferir da simulação oficial.</p><p>Esta ferramenta e quem a disponibiliza não se responsabilizam por diferenças entre esta estimativa e as condições efetivamente oferecidas pela Caixa. Antes de qualquer decisão de compra, faça a simulação oficial e confirme todas as condições diretamente com a Caixa.</p></footer>
 <script src="/evolucao-obra/dados.js"></script><script src="/evolucao-obra/simulador.js"></script>
 <script>
 (function(){

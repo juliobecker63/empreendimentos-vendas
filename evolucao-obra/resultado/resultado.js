@@ -1,6 +1,6 @@
 (function(){
 var S=SIM,app=document.getElementById('app'),wa=app.dataset.wa,esc=function(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
-var AVISO='<div class="aviso"><b>Importante:</b> os resultados desta página são meros cálculos feitos com os dados informados por você. A simulação pode mudar por algum detalhe informado de forma incorreta ou por mudança nas taxas de juros oferecidas pela Caixa. A aprovação final depende da análise de crédito e da avaliação da Caixa.</div>';
+var AVISO='';
 var f=null;try{f=JSON.parse(sessionStorage.getItem('simViva'))}catch(e){}
 if(!f){app.innerHTML='<h1>Preencha a simulação primeiro</h1><p class="sub">Não encontramos seus dados.</p><a class="btn" href="/evolucao-obra/">Fazer a simulação</a>';return}
 var p=S.perfil(f),primeiro=esc(f.nome.split(' ')[0]),all=S.todos(p),sel=all.filter(function(r){return r.key===f.emp})[0],outros=all.filter(function(r){return r.key!==f.emp});
