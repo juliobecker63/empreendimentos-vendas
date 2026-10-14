@@ -55,5 +55,5 @@
     pl.posRows.forEach(function(r){L.push(r.mes+' | '+f(r.prestacao)+' | '+f(r.pos)+' | '+f(r.total))});
     return L.join('\n');
   }
-  window.PLANO={FLUXO:FLUXO,calcula:calcula,texto:texto,mesesObra:mesesObra};
+  window.PLANO={rotulo:rotulo,FLUXO:FLUXO,calcula:calcula,texto:texto,mesesObra:mesesObra};
 })();
