@@ -46,6 +46,7 @@
     var f=S.fmt,L=[];
     L.push('PLANO DE PAGAMENTO (estimativa)','Valor do imóvel: '+f(pl.valor),'Ato (assinatura): '+f(pl.ato),
       'Mensais: '+pl.nMensais+' x '+f(pl.mensal)+(pl.nMensais?' (início '+pl.inicio+')':''),
+      'Obs.: durante a obra, o valor das parcelas é atualizado pelo CUB.',
       'Reforços: '+(pl.reforcos?pl.reforcos+' x '+f(pl.vRef):'nenhum'),
       'FGTS na entrega: '+f(pl.fgts),'Financiamento Caixa: '+f(pl.fin)+(pl.limitado?' (limitado pela capacidade do cliente; máximo da cota 80% avaliação '+f(pl.finMax)+')':''),
       'Prestação do financiamento: '+f(pl.prestacao),'Pós-chaves ('+pl.posPct+'% do imóvel, corrigido pelo IGP-M mais juros de 1%): '+pl.posN+' x '+f(pl.pos/pl.posN)+' = '+f(pl.pos),
