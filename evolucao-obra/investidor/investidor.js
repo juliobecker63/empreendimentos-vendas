@@ -15,10 +15,10 @@ var mes0=(function(){var d=new Date(),m=d.getMonth()+1,y=d.getFullYear();return 
 function rotulo(i){var m=mes0.m+i,y=mes0.y;while(m>12){m-=12;y++}return MES[m-1]+'/'+y}
 var ctx=null;
 function monta(e,u){
-  ctx={emp:e,u:u};var valor=u[3],nomeE=DADOS.emp[e].nome;
+  ctx={emp:e,u:u};cbuilt=false;var valor=u[3],nomeE=DADOS.emp[e].nome;
   var c='<div class="linha"><div class="card"><div class="lbl">Valor do imóvel</div><div class="val">'+fm(valor)+'</div><div class="note">'+esc(nomeE)+' – apartamento '+esc(String(u[1]).replace(/ da (Torre|Bloco) [A-Za-z0-9]+$/,''))+' ('+esc(u[0])+'). Valor fixo.</div></div><div class="card"><div class="lbl">Financiamento direto com a construtora</div><div class="val">30 parcelas</div><div class="note">Entrada + 30 mensais + reforços opcionais.</div></div></div>';
   var fx=window.PLANO&&PLANO.FLUXO[e];
-  c+='<div class="card"><div class="lbl">Como você quer pagar?</div><div class="opt" style="margin-top:6px"><input type="radio" name="md" id="mD" value="D" checked><label for="mD">Parcelamento direto (30 parcelas)</label>'+'<input type="radio" name="md" id="mC" value="C"><label for="mC">Condição da construtora</label>'+'</div><p class="note">Condição da construtora: 10% de entrada, 40% em parcelas até as chaves'+(fx?' ('+PLANO.rotulo(fx)+')':'')+' e 50% financiado no banco.</p><div id="nbox" hidden><label>Meses até a entrega (previsão, a confirmar com a construtora): <b id="t_nc"></b></label><input id="i_nc" type="range" min="12" max="48" value="36"></div></div>';
+  c+='<div class="card"><div class="lbl">Como você quer pagar?</div><div class="opt" style="margin-top:6px"><input type="radio" name="md" id="mD" value="D" checked><label for="mD">Parcelamento direto (30 parcelas)</label>'+'<input type="radio" name="md" id="mC" value="C"><label for="mC">Condição da construtora</label>'+'</div><p class="note">Condição da construtora (sugestão: 10% de entrada, 40% em parcelas até as chaves'+(fx?' ('+PLANO.rotulo(fx)+')':'')+' e 50% financiado no banco). Ajuste abaixo como preferir.</p><div id="nbox" hidden><label>Meses até a entrega (previsão, a confirmar com a construtora): <b id="t_nc"></b></label><input id="i_nc" type="range" min="12" max="48" value="36"></div></div>';
   c+='<div class="aviso"><b>Atenção:</b> durante a obra, o valor das parcelas é atualizado pelo CUB.</div>';
   c+='<div id="modoC" hidden></div><div id="modoD">';
   c+='<div class="linha"><div class="card"><div class="lbl">Entrada</div><div class="val" id="v_ent"></div><input id="i_ent" type="range" min="10" max="90" step="1" value="10"><div class="note">Percentual do valor do imóvel: <b id="t_ent"></b></div></div><div class="card evo" id="e_ent"></div></div>';
@@ -48,19 +48,37 @@ function evo(id,cum,valor){
   b.innerHTML='<div class="lbl">Evolução do pagamento</div><div class="bar"><i style="width:'+pct.toFixed(1)+'%"></i></div>'+(cheio?'<b class="p">100% do valor do imóvel</b>':'<div>Coberto: <b>'+fm(cum)+'</b> ('+pct.toFixed(1).replace('.',',')+'%)</div><div>Falta: <b>'+fm(Math.max(0,falta))+'</b></div>'+(falta<0?'<div class="obs">Observação: passou do valor do imóvel em '+fm(-falta)+'.</div>':''));
 }
 var pl=null;
+var cbuilt=false;
 function modoC(){
-  var u=ctx.u,valor=u[3],ent=r2(valor*0.1),obra=r2(valor*0.4),fin=r2(valor-ent-obra),fx=PLANO.FLUXO[ctx.emp];
-  var meses=fx?PLANO.mesesObra(ctx.emp,new Date()).map(function(x){return MES[x.m-1]+'/'+x.a}):null,n=meses?meses.length:+g('i_nc').value,men=n?r2(obra/n):0;
+  var u=ctx.u,valor=u[3],fx=PLANO.FLUXO[ctx.emp];
+  var meses=fx?PLANO.mesesObra(ctx.emp,new Date()).map(function(x){return MES[x.m-1]+'/'+x.a}):null,n=meses?meses.length:+g('i_nc').value;
   g('t_nc').textContent=n;
-  var rows=[];for(var i=0;i<n;i++)rows.push({mes:meses?meses[i]:rotulo(i),v:men});
-  pl={c:true,valor:valor,ent:ent,obra:obra,fin:fin,n:n,men:men,chaves:fx?PLANO.rotulo(fx):'entrega',rows:rows};
-  g('modoC').innerHTML='<div class="linha"><div class="card"><div class="lbl">Entrada (10%)</div><div class="val">'+fm(ent)+'</div></div><div class="card evo" id="c_e1"></div></div>'+
-    '<div class="linha"><div class="card"><div class="lbl">Até as chaves (40%)</div><div class="val">'+(n?n+' de '+fm(men):fm(obra))+'</div><div class="note">Parcelas mensais de agora até '+(fx?pl.chaves:'a entrega')+'. Atualizadas pelo CUB durante a obra.</div></div><div class="card evo" id="c_e2"></div></div>'+
-    '<div class="linha"><div class="card"><div class="lbl">Financiamento bancário (50%)</div><div class="val">'+fm(fin)+'</div><div class="note">Quitado com o banco na entrega das chaves'+(fx?' ('+pl.chaves+')':'')+'.</div></div><div class="card evo" id="c_e3"></div></div>'+
-    '<div class="banner ok"><b>100% do valor do imóvel</b> coberto por este plano.</div>'+
-    '<div class="card"><details><summary>Pagamento mês a mês</summary><div class="tw"><table><thead><tr><th>Mês</th><th>Parcela</th></tr></thead><tbody><tr><td>Hoje</td><td>'+fm(ent)+' (entrada)</td></tr>'+rows.map(function(x){return '<tr><td>'+x.mes+'</td><td>'+fm(x.v)+'</td></tr>'}).join('')+'<tr><td>'+(fx?pl.chaves:'Entrega')+'</td><td>'+fm(fin)+' (financiamento)</td></tr></tbody></table></div></details></div>';
-  evo('c_e1',ent,valor);evo('c_e2',ent+obra,valor);evo('c_e3',valor,valor);
-  g('a_wa').href=waLink('Olá! Sou investidor e simulei o '+DADOS.emp[ctx.emp].nome+' (apartamento '+ctx.u[1]+') na condição da construtora: entrada de '+fm(ent)+', '+n+' parcelas de '+fm(men)+' até as chaves e '+fm(fin)+' financiados. Quero conversar.');
+  if(!cbuilt){cbuilt=true;
+    g('modoC').innerHTML='<div class="linha"><div class="card"><div class="lbl">Entrada</div><div class="val" id="c_ent"></div><input id="i_ce" type="range" min="10" max="90" step="1" value="10"><div class="note">Percentual do valor do imóvel: <b id="t_ce"></b></div></div><div class="card evo" id="c_e1"></div></div>'+
+    '<div class="linha"><div class="card"><div class="lbl">Reforços</div><div class="opt" style="margin-top:6px"><input type="radio" name="rfc" id="cr0" value="0" checked><label for="cr0">Sem reforços</label><input type="radio" name="rfc" id="crS" value="S"><label for="crS">Semestrais</label><input type="radio" name="rfc" id="crA" value="A"><label for="crA">Anuais</label></div><div id="cbox" hidden style="margin-top:10px"><label>Quantidade: <b id="t_cn"></b></label><input id="i_cn" type="range" min="1" max="5" value="1"><label for="i_cv" style="margin-top:8px">Valor de cada reforço (R$)</label><input id="i_cv" type="text" inputmode="decimal"></div><div class="val" id="c_ref" style="margin-top:8px"></div></div><div class="card evo" id="c_e2"></div></div>'+
+    '<div class="linha"><div class="card"><div class="lbl">Parcelas mensais até as chaves</div><div class="val" id="c_men"></div><div class="note" id="c_mn"></div></div><div class="card evo" id="c_e3"></div></div>'+
+    '<div class="linha"><div class="card"><div class="lbl">Financiamento bancário</div><div class="val" id="c_fin"></div><input id="i_cf" type="range" min="0" max="80" step="1" value="50"><div class="note">Percentual do valor do imóvel: <b id="t_cf"></b>. Quitado com o banco na entrega das chaves.</div></div><div class="card evo" id="c_e4"></div></div>'+
+    '<div id="c_fecho"></div><div class="card"><details><summary>Pagamento mês a mês</summary><div id="c_mes"></div></details></div>';
+    ['i_ce','i_cn','i_cv','i_cf'].forEach(function(i){g(i).addEventListener('input',render)});
+    [].forEach.call(document.querySelectorAll('[name=rfc]'),function(x){x.addEventListener('change',render)});
+  }
+  var r=document.querySelector('[name=rfc]:checked').value;g('cbox').hidden=r==='0';
+  var passo=r==='S'?6:12,max=Math.max(1,Math.min(r==='S'?5:2,Math.floor(n/passo)));g('i_cn').max=max;if(+g('i_cn').value>max)g('i_cn').value=max;
+  if(r!=='0'&&g('i_cv').dataset.r!==r){g('i_cv').dataset.r=r;g('i_cv').value=String(Math.round(valor*(r==='S'?0.02:0.04))).replace(/\B(?=(\d{3})+$)/g,'.')+',00'}
+  var pct=+g('i_ce').value,ent=Math.round(valor*pct/100),fp=+g('i_cf').value,fin=Math.round(valor*fp/100);
+  var nr=r==='0'?0:Math.min(+g('i_cn').value,Math.floor(n/passo)),vr=C.num(g('i_cv').value),totRef=r2(nr*vr);
+  var resto=r2(valor-ent-fin-totRef),men=n?r2(Math.max(0,resto)/n):0;
+  var rows=[];for(var i=0;i<n;i++){var ref=(nr>0&&(i+1)%passo===0&&(i+1)/passo<=nr)?vr:0;rows.push({mes:meses?meses[i]:rotulo(i),v:men,ref:ref,tot:r2(men+ref)})}
+  var chaves=fx?PLANO.rotulo(fx):'Entrega';
+  pl={c:true,valor:valor,ent:ent,pct:pct,fin:fin,fp:fp,r:r,nr:nr,vr:vr,totRef:totRef,n:n,men:men,chaves:chaves,rows:rows};
+  g('c_ent').textContent=fm(ent);g('t_ce').textContent=pct+'%';g('t_cn').textContent=nr||g('i_cn').value;
+  g('c_ref').textContent=nr?nr+' de '+fm(vr):'';g('c_men').textContent=n+' de '+fm(men);
+  g('c_mn').textContent='Parcelas mensais de agora até '+(fx?chaves:'a entrega')+'. Atualizadas pelo CUB durante a obra. Acertam-se sozinhas para fechar o valor do imóvel.';
+  g('c_fin').textContent=fm(fin);g('t_cf').textContent=fp+'%';
+  evo('c_e1',ent,valor);evo('c_e2',ent+totRef,valor);evo('c_e3',ent+totRef+men*n,valor);evo('c_e4',ent+totRef+men*n+fin,valor);
+  g('c_fecho').innerHTML=resto<0?'<div class="banner warn"><b>Observação:</b> a entrada, os reforços e o financiamento passam do valor do imóvel. Reduza algum deles.</div>':'<div class="banner ok"><b>100% do valor do imóvel</b> coberto por este plano.</div>';
+  g('c_mes').innerHTML='<div class="tw"><table><thead><tr><th>Mês</th><th>Mensal</th><th>Reforço</th><th>Total do mês</th></tr></thead><tbody><tr><td>Hoje</td><td colspan="3">'+fm(ent)+' (entrada)</td></tr>'+rows.map(function(x){return '<tr><td>'+x.mes+'</td><td>'+fm(x.v)+'</td><td>'+(x.ref?fm(x.ref):'-')+'</td><td>'+fm(x.tot)+'</td></tr>'}).join('')+'<tr><td>'+chaves+'</td><td colspan="3">'+fm(fin)+' (financiamento bancário)</td></tr></tbody></table></div>';
+  g('a_wa').href=waLink('Olá! Sou investidor e simulei o '+DADOS.emp[ctx.emp].nome+' (apartamento '+ctx.u[1]+') na condição da construtora: entrada de '+fm(ent)+', '+n+' parcelas de '+fm(men)+(nr?', '+nr+' reforços de '+fm(vr):'')+' e '+fm(fin)+' financiados. Quero conversar.');
 }
 function render(){
   var c=document.querySelector('[name=md]:checked').value==='C';g('modoC').hidden=!c;g('modoD').hidden=c;g('nbox').hidden=!(c&&!PLANO.FLUXO[ctx.emp]);
@@ -78,7 +96,7 @@ function render(){
   g('a_wa').href=waLink('Olá! Sou investidor e simulei o '+DADOS.emp[ctx.emp].nome+' (apartamento '+ctx.u[1]+'): entrada de '+fm(pl.ent)+' e 30 parcelas de '+fm(pl.men)+'. Quero conversar.');
 }
 function texto(){
-  var u=ctx.u;if(pl.c)return ['SIMULAÇÃO INVESTIDOR - CONDIÇÃO DA CONSTRUTORA','Empreendimento: '+DADOS.emp[ctx.emp].nome,'Apartamento: '+u[1]+' ('+u[0]+') - '+fm(u[3]),'Entrada (10%): '+fm(pl.ent),'Até as chaves (40%): '+pl.n+' x '+fm(pl.men),'Obs.: durante a obra, o valor das parcelas é atualizado pelo CUB.','Financiamento bancário (50%) em '+pl.chaves+': '+fm(pl.fin),'','Mês | parcela'].concat(pl.rows.map(function(x){return x.mes+' | '+fm(x.v)})).join('\n');
+  var u=ctx.u;if(pl.c)return ['SIMULAÇÃO INVESTIDOR - CONDIÇÃO DA CONSTRUTORA','Empreendimento: '+DADOS.emp[ctx.emp].nome,'Apartamento: '+u[1]+' ('+u[0]+') - '+fm(u[3]),'Entrada ('+pl.pct+'%): '+fm(pl.ent),'Reforços: '+(pl.nr?pl.nr+' '+(pl.r==='S'?'semestrais':'anuais')+' de '+fm(pl.vr):'nenhum'),'Mensais até as chaves: '+pl.n+' x '+fm(pl.men),'Obs.: durante a obra, o valor das parcelas é atualizado pelo CUB.','Financiamento bancário ('+pl.fp+'%) em '+pl.chaves+': '+fm(pl.fin),'','Mês | mensal | reforço | total'].concat(pl.rows.map(function(x){return x.mes+' | '+fm(x.v)+' | '+fm(x.ref)+' | '+fm(x.tot)})).join('\n');
   return ['SIMULAÇÃO INVESTIDOR','Empreendimento: '+DADOS.emp[ctx.emp].nome,'Apartamento: '+u[1]+' ('+u[0]+') - '+fm(u[3]),'Entrada ('+pl.pct+'%): '+fm(pl.ent),'Reforços: '+(pl.nr?pl.nr+' '+(pl.r==='S'?'semestrais':'anuais')+' de '+fm(pl.vr):'nenhum'),'Mensais: 30 x '+fm(pl.men),'Obs.: durante a obra, o valor das parcelas é atualizado pelo CUB.','','Mês | mensal | reforço | total'].concat(pl.rows.map(function(x){return x.mes+' | '+fm(x.mensal)+' | '+fm(x.reforco)+' | '+fm(x.total)})).join('\n');
 }
 function enviar(){
