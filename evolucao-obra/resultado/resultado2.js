@@ -86,16 +86,16 @@ if(alvo&&PL.FLUXO[f.emp]){
    '<div class="ctl"><label>Mensais até a entrega: <b id="pl_nm_v"></b></label><input id="pl_nm" type="range" min="1" max="'+N+'" value="'+N+'"></div>'+
    '<div class="ctl"><label>Reforços</label><select id="pl_fr"><option value="0">Sem reforços</option><option value="S">Semestrais (jun e dez)</option><option value="A">Anuais (dezembro)</option></select></div>'+
    '<div id="pl_refbox" hidden><div class="ctl"><label>Quantidade de reforços: <b id="pl_nr_v"></b></label><input id="pl_nr" type="range" min="1" max="1" value="1"></div><div class="ctl"><label>Valor de cada reforço, R$</label><input id="pl_vr" type="text" inputmode="decimal" value="'+String(padRef).replace(/\B(?=(\d{3})+$)/g,'.')+',00"></div></div>'+
-   '<div class="ctl"><label>Pós-chaves: <b id="pl_pp_v"></b>% do valor do imóvel (máx. 6%)</label><input id="pl_pp" type="range" min="0" max="6" step="0.5" value="6"></div>'+
+   '<div class="ctl"><label>Pós-chaves: <b id="pl_pp_v"></b>% do valor do imóvel (máx. 6%)</label><input id="pl_pp" type="range" min="0" max="'+Math.round(alvo[3]*0.06)+'" step="1" value="'+Math.round(alvo[3]*0.06)+'"></div>'+
    '<div class="ctl"><label>Parcelas pós-chaves: <b id="pl_pn_v"></b></label><input id="pl_pn" type="range" min="1" max="24" value="24"><p class="note" style="margin:4px 0 0">Máximo de 24 parcelas, corrigidas pelo IGP-M mais juros de 1%.</p></div>'+
    ((p.cotista&&p.fgts>0)?'<div class="ctl"><label><input id="pl_fg" type="checkbox" checked> Usar meu FGTS ('+S.fmt(p.fgts)+') na entrega das chaves</label></div>':'')+
    '<div id="pl_out"></div><div class="noprint"><button id="pl_mail" class="lite">✉ Enviar este plano ao corretor por e-mail</button> <span id="pl_ok" class="note"></span></div></div><div id="pl_fin"></div><div id="pl_evo"></div><div id="pl_pos"></div>';
   var g=function(i){return document.getElementById(i)};
-  function opts(){var fr=g('pl_fr').value;return {ato:num(g('pl_ato').value),nMensais:+g('pl_nm').value,freq:fr,nRef:fr==='0'?0:+g('pl_nr').value,vRef:num(g('pl_vr').value),posPct:+g('pl_pp').value,posN:+g('pl_pn').value,usarFgts:!!(g('pl_fg')&&g('pl_fg').checked)}}
+  function opts(){var fr=g('pl_fr').value;return {ato:num(g('pl_ato').value),nMensais:+g('pl_nm').value,freq:fr,nRef:fr==='0'?0:+g('pl_nr').value,vRef:num(g('pl_vr').value),posPct:+g('pl_pp').value/alvo[3]*100,posN:+g('pl_pn').value,usarFgts:!!(g('pl_fg')&&g('pl_fg').checked)}}
   function render(){
     var fr=g('pl_fr').value,nObra=PL.mesesObra(f.emp,new Date()).filter(function(x){return fr==='A'?x.m===12:fr==='S'?(x.m===6||x.m===12):false}).length;
     g('pl_refbox').hidden=fr==='0';var nr=g('pl_nr');nr.max=Math.max(1,nObra);if(+nr.value>nObra)nr.value=Math.max(1,nObra);
-    g('pl_nm_v').textContent=g('pl_nm').value;g('pl_nr_v').textContent=nr.value;g('pl_pp_v').textContent=g('pl_pp').value.replace('.',',');g('pl_pn_v').textContent=g('pl_pn').value;
+    g('pl_nm_v').textContent=g('pl_nm').value;g('pl_nr_v').textContent=nr.value;g('pl_pp_v').textContent=(g('pl_pp').value/alvo[3]*100).toFixed(1).replace('.',',');g('pl_pn_v').textContent=g('pl_pn').value;
     var pl=PL.calcula(p,alvo,f.emp,opts());planoAtual=pl;var fm=S.fmt;g('pl_pn_v').textContent=g('pl_pn').value+' de '+fm(pl.pos/pl.posN);g('pl_nm_v').textContent=g('pl_nm').value+' meses de '+fm(pl.mensal);
     var alerta='';
     if(pl.excede) alerta+='<div class="banner warn" style="font-size:15px">Os valores escolhidos passam do valor do imóvel em '+fm(-pl.restante)+'. Reduza o ato, os reforços ou o pós-chaves.</div>';
@@ -119,6 +119,7 @@ if(alvo&&PL.FLUXO[f.emp]){
       pl.posRows.map(function(r){return '<tr><td>'+r.mes+'</td><td>'+fm(r.prestacao)+'</td><td>'+fm(r.pos)+'</td><td>'+fm(r.total)+'</td></tr>'}).join('')+'</tbody></table></div></details>';
     g('pl_out').innerHTML=alerta+'<h3 style="margin:12px 0 4px;font-size:18px">1. Pagamento da compra à construtora</h3>'+resumo;g('pl_fin').innerHTML='<div class="card">'+cards+'</div>';g('pl_evo').innerHTML='<div class="card">'+evo+'</div>';g('pl_pos').innerHTML='<div class="card">'+pos+'</div>';
   }
+  parValor('pl_pp');
   ['pl_ato','pl_nm','pl_fr','pl_nr','pl_vr','pl_pp','pl_pn','pl_fg'].forEach(function(i){var e=g(i);if(e){e.addEventListener('input',render);e.addEventListener('change',render)}});
   g('pl_mail').addEventListener('click',function(){enviar('Plano ajustado - simulação MCMV');g('pl_ok').textContent='Plano enviado ao corretor.'});
   render();

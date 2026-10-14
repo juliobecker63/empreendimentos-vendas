@@ -21,13 +21,14 @@ function monta(e,u){
   c+='<div class="card"><div class="lbl">Como você quer pagar?</div><div class="opt" style="margin-top:6px"><input type="radio" name="md" id="mD" value="D" checked><label for="mD">Parcelamento direto (30 parcelas)</label>'+'<input type="radio" name="md" id="mC" value="C"><label for="mC">Condição da construtora</label>'+'</div><p class="note">Condição da construtora (sugestão: 10% de entrada, 40% em parcelas até as chaves'+(fx?' ('+PLANO.rotulo(fx)+')':'')+' e 50% financiado no banco). Ajuste abaixo como preferir.</p><div id="nbox" hidden><label>Meses até a entrega (previsão, a confirmar com a construtora): <b id="t_nc"></b></label><input id="i_nc" type="range" min="12" max="48" value="36"></div></div>';
   c+='<div class="aviso"><b>Atenção:</b> durante a obra, o valor das parcelas é atualizado pelo CUB.</div>';
   c+='<div id="modoC" hidden></div><div id="modoD">';
-  c+='<div class="linha"><div class="card"><div class="lbl">Entrada</div><div class="val" id="v_ent"></div><input id="i_ent" type="range" min="10" max="90" step="1" value="10"><div class="note">Percentual do valor do imóvel: <b id="t_ent"></b></div></div><div class="card evo" id="e_ent"></div></div>';
+  c+='<div class="linha"><div class="card"><div class="lbl">Entrada</div><div class="val" id="v_ent"></div><input id="i_ent" type="range" min="'+Math.round(valor*0.1)+'" max="'+Math.round(valor*0.9)+'" step="1" value="'+Math.round(valor*0.1)+'"><div class="note">Percentual do valor do imóvel: <b id="t_ent"></b></div></div><div class="card evo" id="e_ent"></div></div>';
   c+='<div class="linha"><div class="card"><div class="lbl">Reforços</div><div class="opt" style="margin-top:6px"><input type="radio" name="rf" id="r0" value="0" checked><label for="r0">Sem reforços</label><input type="radio" name="rf" id="rS" value="S"><label for="rS">Semestrais</label><input type="radio" name="rf" id="rA" value="A"><label for="rA">Anuais</label></div><div id="rbox" hidden style="margin-top:10px"><label>Quantidade: <b id="t_nr"></b></label><input id="i_nr" type="range" min="1" max="5" value="1"><label for="i_vr" style="margin-top:8px">Valor de cada reforço (R$)</label><input id="i_vr" type="text" inputmode="decimal"></div><div class="val" id="v_ref" style="margin-top:8px"></div></div><div class="card evo" id="e_ref"></div></div>';
   c+='<div class="linha"><div class="card"><div class="lbl">Parcelas mensais</div><div class="val" id="v_men"></div><div class="note">30 parcelas, a partir do mês que vem. Acertam-se sozinhas para fechar o valor do imóvel.</div></div><div class="card evo" id="e_men"></div></div>';
   c+='<div id="fecho"></div><div class="card"><details><summary>Pagamento mês a mês</summary><div id="d_mes"></div></details></div></div>';
   c+='<div class="card noprint"><h3>Quer receber esta simulação por e-mail?</h3><p class="note" style="margin:4px 0 10px">Enviamos para você e para o corretor.</p><div class="g2"><div class="row"><label for="i_nome">Seu nome</label><input id="i_nome" type="text"></div><div class="row"><label for="i_fone">WhatsApp com DDD</label><input id="i_fone" type="tel" inputmode="tel"></div></div><div class="g2"><div class="row"><label for="i_mail">Seu e-mail</label><input id="i_mail" type="email"></div><div style="align-self:end"><button id="b_mail" type="button" style="width:100%;margin:0 0 16px">Sim, enviar a simulação</button></div></div><p id="m_ok" class="note"></p></div>';
   c+='<div class="noprint"><a class="btn green" id="a_wa" href="#">Falar com o corretor no WhatsApp</a> <button class="lite" onclick="window.print()">🖨 Imprimir tudo</button></div>';
   g('calc').innerHTML=c;
+  parValor('i_ent');
   ['i_ent','i_nr','i_vr'].forEach(function(i){g(i).addEventListener('input',render)});
   g('i_nc').addEventListener('input',render);
   [].forEach.call(document.querySelectorAll('[name=rf],[name=md]'),function(x){x.addEventListener('change',render)});
@@ -36,7 +37,7 @@ function monta(e,u){
   render();
 }
 function plano(){
-  var u=ctx.u,valor=u[3],r=document.querySelector('[name=rf]:checked').value,pct=+g('i_ent').value,ent=Math.round(valor*pct/100);
+  var u=ctx.u,valor=u[3],r=document.querySelector('[name=rf]:checked').value,ent=+g('i_ent').value,pct=Math.round(ent/valor*1000)/10;
   var passo=r==='S'?6:12,max=r==='S'?5:2,nr=r==='0'?0:Math.min(+g('i_nr').value,max);
   var vr=C.num(g('i_vr').value),totRef=r2(nr*vr),resto=r2(valor-ent-totRef),men=r2(resto/30);
   var rows=[];for(var i=0;i<30;i++){var ref=(nr>0&&(i+1)%passo===0&&(i+1)/passo<=nr)?vr:0;rows.push({mes:rotulo(i),mensal:men,reforco:ref,total:r2(men+ref)})}
@@ -54,27 +55,28 @@ function modoC(){
   var meses=fx?PLANO.mesesObra(ctx.emp,new Date()).map(function(x){return MES[x.m-1]+'/'+x.a}):null,n=meses?meses.length:+g('i_nc').value;
   g('t_nc').textContent=n;
   if(!cbuilt){cbuilt=true;
-    g('modoC').innerHTML='<div class="linha"><div class="card"><div class="lbl">Entrada</div><div class="val" id="c_ent"></div><input id="i_ce" type="range" min="10" max="90" step="1" value="10"><div class="note">Percentual do valor do imóvel: <b id="t_ce"></b></div></div><div class="card evo" id="c_e1"></div></div>'+
+    g('modoC').innerHTML='<div class="linha"><div class="card"><div class="lbl">Entrada</div><div class="val" id="c_ent"></div><input id="i_ce" type="range" min="'+Math.round(valor*0.1)+'" max="'+Math.round(valor*0.9)+'" step="1" value="'+Math.round(valor*0.1)+'"><div class="note">Percentual do valor do imóvel: <b id="t_ce"></b></div></div><div class="card evo" id="c_e1"></div></div>'+
     '<div class="linha"><div class="card"><div class="lbl">Reforços</div><div class="opt" style="margin-top:6px"><input type="radio" name="rfc" id="cr0" value="0" checked><label for="cr0">Sem reforços</label><input type="radio" name="rfc" id="crS" value="S"><label for="crS">Semestrais</label><input type="radio" name="rfc" id="crA" value="A"><label for="crA">Anuais</label></div><div id="cbox" hidden style="margin-top:10px"><label>Quantidade: <b id="t_cn"></b></label><input id="i_cn" type="range" min="1" max="5" value="1"><label for="i_cv" style="margin-top:8px">Valor de cada reforço (R$)</label><input id="i_cv" type="text" inputmode="decimal"></div><div class="val" id="c_ref" style="margin-top:8px"></div></div><div class="card evo" id="c_e2"></div></div>'+
     '<div class="linha"><div class="card"><div class="lbl">Parcelas mensais até as chaves</div><div class="val" id="c_men"></div><div class="note" id="c_mn"></div></div><div class="card evo" id="c_e3"></div></div>'+
-    '<div class="linha"><div class="card"><div class="lbl">Financiamento bancário</div><div class="val" id="c_fin"></div><input id="i_cf" type="range" min="0" max="80" step="1" value="50"><div class="note">Percentual do valor do imóvel: <b id="t_cf"></b>. Quitado com o banco na entrega das chaves.</div></div><div class="card evo" id="c_e4"></div></div>'+
+    '<div class="linha"><div class="card"><div class="lbl">Financiamento bancário</div><div class="val" id="c_fin"></div><input id="i_cf" type="range" min="0" max="'+Math.round(valor*0.8)+'" step="1" value="'+Math.round(valor*0.5)+'"><div class="note">Percentual do valor do imóvel: <b id="t_cf"></b>. Quitado com o banco na entrega das chaves.</div></div><div class="card evo" id="c_e4"></div></div>'+
     '<div id="c_fecho"></div><div class="card"><details><summary>Pagamento mês a mês</summary><div id="c_mes"></div></details></div>';
+    parValor('i_ce');parValor('i_cf');
     ['i_ce','i_cn','i_cv','i_cf'].forEach(function(i){g(i).addEventListener('input',render)});
     [].forEach.call(document.querySelectorAll('[name=rfc]'),function(x){x.addEventListener('change',render)});
   }
   var r=document.querySelector('[name=rfc]:checked').value;g('cbox').hidden=r==='0';
   var passo=r==='S'?6:12,max=Math.max(1,Math.min(r==='S'?5:2,Math.floor(n/passo)));g('i_cn').max=max;if(+g('i_cn').value>max)g('i_cn').value=max;
   if(r!=='0'&&g('i_cv').dataset.r!==r){g('i_cv').dataset.r=r;g('i_cv').value=String(Math.round(valor*(r==='S'?0.02:0.04))).replace(/\B(?=(\d{3})+$)/g,'.')+',00'}
-  var pct=+g('i_ce').value,ent=Math.round(valor*pct/100),fp=+g('i_cf').value,fin=Math.round(valor*fp/100);
+  var ent=+g('i_ce').value,pct=Math.round(ent/valor*1000)/10,fin=+g('i_cf').value,fp=Math.round(fin/valor*1000)/10;
   var nr=r==='0'?0:Math.min(+g('i_cn').value,Math.floor(n/passo)),vr=C.num(g('i_cv').value),totRef=r2(nr*vr);
   var resto=r2(valor-ent-fin-totRef),men=n?r2(Math.max(0,resto)/n):0;
   var rows=[];for(var i=0;i<n;i++){var ref=(nr>0&&(i+1)%passo===0&&(i+1)/passo<=nr)?vr:0;rows.push({mes:meses?meses[i]:rotulo(i),v:men,ref:ref,tot:r2(men+ref)})}
   var chaves=fx?PLANO.rotulo(fx):'Entrega';
   pl={c:true,valor:valor,ent:ent,pct:pct,fin:fin,fp:fp,r:r,nr:nr,vr:vr,totRef:totRef,n:n,men:men,chaves:chaves,rows:rows};
-  g('c_ent').textContent=fm(ent);g('t_ce').textContent=pct+'%';g('t_cn').textContent=nr||g('i_cn').value;
+  g('c_ent').textContent=fm(ent);g('t_ce').textContent=String(pct).replace('.',',')+'%';g('t_cn').textContent=nr||g('i_cn').value;
   g('c_ref').textContent=nr?nr+' de '+fm(vr):'';g('c_men').textContent=n+' de '+fm(men);
   g('c_mn').textContent='Parcelas mensais de agora até '+(fx?chaves:'a entrega')+'. Atualizadas pelo CUB durante a obra. Acertam-se sozinhas para fechar o valor do imóvel.';
-  g('c_fin').textContent=fm(fin);g('t_cf').textContent=fp+'%';
+  g('c_fin').textContent=fm(fin);g('t_cf').textContent=String(fp).replace('.',',')+'%';
   evo('c_e1',ent,valor);evo('c_e2',ent+totRef,valor);evo('c_e3',ent+totRef+men*n,valor);evo('c_e4',ent+totRef+men*n+fin,valor);
   g('c_fecho').innerHTML=resto<0?'<div class="banner warn"><b>Observação:</b> a entrada, os reforços e o financiamento passam do valor do imóvel. Reduza algum deles.</div>':'<div class="banner ok"><b>100% do valor do imóvel</b> coberto por este plano.</div>';
   g('c_mes').innerHTML='<div class="tw"><table><thead><tr><th>Mês</th><th>Mensal</th><th>Reforço</th><th>Total do mês</th></tr></thead><tbody><tr><td>Hoje</td><td colspan="3">'+fm(ent)+' (entrada)</td></tr>'+rows.map(function(x){return '<tr><td>'+x.mes+'</td><td>'+fm(x.v)+'</td><td>'+(x.ref?fm(x.ref):'-')+'</td><td>'+fm(x.tot)+'</td></tr>'}).join('')+'<tr><td>'+chaves+'</td><td colspan="3">'+fm(fin)+' (financiamento bancário)</td></tr></tbody></table></div>';
@@ -87,7 +89,7 @@ function render(){
   var max=r==='S'?5:2;g('i_nr').max=max;if(+g('i_nr').value>max)g('i_nr').value=max;
   if(r!=='0'&&g('i_vr').dataset.r!==r){g('i_vr').dataset.r=r;g('i_vr').value=String(Math.round(ctx.u[3]*(r==='S'?0.02:0.04))).replace(/\B(?=(\d{3})+$)/g,'.')+',00'}
   pl=plano();var valor=pl.valor;
-  g('v_ent').textContent=fm(pl.ent);g('t_ent').textContent=pl.pct+'%';g('t_nr').textContent=pl.nr||g('i_nr').value;
+  g('v_ent').textContent=fm(pl.ent);g('t_ent').textContent=String(pl.pct).replace('.',',')+'%';g('t_nr').textContent=pl.nr||g('i_nr').value;
   g('v_ref').textContent=pl.nr?pl.nr+' de '+fm(pl.vr):'';g('v_men').textContent='30 de '+fm(pl.men);
   evo('e_ent',pl.ent,valor);evo('e_ref',pl.ent+pl.totRef,valor);evo('e_men',pl.ent+pl.totRef+pl.men*30,valor);
   var falta=r2(valor-pl.ent-pl.totRef-pl.men*30);

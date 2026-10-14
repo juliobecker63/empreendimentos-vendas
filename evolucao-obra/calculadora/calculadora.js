@@ -21,18 +21,19 @@ if(temFgts) h+='<div class="linha"><div class="card"><div class="lbl">FGTS</div>
 h+='<div class="linha"><div class="card"><div class="lbl">Entrada (mínimo R$ 1.000,00)</div><input id="i_ato" type="text" inputmode="decimal" value="1.000,00"></div><div class="card evo" id="e_ato"></div></div>';
 h+='<div class="linha"><div class="card"><div class="lbl">Parcelas mensais até a entrega</div><div class="val" id="v_men"></div><input id="i_nm" type="range" min="0" max="'+N+'" value="'+N+'"><div class="note">As mensais se acertam sozinhas para fechar o valor do imóvel. Durante a obra, o valor das parcelas é atualizado pelo CUB.</div></div><div class="card evo" id="e_men"></div></div>';
 h+='<div class="linha"><div class="card"><div class="lbl">Reforços</div><div class="opt" style="margin-top:6px"><input type="radio" name="rf" id="r0" value="0" checked><label for="r0">Sem reforços</label><input type="radio" name="rf" id="rS" value="S"><label for="rS">6 semestrais</label><input type="radio" name="rf" id="rA" value="A"><label for="rA">3 anuais</label></div><div id="rbox" hidden style="margin-top:10px"><label for="i_vr">Valor de cada reforço (R$)</label><input id="i_vr" type="text" inputmode="decimal" value=""></div><div class="val" id="v_ref" style="margin-top:8px"></div></div><div class="card evo" id="e_ref"></div></div>';
-h+='<div class="linha"><div class="card"><div class="lbl">Pós-chaves</div><div class="val" id="v_pos"></div><label style="font-weight:500;margin-top:8px">Percentual do valor do imóvel: <b id="t_pp"></b> (máx. 6%)</label><input id="i_pp" type="range" min="0" max="6" step="0.5" value="6"><label style="font-weight:500;margin-top:8px">Parcelas: <b id="t_pn"></b></label><input id="i_pn" type="range" min="1" max="24" value="24"><div class="note">Até 24 parcelas, corrigidas pelo IGP-M mais juros de 1%.</div></div><div class="card evo" id="e_pos"></div></div>';
+h+='<div class="linha"><div class="card"><div class="lbl">Pós-chaves</div><div class="val" id="v_pos"></div><label style="font-weight:500;margin-top:8px">Percentual do valor do imóvel: <b id="t_pp"></b> (máx. 6%)</label><input id="i_pp" type="range" min="0" max="'+Math.round(valor*0.06)+'" step="1" value="'+Math.round(valor*0.06)+'"><label style="font-weight:500;margin-top:8px">Parcelas: <b id="t_pn"></b></label><input id="i_pn" type="range" min="1" max="24" value="24"><div class="note">Até 24 parcelas, corrigidas pelo IGP-M mais juros de 1%.</div></div><div class="card evo" id="e_pos"></div></div>';
 h+='<div id="fecho"></div>';
 h+='<div class="card"><h3>Obra e prestação</h3><details><summary>Evolução da obra, mês a mês (até as chaves)</summary><div id="d_evo"></div></details><details><summary>Depois das chaves, mês a mês</summary><div id="d_pos"></div></details><p class="note">Durante a obra você paga à Caixa a evolução (percentual da obra × prestação) junto com as mensais. Evolução linear, apenas como estimativa. Durante a obra, o valor das parcelas é atualizado pelo CUB.</p></div>';
 h+='<div class="card noprint"><h3>Quer receber esta simulação por e-mail?</h3><p class="note" style="margin:4px 0 10px">Enviamos para você e para o corretor.</p><div class="g2"><div class="row"><label for="i_mail">Seu e-mail</label><input id="i_mail" type="email" placeholder="voce@email.com"></div><div style="align-self:end"><button id="b_mail" type="button" style="width:100%;margin:0 0 16px">Sim, enviar a simulação</button></div></div><p id="m_ok" class="note"></p></div>';
 h+='<div class="card noprint" style="border-color:#c9a227"><h3>Pronto para o próximo passo?</h3><p style="margin:4px 0 0">Envie seus documentos e começamos agora o processo de financiamento do seu apartamento.</p><a class="btn green" id="a_doc" href="#">Enviar meus documentos</a></div>';
 h+='<div class="noprint"><a class="btn green" id="a_wa" href="#">Falar com o corretor no WhatsApp</a> <button class="lite" onclick="window.print()">🖨 Imprimir tudo</button> <a class="btn lite" id="a_out" href="#">Ver outros apartamentos para o meu perfil</a></div>';
 app.innerHTML=h;
+parValor('i_fin');parValor('i_pp');
 var g=function(i){return document.getElementById(i)};
 g('a_doc').href='/evolucao-obra/documentos/'+C.qs();g('a_out').href='/evolucao-obra/resultado/'+C.qs();
 g('a_wa').href=waLink('Olá! Sou '+f.nome+'. Fiz a simulação no site e quero falar sobre o apartamento '+un+' do '+nomeEmp+'.');
 var plano=null;
-function opts(){var r=document.querySelector('[name=rf]:checked').value;return {ato:Math.max(1000,C.num(g('i_ato').value)),nMensais:+g('i_nm').value,freq:r,nRef:r==='S'?6:r==='A'?3:0,vRef:C.num(g('i_vr').value),posPct:+g('i_pp').value,posN:+g('i_pn').value,usarFgts:!!(g('i_fgts')&&g('i_fgts').checked),fin:+g('i_fin').value}}
+function opts(){var r=document.querySelector('[name=rf]:checked').value;return {ato:Math.max(1000,C.num(g('i_ato').value)),nMensais:+g('i_nm').value,freq:r,nRef:r==='S'?6:r==='A'?3:0,vRef:C.num(g('i_vr').value),posPct:+g('i_pp').value/valor*100,posN:+g('i_pn').value,usarFgts:!!(g('i_fgts')&&g('i_fgts').checked),fin:+g('i_fin').value}}
 function evo(id,cum,total){
   var falta=Math.round((valor-cum)*100)/100,pct=Math.max(0,Math.min(100,cum/valor*100)),b=g(id),cheio=Math.abs(falta)<1;
   b.className='card evo'+(cheio?' cheio':'');
@@ -51,7 +52,7 @@ function render(){
   g('v_men').textContent=pl.nMensais+' meses de '+fm(pl.mensal);
   g('v_ref').textContent=pl.reforcos?pl.reforcos+' de '+fm(pl.vRef):'';
   g('v_pos').textContent=pl.posN+' de '+fm(pl.pos/pl.posN);
-  g('t_pp').textContent=g('i_pp').value.replace('.',',')+'%';g('t_pn').textContent=g('i_pn').value;
+  g('t_pp').textContent=(g('i_pp').value/valor*100).toFixed(1).replace('.',',')+'%';g('t_pn').textContent=g('i_pn').value;
   var c=pl.fin;evo('e_fin',c);
   if(g('e_fgts')){c+=pl.fgts;evo('e_fgts',c)}
   c+=pl.ato;evo('e_ato',c);c+=pl.mensal*pl.nMensais;evo('e_men',c);c+=pl.totRef;evo('e_ref',c);c+=pl.pos;evo('e_pos',c);
