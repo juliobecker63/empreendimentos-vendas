@@ -4,7 +4,7 @@
 (function(){
   var S=window.SIM;
   // mes/ano das chaves (= mes do financiamento na planilha da construtora) e quantidade padrao de parcelas pos-chaves
-  var FLUXO={aura:{m:6,a:2029,pos:30},gran_maltech:{m:10,a:2028,pos:24},visio_home:{m:3,a:2028,pos:24},viva_serenita:{m:4,a:2029,pos:24},vivanti:{m:2,a:2030,pos:30}};
+  var FLUXO={aura:{m:6,a:2029,pos:30},gran_maltech:{m:10,a:2028,pos:30},visio_home:{m:3,a:2028,pos:30},viva_serenita:{m:4,a:2029,pos:30},vivanti:{m:2,a:2030,pos:30}};
   var MES=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
   var rotulo=function(x){return MES[x.m-1]+'/'+x.a};
   var r2=function(v){return Math.round(v*100)/100};
@@ -27,7 +27,7 @@
     var valor=u[3],cap=S.capacidadeDe(p,u),finMax=Math.round(u[4]*0.8),finTeto=Math.min(finMax,cap.fin),fin=finTeto;
     if(o.fin!=null) fin=Math.max(0,Math.min(finTeto,o.fin));
     var prestacao=r2(fin*cap.parcela/cap.fin),obra=mesesObra(emp,hoje),N=obra.length;
-    var nMen=Math.max(0,Math.min(o.nMensais,N)),pos=r2(valor*o.posPct/100),posN=Math.max(1,Math.min(24,o.posN));
+    var nMen=Math.max(0,Math.min(o.nMensais,N,41)),pos=r2(valor*o.posPct/100),posN=Math.max(1,Math.min(FLUXO[emp].pos,o.posN));posN=Math.min(posN,Math.max(1,71-nMen)); // ponytail: 72 = 1 ato + ate 41 obra + ate 30 pos; cap aqui. so morde se obra passar de 41 meses
     var fgts=(o.usarFgts&&p.cotista)?p.fgts:0;
     var refMeses=obra.filter(function(x){return o.freq==='A'?x.m===12:o.freq==='S'?(x.m===6||x.m===12):false}).slice(0,o.nRef);
     var totRef=r2(refMeses.length*o.vRef),ato=Math.min(o.ato,valor);
