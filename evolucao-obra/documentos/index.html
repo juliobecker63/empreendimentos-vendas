@@ -149,7 +149,7 @@
   function upload(path,file){
     return fetch(SUPA.url+'/storage/v1/object/'+SUPA.bucket+'/'+path,{
       method:'POST',
-      headers:{'apikey':SUPA.key,'Authorization':'Bearer '+SUPA.key,'Content-Type':file.type||'application/octet-stream','x-upsert':'true'},
+      headers:{'apikey':SUPA.key,'Authorization':'Bearer '+SUPA.key,'Content-Type':file.type||'application/octet-stream'},
       body:file
     });
   }
@@ -173,7 +173,7 @@
     g('msg').textContent=''; g('enviar').disabled=true;
 
     var anexos=Object.keys(files).filter(function(k){return files[k]});
-    var pasta='pre-cadastro/'+new Date().toISOString().slice(0,10)+'/'+slug(o.nome)+'-'+Math.random().toString(36).slice(2,7);
+    var pasta='pre-cadastro/'+new Date().toISOString().slice(0,10)+'/'+slug(o.nome)+'-'+((self.crypto&&crypto.randomUUID)?crypto.randomUUID().slice(0,8):Math.random().toString(36).slice(2,10));
 
     function notifica(status){
       var campos={}; Object.keys(o).forEach(function(k){campos[k]=o[k]});
