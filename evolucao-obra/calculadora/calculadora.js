@@ -27,11 +27,11 @@ h+='<div id="fecho"></div>';
 h+='<div class="card"><h3>Obra e prestação</h3><details><summary>Evolução da obra, mês a mês (até as chaves)</summary><div id="d_evo"></div></details><details><summary>Depois das chaves, mês a mês</summary><div id="d_pos"></div></details><p class="note">Durante a obra você paga à Caixa a evolução (percentual da obra × prestação) junto com as mensais. Evolução linear, apenas como estimativa. Durante a obra, o valor das parcelas é atualizado pelo CUB.</p></div>';
 h+='<div class="card noprint"><h3>Quer receber esta simulação por e-mail?</h3><p class="note" style="margin:4px 0 10px">Enviamos para você e para o corretor.</p><div class="g2"><div class="row"><label for="i_mail">Seu e-mail</label><input id="i_mail" type="email" placeholder="voce@email.com"></div><div style="align-self:end"><button id="b_mail" type="button" style="width:100%;margin:0 0 16px">Sim, enviar a simulação</button></div></div><p id="m_ok" class="note"></p></div>';
 h+='<div class="card noprint" style="border-color:#c9a227"><h3>Pronto para o próximo passo?</h3><p style="margin:4px 0 0">Envie seus documentos e começamos agora o processo de financiamento do seu apartamento.</p><a class="btn green" id="a_doc" href="#">Enviar meus documentos</a></div>';
-h+='<div class="noprint"><a class="btn green" id="a_wa" href="#">Falar com o corretor no WhatsApp</a> <button class="lite" onclick="window.print()">🖨 Imprimir tudo</button> <a class="btn lite" id="a_out" href="#">Ver outros apartamentos para o meu perfil</a></div>';
+h+='<div class="card noprint"><h3>Fale com um corretor</h3><p>Não entendeu como funciona a entrada parcelada, o financiamento pela Caixa ou o Minha Casa Minha Vida? Converse com um corretor: a gente explica cada passo com calma e monta a condição ideal pro seu bolso, sem compromisso.</p></div>';h+='<div class="noprint"><a class="btn green" id="a_wa" href="#">Falar com o corretor no WhatsApp</a> <button class="lite" onclick="window.print()">🖨 Imprimir tudo</button></div>';
 app.innerHTML=h;
 parValor('i_fin');parValor('i_pp');
 var g=function(i){return document.getElementById(i)};
-g('a_doc').href='/evolucao-obra/documentos/'+C.qs();g('a_out').href='/evolucao-obra/resultado/'+C.qs();
+g('a_doc').href='/evolucao-obra/documentos/'+C.qs();
 g('a_wa').href=waLink('Olá! Sou '+f.nome+'. Fiz a simulação no site e quero falar sobre o apartamento '+un+' do '+nomeEmp+'.');
 var plano=null;
 function opts(){var r=document.querySelector('[name=rf]:checked').value;return {ato:Math.max(1000,C.num(g('i_ato').value)),nMensais:+g('i_nm').value,freq:r,nRef:r==='S'?6:r==='A'?3:0,vRef:C.num(g('i_vr').value),posPct:+g('i_pp').value/valor*100,posN:+g('i_pn').value,usarFgts:!!(g('i_fgts')&&g('i_fgts').checked),fin:+g('i_fin').value}}

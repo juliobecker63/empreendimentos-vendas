@@ -1,21 +1,208 @@
 <!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>Envio de documentos – Viva Corp</title>
-<link rel="stylesheet" href="/evolucao-obra/estilo.css"></head><body>
+<link rel="stylesheet" href="/evolucao-obra/estilo.css">
+<style>
+#app .doc{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid #e6e9ee;padding:12px 0}
+#app .doc:first-of-type{border-top:0}
+#app .doc .d-tit{font-weight:700;max-width:62%}
+#app .doc .d-tit small{display:block;font-weight:400;color:#56697a;font-size:12px;margin-top:2px}
+#app .doc .d-pick{display:inline-flex;align-items:center;gap:8px}
+#app .doc input[type=file]{display:none}
+#app .doc .pick{cursor:pointer;margin:0}
+#app .doc .d-nome{font-size:12px;color:#1a7a3c;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#app .req{color:#c0392b}
+#app .prog{height:8px;background:#eef1f5;border-radius:6px;overflow:hidden;margin:10px 0 0;display:none}
+#app .prog > i{display:block;height:100%;width:0;background:#1a7a3c;transition:width .2s}
+#app .aviso{background:#fff8e6;border:1px solid #e9d08a;border-radius:10px;padding:10px 12px;font-size:13px;color:#6b5600;margin:10px 0}
+</style></head><body>
 <header><div class="wrap"><img src="/logo.png" alt="Logo"></div></header>
 <div class="wrap" id="app" data-wa="5548991480285">
 <h1>Envie seus documentos</h1>
-<p class="sub">Vamos começar agora o processo de financiamento do seu apartamento.</p>
+<p class="sub">Preencha seus dados e anexe os documentos abaixo. Com isso o corretor já inicia a sua análise de crédito e o pré-cadastro. Leva poucos minutos e seus dados são tratados com sigilo.</p>
+
+<form id="form" novalidate>
+
 <div class="card">
-<h3>Documentos necessários</h3>
-<p style="margin-top:6px">Em breve você verá aqui a lista de documentos e como enviá-los. Enquanto isso, fale com o corretor pelo WhatsApp que ele orienta o envio.</p>
+<h3>Seus dados</h3>
+<div class="g2">
+<div class="row"><label for="nome">Nome completo <span class="req">*</span></label><input id="nome" name="nome" type="text" required></div>
+<div class="row"><label for="nasc">Data de nascimento <span class="req">*</span></label><input id="nasc" name="nasc" type="date" required></div>
+</div>
+<div class="g2">
+<div class="row"><label for="genero">Gênero <span class="req">*</span></label><select id="genero" name="genero" required><option value="">Selecione</option><option>Feminino</option><option>Masculino</option><option>Outro</option></select></div>
+<div class="row"><label for="civil">Estado civil <span class="req">*</span></label><select id="civil" name="civil" required><option value="">Selecione</option><option>Solteiro(a)</option><option>Casado(a)</option><option>União estável</option><option>Divorciado(a)</option><option>Viúvo(a)</option></select></div>
+</div>
+<div class="g2">
+<div class="row"><label for="prof">Profissão <span class="req">*</span></label><input id="prof" name="prof" type="text" required></div>
+<div class="row"><label for="pais">País <span class="req">*</span></label><input id="pais" name="pais" type="text" value="Brasil" required></div>
+</div>
+<div class="row"><label for="natur">Naturalidade (cidade e estado onde nasceu) <span class="req">*</span></label><input id="natur" name="natur" type="text" placeholder="Ex.: Florianópolis - SC" required></div>
+</div>
+
+<div class="card">
+<h3>Contato</h3>
+<div class="g2">
+<div class="row"><label for="email">E-mail <span class="req">*</span></label><input id="email" name="email" type="email" required></div>
+<div class="row"><label for="fone">Telefone (WhatsApp, com DDD) <span class="req">*</span></label><input id="fone" name="fone" type="tel" inputmode="tel" required></div>
+</div>
+</div>
+
+<div class="card">
+<h3>Endereço</h3>
+<div class="g2">
+<div class="row"><label for="cep">CEP <span class="req">*</span></label><input id="cep" name="cep" type="text" inputmode="numeric" placeholder="00000-000" required></div>
+<div class="row"><label for="end">Endereço (rua/av.) <span class="req">*</span></label><input id="end" name="end" type="text" required></div>
+</div>
+<div class="g2">
+<div class="row"><label for="num">Número <span class="req">*</span></label><input id="num" name="num" type="text" required></div>
+<div class="row"><label for="bairro">Bairro <span class="req">*</span></label><input id="bairro" name="bairro" type="text" required></div>
+</div>
+<div class="g2">
+<div class="row"><label for="cidade">Cidade <span class="req">*</span></label><input id="cidade" name="cidade" type="text" required></div>
+<div class="row"><label for="uf">Estado (UF) <span class="req">*</span></label><input id="uf" name="uf" type="text" maxlength="2" placeholder="SC" required></div>
+</div>
+</div>
+
+<div class="card">
+<h3>Documentos para análise de crédito</h3>
+<p class="note" style="margin:2px 0 8px">Pode anexar foto ou PDF. Aceita até 10 MB por arquivo. Os marcados com <span class="req">*</span> são essenciais para iniciar; os demais agilizam a aprovação.</p>
+<div id="docs"></div>
+</div>
+
+<div class="aviso" id="avisoWa" hidden>O envio de anexos pelo site está sendo liberado. Ao finalizar, seus dados vão para o corretor e abrimos o WhatsApp para você enviar os documentos com segurança.</div>
+
+<div class="prog" id="prog"><i></i></div>
+<p id="msg" class="note"></p>
+<button type="submit" id="enviar" style="width:100%">Enviar para análise</button>
+<p class="note" style="margin-top:10px">Seus documentos são usados apenas para a análise de crédito e o pré-cadastro junto à construtora e à Caixa.</p>
+</form>
+
+<div class="card" id="ok" hidden style="border-color:#1a7a3c">
+<h3>Recebemos! ✅</h3>
+<p>Seus dados e documentos foram enviados ao corretor. Em breve ele fala com você para dar sequência à análise.</p>
 <a class="btn green" id="a_wa" href="#">Falar com o corretor no WhatsApp</a>
 </div>
+
 </div>
 <script src="/evolucao-obra/comum.js"></script>
 <script>
 (function(){
-  var f=C.get('simViva')||{},wa=document.getElementById('app').dataset.wa;
-  document.getElementById('a_wa').href='https://wa.me/'+wa+'?text='+encodeURIComponent('Olá! Sou '+(f.nome||'cliente')+'. Fiz a simulação no site e quero enviar meus documentos para iniciar o financiamento.');
+  // === CONFIG DE UPLOAD (bucket privado do Supabase) ===
+  // Para ativar o anexo direto no site: preencher key com a chave "anon/publishable"
+  // do projeto ljxijsfumxrstixkimyg e criar o bucket privado (ver passo a passo).
+  var SUPA={url:'https://ljxijsfumxrstixkimyg.supabase.co', key:'', bucket:'documentos-credito'};
+  var MAX=10*1024*1024;
+
+  var DOCS=[
+    {id:'rg',    lab:'RG e CPF (ou CNH)', req:true},
+    {id:'resid', lab:'Comprovante de residência', req:true},
+    {id:'cert',  lab:'Certidão de casamento ou nascimento', req:true},
+    {id:'renda', lab:'Comprovação de renda', sub:'6 últimos extratos bancários (autônomo) ou 3 últimos holerites (registrado)', req:true},
+    {id:'ctps',  lab:'Carteira de trabalho digital', req:false},
+    {id:'fgts',  lab:'Extrato do FGTS', req:false},
+    {id:'ir',    lab:'Imposto de renda + recibo de entrega', req:false}
+  ];
+  var files={};
+  var wa=document.getElementById('app').dataset.wa;
+  var g=function(id){return document.getElementById(id)};
+
+  var html=DOCS.map(function(d){
+    return '<div class="doc"><div class="d-tit">'+d.lab+(d.req?' <span class="req">*</span>':'')+(d.sub?'<small>'+d.sub+'</small>':'')+'</div>'+
+      '<div class="d-pick"><label class="btn lite pick" for="f_'+d.id+'">Anexar</label>'+
+      '<input id="f_'+d.id+'" type="file" accept="image/*,application/pdf,.pdf" data-id="'+d.id+'">'+
+      '<span class="d-nome" id="n_'+d.id+'"></span></div></div>';
+  }).join('');
+  g('docs').innerHTML=html;
+
+  if(!SUPA.key) g('avisoWa').hidden=false;
+
+  var sv=C.get('simViva')||{};
+  if(sv.nome) g('nome').value=sv.nome;
+  if(sv.fone) g('fone').value=sv.fone;
+  if(sv.email) g('email').value=sv.email;
+
+  [].forEach.call(document.querySelectorAll('#docs input[type=file]'),function(inp){
+    inp.addEventListener('change',function(){
+      var id=inp.dataset.id, f=inp.files[0];
+      if(!f){files[id]=null;g('n_'+id).textContent='';return}
+      if(f.size>MAX){alert('O arquivo "'+f.name+'" tem mais de 10 MB. Reduza ou envie em partes.');inp.value='';return}
+      files[id]=f; g('n_'+id).textContent='✓ '+f.name;
+    });
+  });
+
+  var slug=function(s){return (s||'cliente').toString().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-|-$/g,'').toLowerCase().slice(0,40)};
+
+  function dados(){
+    var o={}; ['nome','nasc','genero','civil','prof','pais','natur','email','fone','cep','end','num','bairro','cidade','uf'].forEach(function(k){o[k]=(g(k).value||'').trim()});
+    return o;
+  }
+
+  function faltando(o){
+    var req=['nome','nasc','genero','civil','prof','pais','natur','email','fone','cep','end','num','bairro','cidade','uf'];
+    var falta=req.filter(function(k){return !o[k]});
+    if(falta.length) return 'Preencha todos os campos obrigatórios.';
+    var fd=DOCS.filter(function(d){return d.req && !files[d.id]});
+    if(fd.length) return 'Anexe os documentos essenciais (marcados com *).';
+    return '';
+  }
+
+  function upload(path,file){
+    return fetch(SUPA.url+'/storage/v1/object/'+SUPA.bucket+'/'+path,{
+      method:'POST',
+      headers:{'apikey':SUPA.key,'Authorization':'Bearer '+SUPA.key,'Content-Type':file.type||'application/octet-stream','x-upsert':'true'},
+      body:file
+    });
+  }
+
+  function linkWa(o){
+    var t='Olá! Sou '+(o.nome||'cliente')+'. Preenchi meus dados no site para a análise de crédito e vou te enviar os documentos por aqui.';
+    return 'https://wa.me/'+wa+'?text='+encodeURIComponent(t);
+  }
+
+  function sucesso(o){
+    g('form').hidden=true; g('ok').hidden=false;
+    g('a_wa').href=linkWa(o);
+    try{window.scrollTo(0,0)}catch(e){}
+  }
+
+  g('form').addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var o=dados(), erro=faltando(o);
+    g('msg').style.color='#c0392b';
+    if(erro){g('msg').textContent=erro;return}
+    g('msg').textContent=''; g('enviar').disabled=true;
+
+    var anexos=Object.keys(files).filter(function(k){return files[k]});
+    var pasta='pre-cadastro/'+new Date().toISOString().slice(0,10)+'/'+slug(o.nome)+'-'+Math.random().toString(36).slice(2,7);
+
+    function notifica(status){
+      var campos={}; Object.keys(o).forEach(function(k){campos[k]=o[k]});
+      campos['Documentos anexados']=status;
+      if(SUPA.key) campos['Pasta no bucket']=SUPA.bucket+'/'+pasta;
+      C.enviar('Novo pré-cadastro / documentos — '+o.nome, campos);
+    }
+
+    if(SUPA.key && anexos.length){
+      g('prog').style.display='block';
+      var done=0, falhas=[];
+      Promise.all(anexos.map(function(k){
+        var f=files[k], ext=(f.name.split('.').pop()||'bin').toLowerCase();
+        return upload(pasta+'/'+k+'.'+ext, f).then(function(r){
+          done++; g('prog').firstElementChild.style.width=Math.round(done/anexos.length*100)+'%';
+          if(!r.ok) falhas.push(k);
+        }).catch(function(){done++;falhas.push(k)});
+      })).then(function(){
+        notifica(anexos.length+' arquivo(s)'+(falhas.length?' ('+falhas.length+' falharam)':''));
+        sucesso(o);
+      });
+    } else {
+      notifica('enviar pelo WhatsApp ('+anexos.length+' selecionado(s))');
+      setTimeout(function(){
+        try{window.open(linkWa(o),'_blank')}catch(e){}
+        sucesso(o);
+      },300);
+    }
+  });
 })();
 </script>
 </body></html>

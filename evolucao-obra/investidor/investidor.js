@@ -31,6 +31,7 @@ function monta(e,u){
   c+='<div class="linha"><div class="card"><div class="lbl">Parcelas mensais</div><div class="val" id="v_men"></div><div class="note">30 parcelas, a partir do mês que vem. Acertam-se sozinhas para fechar o valor do imóvel.</div></div><div class="card evo" id="e_men"></div></div>';
   c+='<div id="fecho"></div><div class="card"><details><summary>Pagamento mês a mês</summary><div id="d_mes"></div></details></div></div>';
   c+='<div class="card noprint"><h3>Quer receber esta simulação por e-mail?</h3><p class="note" style="margin:4px 0 10px">Enviamos para você e para o corretor.</p><div class="g2"><div class="row"><label for="i_nome">Seu nome</label><input id="i_nome" type="text"></div><div class="row"><label for="i_fone">WhatsApp com DDD</label><input id="i_fone" type="tel" inputmode="tel"></div></div><div class="g2"><div class="row"><label for="i_mail">Seu e-mail</label><input id="i_mail" type="email"></div><div style="align-self:end"><button id="b_mail" type="button" style="width:100%;margin:0 0 16px">Sim, enviar a simulação</button></div></div><p id="m_ok" class="note"></p></div>';
+  c+='<div class="card noprint" style="border-color:#c9a227"><h3>Pronto para o próximo passo?</h3><p style="margin:4px 0 0">Envie seus documentos e começamos agora o processo de COMPRA do seu apartamento.</p><a class="btn green" id="a_doc" href="#">Enviar meus documentos</a></div>';
   c+='<div class="noprint"><a class="btn green" id="a_wa" href="#">Falar com o corretor no WhatsApp</a> <button class="lite" onclick="window.print()">🖨 Imprimir tudo</button></div>';
   g('calc').innerHTML=c;
   parValor('i_ent');
@@ -85,7 +86,7 @@ function modoC(){
   evo('c_e1',ent,valor);evo('c_e2',ent+totRef,valor);evo('c_e3',ent+totRef+men*n,valor);evo('c_e4',ent+totRef+men*n+fin,valor);
   g('c_fecho').innerHTML=resto<0?'<div class="banner warn"><b>Observação:</b> a entrada, os reforços e o financiamento passam do valor do imóvel. Reduza algum deles.</div>':'<div class="banner ok"><b>100% do valor do imóvel</b> coberto por este plano.</div>';
   g('c_mes').innerHTML='<div class="tw"><table><thead><tr><th>Mês</th><th>Mensal</th><th>Reforço</th><th>Total do mês</th></tr></thead><tbody><tr><td>Hoje</td><td colspan="3">'+fm(ent)+' (entrada)</td></tr>'+rows.map(function(x){return '<tr><td>'+x.mes+'</td><td>'+fm(x.v)+'</td><td>'+(x.ref?fm(x.ref):'-')+'</td><td>'+fm(x.tot)+'</td></tr>'}).join('')+'<tr><td>'+chaves+'</td><td colspan="3">'+fm(fin)+' (financiamento bancário)</td></tr></tbody></table></div>';
-  g('a_wa').href=waLink('Olá! Sou investidor e simulei o '+DADOS.emp[ctx.emp].nome+' (apartamento '+ctx.u[1]+') na condição da construtora: entrada de '+fm(ent)+', '+n+' parcelas de '+fm(men)+(nr?', '+nr+' reforços de '+fm(vr):'')+' e '+fm(fin)+' financiados. Quero conversar.');
+  g('a_doc').href='/evolucao-obra/documentos/'+C.qs();g('a_wa').href=waLink('Olá! Sou investidor e simulei o '+DADOS.emp[ctx.emp].nome+' (apartamento '+ctx.u[1]+') na condição da construtora: entrada de '+fm(ent)+', '+n+' parcelas de '+fm(men)+(nr?', '+nr+' reforços de '+fm(vr):'')+' e '+fm(fin)+' financiados. Quero conversar.');
 }
 function render(){
   var c=document.querySelector('[name=md]:checked').value==='C';g('modoC').hidden=!c;g('modoD').hidden=c;g('nbox').hidden=!(c&&!PLANO.FLUXO[ctx.emp]);
