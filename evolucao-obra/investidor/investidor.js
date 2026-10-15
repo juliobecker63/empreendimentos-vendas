@@ -6,7 +6,7 @@ var ach=(emp&&un&&DADOS.emp[emp])?S.acharUnidade(emp,un,tt,vv):null;
 var alvo=ach?{emp:emp,u:ach.u}:null;
 var empValid=emp&&DADOS.emp[emp];
 function waLink(t){return 'https://wa.me/'+wa+'?text='+encodeURIComponent(t)}
-var h='<h1>Calculadora do investidor</h1><p class="sub">Dê uma entrada e financie o restante direto com a construtora em 30 parcelas, com reforços anuais ou semestrais, ou escolha a condição aprovada pela construtora (10% + 40% até as chaves + 50% financiado no banco).</p>';
+var h='<h1>Calculadora do investidor</h1><p class="sub">Monte o seu plano em segundos, sem compromisso. Dê uma entrada e financie o restante direto com a construtora em 30 parcelas, com reforços anuais ou semestrais, ou escolha a condição aprovada pela construtora (10% + 40% até as chaves + 50% financiado no banco).</p>';
 if(!alvo){
   if(empValid){
     h+='<div class="card"><h3>Escolha o modelo</h3><p class="note" style="margin:0 0 10px">Imóvel: <b>'+esc(DADOS.emp[emp].nome)+'</b></p><div class="row"><label for="s_un">Modelo / apartamento</label><select id="s_un">'+(DADOS.emp[emp].u.length>1?'<option value="">Selecione</option>':'')+DADOS.emp[emp].u.map(function(u,i){return '<option value="'+i+'">'+esc(String(u[1]).replace(/ da (Torre|Bloco) [A-Za-z0-9]+$/,''))+(u[0]?' – '+esc(u[0]):'')+' – '+fm(u[3])+'</option>'}).join('')+'</select></div></div>';

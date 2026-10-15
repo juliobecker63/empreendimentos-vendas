@@ -22,7 +22,7 @@ function tabela(r){
 }
 function bloco(r){var n=qtd(r);return '<div class="card emp"><h3>'+esc(r.nome)+'<span>'+n+' apartamento'+(n>1?'s':'')+' no seu perfil</span></h3>'+tabela(r)+'</div>'}
 
-var nome=DADOS.emp[f.emp]?DADOS.emp[f.emp].nome:(f.emp==='viva_urban'?'Viva Urban':'(simulação geral)'),h='<h1>'+primeiro+', este é o seu resultado</h1><p class="sub">Simulação preliminar do Minha Casa Minha Vida.</p>';
+var nome=DADOS.emp[f.emp]?DADOS.emp[f.emp].nome:(f.emp==='viva_urban'?'Viva Urban':'(simulação geral)'),h='<h1>'+primeiro+', este é o seu resultado</h1><p class="sub">Esta é a sua estimativa do Minha Casa Minha Vida — um ponto de partida pra você se planejar. A condição final é confirmada com o corretor e na Caixa.</p>';
 var ach=f.un&&sel?S.acharUnidade(f.emp,f.un,f.t,f.v):null,uLabel=f.un?esc(f.un)+(f.t?' (torre/bloco '+esc(f.t.toUpperCase())+')':''):'';
 var alvo=null,alvoTxt='',fit=sel?sel.cabe.slice().sort(porValor):[];
 if(p.erro){
@@ -36,11 +36,11 @@ if(p.erro){
     if(a&&a.st==='cabe'){
       h+='<div class="banner ok">Boa notícia! O apartamento <b>'+uLabel+'</b> do <b>'+esc(sel.nome)+'</b> cabe no seu financiamento.'+' O restante, '+S.fmt(a.entrada)+', é pago à construtora (ato, mensais e pós-chaves): ajuste abaixo.</div>';
     }else{
-      if(fit.length){var m=fit[0];h+='<div class="banner ok"><b>Opção no mesmo empreendimento:</b> o apartamento de menor valor que você consegue financiar no '+esc(sel.nome)+' é o <b>'+curto(m.u)+'</b> ('+esc(m.u[0])+'), de '+S.fmt(m.u[3])+'. Veja abaixo as opções.</div>'}
+      if(fit.length){var m=fit[0];h+='<div class="banner ok"><b>Opção no mesmo empreendimento:</b> o apartamento de menor valor que você consegue financiar no '+esc(sel.nome)+' é o <b>'+curto(m.u)+'</b>'+(m.u[0]?' ('+esc(m.u[0])+')':'')+', de '+S.fmt(m.u[3])+'. Veja abaixo as opções.</div>'}
       h+='<div class="alt"><b>Podemos ajustar a compra do apartamento que você escolheu.</b> A construtora permite pagar a parte que o financiamento não cobre em ato, mensais, reforços e pós-chaves. O plano abaixo mostra como ficaria; ajuste e fale com o corretor.</div>';
     }
   }else if(f.un&&sel){h+='<div class="card"><b>Apartamento solicitado</b><p style="margin-top:4px">'+esc(sel.nome)+' – apartamento '+uLabel+' (valor sob consulta). Veja abaixo o que cabe no seu perfil.</p></div>'}
-  if(!ach&&sel&&fit.length){alvo=fit[0].u;alvoTxt='apartamento '+curto(fit[0].u)+' ('+esc(fit[0].u[0])+'), o de menor valor que cabe no seu perfil'}
+  if(!ach&&sel&&fit.length){alvo=fit[0].u;alvoTxt='apartamento '+curto(fit[0].u)+(fit[0].u[0]?' ('+esc(fit[0].u[0])+')':'')+', o de menor valor que cabe no seu perfil'}
   if(!algum) h+='<div class="banner warn"><b>Ainda não encontramos um apartamento que caiba direto no seu perfil.</b><br>Mas isso tem solução: queremos uma <b>entrevista pessoal</b> com você, porque temos algumas opções de reformular as formas de pagamento e tentar conseguir a aquisição do seu novo imóvel.</div>';
   else if(!ach){
     if(qtd(sel)) h+='<div class="banner ok">Boa notícia! No <b>'+esc(sel.nome)+'</b> você se encaixa em <b>'+qtd(sel)+'</b> apartamento'+(qtd(sel)>1?'s':'')+'.</div>';
