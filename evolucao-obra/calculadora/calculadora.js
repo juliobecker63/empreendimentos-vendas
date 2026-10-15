@@ -5,7 +5,7 @@ if(!f){location.replace('/evolucao-obra/dados/'+C.qs());return}
 var p=S.perfil(f),ach=un&&DADOS.emp[emp]?S.acharUnidade(emp,un,tt,vv):null;
 if(!ach||!PL.FLUXO[emp]){location.replace('/evolucao-obra/resultado/'+C.qs());return}
 var u=ach.u,valor=u[3],nomeEmp=DADOS.emp[emp].nome,primeiro=esc(f.nome.split(' ')[0]);
-var uLabel=esc(un)+(tt?' (torre/bloco '+esc(String(tt).toUpperCase())+')':'');
+var unNome=ach?String(ach.u[1]).replace(/ da (Torre|Bloco) [A-Za-z0-9]+$/,''):un;var uLabel=esc(unNome)+(tt?' (torre/bloco '+esc(String(tt).toUpperCase())+')':'');
 var waLink=function(t){return 'https://wa.me/'+wa+'?text='+encodeURIComponent(t)};
 var msgs={idade:'A idade informada não permite o financiamento.',prazo:'Pela idade, o prazo de financiamento ficaria muito curto.',renda_baixa:'Sua renda está abaixo das faixas desta simulação (a partir de R$ 5.000,01).',renda_alta:'Sua renda está acima do limite do Minha Casa Minha Vida (R$ 13.000,00).'};
 if(p.erro){
