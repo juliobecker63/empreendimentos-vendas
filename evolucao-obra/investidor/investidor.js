@@ -9,9 +9,9 @@ function waLink(t){return 'https://wa.me/'+wa+'?text='+encodeURIComponent(t)}
 var h='<h1>Calculadora do investidor</h1><p class="sub">Monte o seu plano em segundos, sem compromisso. Dê uma entrada e financie o restante direto com a construtora em 30 parcelas, com reforços anuais ou semestrais, ou escolha a condição aprovada pela construtora (10% + 40% até as chaves + 50% financiado no banco).</p>';
 if(!alvo){
   if(empValid){
-    h+='<div class="card"><h3>Escolha o modelo</h3><p class="note" style="margin:0 0 12px">Imóvel: <b>'+esc(DADOS.emp[emp].nome)+'</b></p><div id="modelos">'+DADOS.emp[emp].u.map(function(u,i){return '<div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 2px;border-top:1px solid #e6e9ee"><div><b>'+esc(String(u[1]).replace(/ da (Torre|Bloco) [A-Za-z0-9]+$/,''))+(u[0]?' – '+esc(u[0]):'')+'</b><div style="color:#a9761c;font-weight:800;font-size:18px">'+fm(u[3])+'</div></div><button type="button" class="um" data-i="'+i+'">Simular</button></div>'}).join('')+'</div></div>';
+    h+='<div class="card"><h3>Escolha o modelo</h3><p class="note" style="margin:0 0 12px">Imóvel: <b>'+esc(DADOS.emp[emp].nome)+'</b></p><div id="modelos">'+modelosHTML(emp)+'</div></div>';
   } else {
-  h+='<div class="card"><h3>Escolha o imóvel</h3><div class="g2"><div class="row"><label for="s_emp">Empreendimento</label><select id="s_emp"><option value="">Selecione</option>'+Object.keys(DADOS.emp).map(function(k){return '<option value="'+k+'">'+esc(DADOS.emp[k].nome)+'</option>'}).join('')+'</select></div><div class="row"><label for="s_un">Apartamento</label><select id="s_un"><option value="">Escolha o empreendimento</option></select></div></div></div>';
+  h+='<div class="card"><h3>Escolha o imóvel</h3><div class="row"><label for="s_emp">Empreendimento</label><select id="s_emp"><option value="">Selecione</option>'+Object.keys(DADOS.emp).map(function(k){return '<option value="'+k+'">'+esc(DADOS.emp[k].nome)+'</option>'}).join('')+'</select></div><div id="modelos"></div></div>';
   }
 }
 h+='<div id="calc"></div>';
@@ -112,10 +112,11 @@ function enviar(){
   C.enviar('Simulação investidor - '+nome,{Nome:nome,Email:em,WhatsApp:fone,Simulacao:texto(),_copia_cliente:'sim'});
   g('m_ok').textContent='Pronto! Enviamos a simulação para '+em+' e para o corretor. Se não encontrar, olhe também a caixa de spam.';
 }
+function modelosHTML(e){return DADOS.emp[e].u.map(function(u,i){return '<div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 2px;border-top:1px solid #e6e9ee"><div><b>'+esc(String(u[1]).replace(/ da (Torre|Bloco) [A-Za-z0-9]+$/,''))+(u[0]?' – '+esc(u[0]):'')+'</b><div style="color:#a9761c;font-weight:800;font-size:18px">'+fm(u[3])+'</div></div><button type="button" class="um" data-i="'+i+'">Simular</button></div>'}).join('')}
+function bindCards(e){var us=DADOS.emp[e].u;[].forEach.call(document.querySelectorAll('#modelos .um'),function(b){b.addEventListener('click',function(){monta(e,us[+this.getAttribute('data-i')])})})}
 if(alvo) monta(alvo.emp,alvo.u);
-else if(empValid){var us=DADOS.emp[emp].u;[].forEach.call(document.querySelectorAll('#modelos .um'),function(b){b.addEventListener('click',function(){monta(emp,us[+this.getAttribute('data-i')])})});if(us.length===1)monta(emp,us[0]);}
+else if(empValid){bindCards(emp);if(DADOS.emp[emp].u.length===1)monta(emp,DADOS.emp[emp].u[0]);}
 else{
-  g('s_emp').addEventListener('change',function(){var k=this.value,s=g('s_un');s.innerHTML='<option value="">Selecione</option>'+(k?DADOS.emp[k].u.map(function(u,i){return '<option value="'+i+'">'+esc(String(u[1]).replace(/ da (Torre|Bloco) [A-Za-z0-9]+$/,''))+' – '+esc(u[0])+' – '+fm(u[3])+'</option>'}).join(''):'');g('calc').innerHTML=''});
-  g('s_un').addEventListener('change',function(){var k=g('s_emp').value;if(k&&this.value!=='')monta(k,DADOS.emp[k].u[+this.value])});
+  g('s_emp').addEventListener('change',function(){var k=this.value;g('modelos').innerHTML=k?modelosHTML(k):'';g('calc').innerHTML='';if(k)bindCards(k)});
 }
 })();
