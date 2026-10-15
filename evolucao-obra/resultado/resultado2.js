@@ -10,7 +10,7 @@ var porValor=function(a,b){return a.u[3]-b.u[3]};
 var curto=function(u){return esc(u[1].replace(/ da (Torre|Bloco) [A-Za-z0-9]+$/,''))};
 var num=function(v){return parseFloat(String(v).replace(/\./g,'').replace(',','.'))||0};
 function linha(x,k){
-  return '<tr><td>'+curto(x.u)+(x.u[0]?' <small class="bl">'+esc(x.u[0])+'</small>':'')+'</td><td>'+(x.u[2]?x.u[2].toFixed(2).replace('.',',')+' m²':'-')+'</td><td>'+S.fmt(x.u[3])+'</td><td>'+S.fmt(x.a.fin)+'</td><td>'+(k==='viva_urban'?'':'<a href="/evolucao-obra/calculadora/?emp='+k+'&un='+encodeURIComponent(S.paramsUnidade(x.u).un)+'&t='+encodeURIComponent(S.paramsUnidade(x.u).t)+'">Simular</a>')+'</td></tr>';
+  return '<tr><td>'+curto(x.u)+(x.u[0]?' <small class="bl">'+esc(x.u[0])+'</small>':'')+'</td><td>'+(x.u[2]?x.u[2].toFixed(2).replace('.',',')+' m²':'-')+'</td><td>'+S.fmt(x.u[3])+'</td><td>'+S.fmt(x.a.fin)+'</td><td>'+'<a href="/evolucao-obra/calculadora/?emp='+k+'&un='+encodeURIComponent(S.paramsUnidade(x.u).un)+'&t='+encodeURIComponent(S.paramsUnidade(x.u).t)+'">Simular</a>'+'</td></tr>';
 }
 function tabela(r){
   var rows=r.cabe.slice().sort(porValor),LIM=10,id='t'+r.key;

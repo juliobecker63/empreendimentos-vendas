@@ -4,10 +4,15 @@ var MES=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'
 var emp=C.Q.get('emp'),un=C.Q.get('un'),tt=C.Q.get('t'),vv=C.Q.get('v');
 var ach=(emp&&un&&DADOS.emp[emp])?S.acharUnidade(emp,un,tt,vv):null;
 var alvo=ach?{emp:emp,u:ach.u}:null;
+var empValid=emp&&DADOS.emp[emp];
 function waLink(t){return 'https://wa.me/'+wa+'?text='+encodeURIComponent(t)}
 var h='<h1>Calculadora do investidor</h1><p class="sub">Dê uma entrada e financie o restante direto com a construtora em 30 parcelas, com reforços anuais ou semestrais, ou escolha a condição aprovada pela construtora (10% + 40% até as chaves + 50% financiado no banco).</p>';
 if(!alvo){
+  if(empValid){
+    h+='<div class="card"><h3>Escolha o modelo</h3><p class="note" style="margin:0 0 10px">Imóvel: <b>'+esc(DADOS.emp[emp].nome)+'</b></p><div class="row"><label for="s_un">Modelo / apartamento</label><select id="s_un">'+(DADOS.emp[emp].u.length>1?'<option value="">Selecione</option>':'')+DADOS.emp[emp].u.map(function(u,i){return '<option value="'+i+'">'+esc(String(u[1]).replace(/ da (Torre|Bloco) [A-Za-z0-9]+$/,''))+(u[0]?' – '+esc(u[0]):'')+' – '+fm(u[3])+'</option>'}).join('')+'</select></div></div>';
+  } else {
   h+='<div class="card"><h3>Escolha o imóvel</h3><div class="g2"><div class="row"><label for="s_emp">Empreendimento</label><select id="s_emp"><option value="">Selecione</option>'+Object.keys(DADOS.emp).map(function(k){return '<option value="'+k+'">'+esc(DADOS.emp[k].nome)+'</option>'}).join('')+'</select></div><div class="row"><label for="s_un">Apartamento</label><select id="s_un"><option value="">Escolha o empreendimento</option></select></div></div></div>';
+  }
 }
 h+='<div id="calc"></div>';
 app.innerHTML=h;
@@ -108,6 +113,7 @@ function enviar(){
   g('m_ok').textContent='Pronto! Enviamos a simulação para '+em+' e para o corretor. Se não encontrar, olhe também a caixa de spam.';
 }
 if(alvo) monta(alvo.emp,alvo.u);
+else if(empValid){var us=DADOS.emp[emp].u;g('s_un').addEventListener('change',function(){if(this.value!=='')monta(emp,us[+this.value]);else g('calc').innerHTML=''});if(us.length===1)monta(emp,us[0]);}
 else{
   g('s_emp').addEventListener('change',function(){var k=this.value,s=g('s_un');s.innerHTML='<option value="">Selecione</option>'+(k?DADOS.emp[k].u.map(function(u,i){return '<option value="'+i+'">'+esc(String(u[1]).replace(/ da (Torre|Bloco) [A-Za-z0-9]+$/,''))+' – '+esc(u[0])+' – '+fm(u[3])+'</option>'}).join(''):'');g('calc').innerHTML=''});
   g('s_un').addEventListener('change',function(){var k=g('s_emp').value;if(k&&this.value!=='')monta(k,DADOS.emp[k].u[+this.value])});
