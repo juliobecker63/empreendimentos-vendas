@@ -1,3 +1,13 @@
+/* ponytail: mascara de R$ ao vivo nos campos inputmode=decimal (com id). Digita 10000 -> 10.000; ao sair -> 10.000,00. A conta sempre rele o valor via num() pt-BR (tira pontos, troca virgula), entao o numero NAO muda — so a exibicao. Idempotente: nao briga com o blur do par-valor nem com o valor padrao "1.000,00". Pula os campos gemeos US$/EUR do moeda.js (sem id). */
+(function(){if(window.__moneyMask)return;window.__moneyMask=1;
+var grp=function(d){return d.replace(/\B(?=(\d{3})+(?!\d))/g,'.')};
+var num=function(v){return parseFloat(String(v).replace(/\./g,'').replace(',','.'))||0};
+var toInt=function(v){var n=num(v);return n?grp(String(Math.round(n))):''};
+var is=function(el){return el&&el.tagName==='INPUT'&&el.id&&(el.getAttribute('inputmode')||el.inputMode||'').toLowerCase()==='decimal'};
+document.addEventListener('focusin',function(e){if(is(e.target))e.target.value=toInt(e.target.value)});
+document.addEventListener('input',function(e){if(is(e.target))e.target.value=toInt(e.target.value)});
+document.addEventListener('focusout',function(e){if(is(e.target)){var i=toInt(e.target.value);e.target.value=i?i+',00':''}});
+})();
 /* Campo para digitar o valor em R$ junto de um slider (slider em R$). Digitado = valor exato; arrastado = arredonda a R$ 500. */
 window.parValor=function(sid){
   var s=document.getElementById(sid);if(!s||document.getElementById(sid+'_r'))return;
