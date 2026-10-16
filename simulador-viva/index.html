@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Simulador de pagamento – Viva Corp</title>
+<style>
+:root{--navy:#0a1626;--navy2:#13263f;--gold:#c9a227;--gold2:#e0b449;--ink:#15202b;--muted:#5b6b7b;--line:#e6e9ee}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:#0a1626;color:#fff;line-height:1.5}
+a{color:inherit;text-decoration:none}.wrap{max-width:900px;margin:0 auto;padding:0 18px}
+header{background:#0a1626;border-bottom:3px solid var(--gold);padding:14px 0}header .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+header img{height:54px;background:#fff;border-radius:8px;padding:4px 10px}header span{color:var(--gold2);font-weight:700;font-size:13px;letter-spacing:.5px}
+.hero{background:linear-gradient(120deg,#0a1626,#13263f);padding:26px 0 20px}.hero h1{font-size:clamp(22px,4vw,30px)}.hero p{color:#cdd9e6;margin-top:4px}
+.unit{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}.unit div{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:9px 14px}
+.unit small{display:block;color:#aebccd;font-size:11.5px;text-transform:uppercase;letter-spacing:.5px}.unit b{font-size:16px}.unit b.gold{color:var(--gold2);font-size:19px}
+main{background:#f4f6f9;color:var(--ink);padding:26px 0 50px}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.mode{text-align:left;font-family:inherit;color:var(--ink);background:#f6f7f9;border:2px solid var(--line);border-radius:14px;padding:14px 18px;cursor:pointer}
+.mode b{display:block;font-size:17px}.mode span{font-size:13.5px;color:var(--muted)}.mode.on{border-color:var(--gold);background:#fffaf0;box-shadow:0 6px 18px rgba(201,162,39,.25)}.mode.on b{color:#8a6d12}
+.pane[hidden]{display:none}h3{font-size:14px;letter-spacing:.5px;text-transform:uppercase;color:#8a6d12;margin:4px 0 12px}
+.row{margin:14px 0}.row label{display:flex;justify-content:space-between;gap:10px;font-weight:600;font-size:14.5px;margin-bottom:6px}.row label output{color:#0d6b3a;font-weight:800}
+input[type=range]{width:100%;accent-color:#c9a227;height:28px}.num{width:100%;padding:11px 12px;border:1px solid #cfd6de;border-radius:8px;font-size:15px;font-family:inherit}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.seg{display:flex;gap:8px}.seg button{flex:1;padding:9px;border:2px solid var(--line);border-radius:9px;background:#f6f7f9;font:700 14px inherit;font-family:inherit;cursor:pointer}.seg button.on{border-color:var(--gold);background:#fffaf0}
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:18px 0 6px}.res div{background:#f6f7f9;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.res small{display:block;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.4px}.res b{display:block;font-size:18px;margin-top:2px}.res .hl{background:#fffaf0;border-color:var(--gold)}
+.warn{background:#fdecea;border:1px solid #f1b5ae;color:#8a1c11;border-radius:10px;padding:11px 14px;margin-top:12px;font-size:14px;font-weight:600;display:none}
+.info{background:#eef4fb;border:1px solid #c5d6ea;color:#1d3f66;border-radius:10px;padding:11px 14px;margin-top:12px;font-size:13.5px;display:none}
+.pre{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}.pre button{background:#c9a227;color:#1b1b1b;border:0;border-radius:20px;padding:7px 14px;font-weight:700;font-size:13px;cursor:pointer}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:16px;border:0;border-radius:9px;padding:14px 26px;cursor:pointer;color:#fff;background:linear-gradient(180deg,#d09a2c,#a9761c)}
+.btn.green{background:linear-gradient(180deg,#27d36c,#1aa854)}hr{border:0;border-top:1px solid var(--line);margin:20px 0}
+.note{font-size:12.5px;color:var(--muted);margin-top:14px}@media(max-width:640px){.modes,.two{grid-template-columns:1fr}}
+</style></head><body>
+<header><div class="wrap"><a href="/home"><img src="/logo.png" alt="Investir Imóveis em Florianópolis"></a><span>CRECI SC 11783 · SIMULADOR DE PAGAMENTO</span></div></header>
+<section class="hero"><div class="wrap"><h1>Simulador de pagamento</h1><p>Monte a proposta do cliente: direto com a construtora ou financiamento bancário.</p>
+<div class="unit"><div><small>Empreendimento</small><b id="uEmp">—</b></div><div><small>Torre / Bloco</small><b id="uTor">—</b></div><div><small>Unidade</small><b id="uUn">—</b></div><div><small>Valor de tabela</small><b class="gold" id="uVal">—</b></div></div></div></section>
+<main><div class="wrap"><div class="card">
+<div class="row" id="valRow" hidden><label for="vIn">Valor do imóvel (R$) — sem preço de tabela no portal, informe o valor</label><input class="num" id="vIn" inputmode="numeric" placeholder="ex.: 450.000"></div>
+<div class="modes" role="group"><button type="button" class="mode on" data-m="direto"><b>Direto com a construtora</b><span>Entrada, parcelas mensais e reforços semestrais</span></button><button type="button" class="mode" data-m="banco"><b>Financiamento bancário</b><span>Entrada, FGTS e financiamento (Minha Casa Minha Vida)</span></button></div>
+
+<div class="pane" id="p-direto"><h3>Condições de referência</h3><div class="pre"><button type="button" data-pre="10,42,0,0">10% de entrada + 42 parcelas</button></div>
+<p class="note" style="margin:0 0 6px">Condição informada para o Viva Urban; para os demais empreendimentos confirme com o Julio antes de passar ao cliente.</p><hr>
+<h3>Monte a proposta</h3>
+<div class="row"><label>Entrada <output id="dEntO"></output></label><input type="range" id="dEnt" min="5" max="60" step="1" value="10"></div>
+<div class="row"><label>Parcelas mensais <output id="dNO"></output></label><input type="range" id="dN" min="1" max="120" step="1" value="42"></div>
+<div class="row"><label>Reforços semestrais <output id="dRO"></output></label><input type="range" id="dR" min="0" max="6" step="1" value="0"></div>
+<div class="row" id="dRvRow" hidden><label>Valor de cada reforço (R$)</label><input class="num" id="dRv" inputmode="numeric" value="0"></div>
+<div class="res"><div><small>Entrada</small><b id="rdE">–</b></div><div class="hl"><small>Parcela mensal</small><b id="rdP">–</b></div><div><small>Reforços</small><b id="rdR">–</b></div><div><small>Total</small><b id="rdT">–</b></div></div>
+<div class="warn" id="dW"></div></div>
+
+<div class="pane" id="p-banco" hidden><div class="row"><label>Entrada <output id="bEntO"></output></label><input type="range" id="bEnt" min="20" max="60" step="1" value="20"></div>
+<div class="row"><label>Parcelar a entrada em <output id="bEnNO"></output></label><input type="range" id="bEnN" min="1" max="72" step="1" value="1"></div>
+<div class="row"><label for="bFg">FGTS a usar na entrada (R$)</label><input class="num" id="bFg" inputmode="numeric" value="0"></div>
+<div class="two"><div class="row"><label>Prazo <output id="bPzO"></output></label><input type="range" id="bPz" min="5" max="35" step="1" value="35"></div>
+<div class="row"><label>Juros ao ano <output id="bTxO"></output></label><input type="range" id="bTx" min="4" max="13" step="0.25" value="10"></div></div>
+<div class="row"><label>Sistema de amortização</label><div class="seg"><button type="button" class="on" data-s="SAC">SAC (parcela decrescente)</button><button type="button" data-s="PRICE">PRICE (parcela fixa)</button></div></div>
+<div class="res"><div><small>Entrada total</small><b id="rbE">–</b></div><div><small>Financiado</small><b id="rbF">–</b></div><div class="hl"><small id="rbPk">1ª parcela</small><b id="rbP">–</b></div><div><small>Renda familiar mínima*</small><b id="rbR">–</b></div></div>
+<div class="info" id="bI"></div><div class="warn" id="bW"></div>
+<p class="note">*Parcela até 30% da renda. Estimativa sem TR, seguros e taxas. Faixa 4 do MCMV: juros de 10% a.a., prazo de até 35 anos, entrada mínima de 20% e imóvel de até R$ 600 mil; a taxa real depende da faixa de renda e da análise da Caixa. Reserve cerca de 5% para ITBI e cartório.</p></div>
+
+<hr><h3>Enviar esta simulação</h3>
+<form id="f" action="https://ljxijsfumxrstixkimyg.supabase.co/functions/v1/enviar-contato" method="POST"><input type="hidden" name="_subject" id="fSub"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="_template" value="table"><input type="hidden" name="Empreendimento" id="fEmp"><input type="hidden" name="Simulação" id="fRes"><input type="text" name="_honey" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px">
+<div class="two"><div class="row"><label>Nome</label><input class="num" name="Nome" required></div><div class="row"><label>Telefone / WhatsApp</label><input class="num" name="Telefone" required></div></div>
+<button class="btn" type="submit">Enviar simulação</button> <a class="btn green" id="wa" href="#" target="_blank" rel="noopener">💬 WhatsApp</a></form>
+<p class="note">Simulação sem valor de proposta formal, sujeita à aprovação da construtora ou do banco. Valores de tabela podem mudar a qualquer momento.</p>
+</div></div></main>
+<script>(function(){
+var Q=new URLSearchParams(location.search),V=Number(Q.get('v'))||0;
+var $=function(i){return document.getElementById(i)};
+$('uEmp').textContent=Q.get('e')||'—';$('uTor').textContent=Q.get('t')||'—';$('uUn').textContent=Q.get('u')||'—';
+function R(n){return 'R$ '+(Number(n)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function R0(n){return 'R$ '+Math.round(Number(n)||0).toLocaleString('pt-BR')}
+function num(el){return Number(String(el.value||'0').replace(/\./g,'').replace(',','.'))||0}
+function mask(el){el.addEventListener('input',function(){var d=el.value.replace(/\D/g,'');el.value=d?Number(d).toLocaleString('pt-BR'):''})}
+['vIn','dRv','bFg'].forEach(function(i){mask($(i))});
+if(!V){$('valRow').hidden=false;$('uVal').textContent='informe abaixo'}else{$('uVal').textContent=R0(V)}
+$('vIn').addEventListener('input',function(){V=num($('vIn'));$('uVal').textContent=V?R0(V):'informe abaixo';upd()});
+var mode='direto',sis='SAC',resumo='';
+function pct(id){return Number($(id).value)}
+function upd(){var out='';
+ // direto
+ var ep=pct('dEnt'),n=pct('dN'),rq=pct('dR');$('dRvRow').hidden=rq===0;var rv=rq?num($('dRv')):0;
+ var ent=V*ep/100,rt=rq*rv,sal=V-ent-rt,par=n?sal/n:0;
+ $('dEntO').textContent=ep+'% = '+R0(ent);$('dNO').textContent=n+'x';$('dRO').textContent=rq?rq+'x':'nenhum';
+ $('rdE').textContent=R(ent);$('rdP').textContent=V?n+'x de '+R(Math.max(par,0)):'–';$('rdR').textContent=rq?rq+'x de '+R(rv):'Nenhum';$('rdT').textContent=R(ent+rt+Math.max(sal,0));
+ var w=$('dW');w.style.display='none';if(V&&sal<0){w.textContent='Entrada e reforços passam o valor do imóvel em '+R(-sal)+'.';w.style.display='block'}
+ var rd='Direto com a construtora | Imóvel '+R(V)+' | Entrada '+ep+'% ('+R(ent)+') | '+n+'x de '+R(par)+(rq?' | Reforços '+rq+'x de '+R(rv):'');
+ // banco
+ var bp=pct('bEnt'),bn=pct('bEnN'),fg=num($('bFg')),pz=pct('bPz')*12,tx=pct('bTx')/100;
+ var eT=V*bp/100,fin=Math.max(V-eT,0),entCaixa=Math.max(eT-fg,0);
+ $('bEntO').textContent=bp+'% = '+R0(eT);$('bEnNO').textContent=bn===1?'à vista':bn+'x de '+R0(entCaixa/bn);$('bPzO').textContent=pct('bPz')+' anos';$('bTxO').textContent=(tx*100).toFixed(2).replace('.',',')+'% a.a.';
+ var i=Math.pow(1+tx,1/12)-1,p1,pk;
+ if(sis==='SAC'){p1=fin/pz+fin*i;pk='1ª parcela (SAC)'}else{p1=i?fin*i/(1-Math.pow(1+i,-pz)):fin/pz;pk='Parcela fixa (PRICE)'}
+ $('rbE').textContent=R(eT);$('rbF').textContent=R(fin);$('rbPk').textContent=pk;$('rbP').textContent=V?R(p1):'–';$('rbR').textContent=V?R0(p1/0.3):'–';
+ var bw=$('bW'),bi=$('bI');bw.style.display='none';bi.style.display='none';
+ if(V>600000){bw.textContent='Valor acima de R$ 600 mil: fora do teto do MCMV Faixa 4. O financiamento seria SBPE (condições e juros diferentes), consulte o banco.';bw.style.display='block'}
+ if(fg>eT){bw.textContent='O FGTS informado é maior que a entrada.';bw.style.display='block'}
+ if(V){var s='Entrada de '+R(eT)+(fg?' (FGTS '+R(fg)+' + '+R(entCaixa)+' do cliente)':'')+(bn>1?', parte do cliente parcelada em '+bn+'x de '+R(entCaixa/bn):'')+'.';bi.textContent=s;bi.style.display='block'}
+ var rb='Financiamento bancário | Imóvel '+R(V)+' | Entrada '+bp+'% ('+R(eT)+') | FGTS '+R(fg)+' | Entrada parcelada '+bn+'x | Financiado '+R(fin)+' | '+pct('bPz')+' anos '+(tx*100).toFixed(2)+'% a.a. '+sis+' | '+pk+' '+R(p1)+' | Renda mínima '+R0(p1/0.3);
+ resumo=mode==='direto'?rd:rb;
+ var emp=Q.get('e')||'Viva Corp',un=(Q.get('t')||'')+' '+(Q.get('u')||'');
+ $('fSub').value='Simulação Viva Corp - '+emp+' '+un+' ('+(mode==='direto'?'direto':'financiamento bancário')+')';$('fEmp').value=emp+' '+un;$('fRes').value=resumo;
+ $('wa').href='https://wa.me/5548991480285?text=%0A%0A%5Bvim%20de%3A%20investirimoveisemflorianopolis.com%2Fsimulador-viva%5D'+encodeURIComponent('Olá! Simulação '+emp+' '+un+': '+resumo);
+}
+document.querySelectorAll('.mode').forEach(function(b){b.addEventListener('click',function(){mode=b.dataset.m;document.querySelectorAll('.mode').forEach(function(x){x.classList.toggle('on',x===b)});$('p-direto').hidden=mode!=='direto';$('p-banco').hidden=mode!=='banco';upd()})});
+document.querySelectorAll('.seg button').forEach(function(b){b.addEventListener('click',function(){sis=b.dataset.s;document.querySelectorAll('.seg button').forEach(function(x){x.classList.toggle('on',x===b)});upd()})});
+document.querySelectorAll('[data-pre]').forEach(function(b){b.addEventListener('click',function(){var p=b.dataset.pre.split(',');$('dEnt').value=p[0];$('dN').value=p[1];$('dR').value=p[2];upd()})});
+document.querySelectorAll('input').forEach(function(el){el.addEventListener('input',upd)});
+if(Q.get('m')==='banco')document.querySelector('.mode[data-m=banco]').click();
+upd();
+})();</script></body></html>
