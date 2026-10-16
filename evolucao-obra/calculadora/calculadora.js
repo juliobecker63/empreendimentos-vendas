@@ -74,11 +74,11 @@ g('b_mail').addEventListener('click',function(){
   if(canal==='email'){
     if(!/^\S+@\S+\.\S+$/.test(em)){g('m_ok').textContent='Digite um e-mail válido (ou escolha WhatsApp).';return}
     C.enviar('Simulação MCMV - '+f.nome,{Nome:f.nome,Email:em,WhatsApp:f.fone,Nascimento:f.nasc,Canal:'E-mail',Simulacao:texto(),_copia_cliente:'sim'});
-    g('m_ok').textContent='Pronto! Enviamos a simulação para '+em+' e para o corretor. Se não encontrar, olhe também a caixa de spam.';
+    g('m_ok').textContent='Pronto! Enviamos a simulação para '+em+' e para o corretor. Se não encontrar, olhe também a caixa de spam. Se quiser, já pode enviar seus documentos aqui embaixo.';try{g('a_doc').scrollIntoView({behavior:'smooth',block:'center'})}catch(e){}
   }else{
     C.enviar('Simulação MCMV (WhatsApp) - '+f.nome,{Nome:f.nome,Email:em,WhatsApp:f.fone,Nascimento:f.nasc,Canal:'WhatsApp',Simulacao:texto()});
     try{window.open('https://wa.me/'+wa+'?text='+encodeURIComponent('Olá! Sou '+f.nome+'. Esta é a minha simulação do '+nomeEmp+' ('+un+'):\n\n'+texto()),'_blank')}catch(e){}
-    g('m_ok').textContent='Abrimos o WhatsApp com a sua simulação — é só tocar em enviar. Uma cópia também vai para o corretor.';
+    g('m_ok').textContent='Abrimos o WhatsApp com a sua simulação — é só tocar em enviar. Uma cópia também vai para o corretor. Se quiser, já pode enviar seus documentos aqui embaixo.';try{g('a_doc').scrollIntoView({behavior:'smooth',block:'center'})}catch(e){}
   }
 });
 [].forEach.call(document.querySelectorAll('[name=canal]'),function(x){x.addEventListener('change',function(){g('row_mail').style.display=(document.querySelector('[name=canal]:checked').value==='whats')?'none':'';})});
