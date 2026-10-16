@@ -25,7 +25,7 @@ h+='<div class="linha"><div class="card"><div class="lbl">Reforços</div><div cl
 h+='<div class="linha"><div class="card"><div class="lbl">Pós-chaves</div><div class="val" id="v_pos"></div><label style="font-weight:500;margin-top:8px">Percentual do valor do imóvel: <b id="t_pp"></b> (máx. 6%)</label><input id="i_pp" type="range" min="0" max="'+Math.round(valor*0.06)+'" step="1" value="'+Math.round(valor*0.06)+'"><label style="font-weight:500;margin-top:8px">Parcelas: <b id="t_pn"></b></label><input id="i_pn" type="range" min="1" max="'+posMax+'" value="'+posMax+'"><div class="note">Até '+posMax+' parcelas, corrigidas pelo IGP-M mais juros de 1%.</div></div><div class="card evo" id="e_pos"></div></div>';
 h+='<div id="fecho"></div>';
 h+='<div class="card"><h3>Obra e prestação</h3><details><summary>Evolução da obra, mês a mês (até as chaves)</summary><div id="d_evo"></div></details><details><summary>Depois das chaves, mês a mês</summary><div id="d_pos"></div></details><p class="note">Durante a obra você paga à Caixa a evolução (percentual da obra × prestação) junto com as mensais. Evolução linear, apenas como estimativa. Durante a obra, o valor das parcelas é atualizado pelo CUB.</p></div>';
-h+='<div class="card noprint"><h3>Quer receber esta simulação por e-mail?</h3><p class="note" style="margin:4px 0 10px">Enviamos para você e para o corretor.</p><div class="g2"><div class="row"><label for="i_mail">Seu e-mail</label><input id="i_mail" type="email" placeholder="voce@email.com"></div><div style="align-self:end"><button id="b_mail" type="button" style="width:100%;margin:0 0 16px">Sim, enviar a simulação</button></div></div><p id="m_ok" class="note"></p></div>';
+h+='<div class="card noprint"><h3>Quer receber esta simulação por e-mail ou WhatsApp?</h3><p class="note" style="margin:4px 0 10px">Escolha como prefere receber — enviamos para você e para o corretor.</p><div class="opt" style="margin:0 0 12px"><input type="radio" name="canal" id="cE" value="email" checked><label for="cE">Por e-mail</label><input type="radio" name="canal" id="cW" value="whats"><label for="cW">Por WhatsApp</label></div><div class="g2"><div class="row" id="row_mail"><label for="i_mail">Seu e-mail</label><input id="i_mail" type="email" placeholder="voce@email.com"></div><div style="align-self:end"><button id="b_mail" type="button" style="width:100%;margin:0 0 16px">Enviar a simulação</button></div></div><p id="m_ok" class="note"></p></div>';
 h+='<div class="card noprint" style="border-color:#c9a227"><h3>Pronto para o próximo passo?</h3><p style="margin:4px 0 0">Envie seus documentos e começamos agora o processo de financiamento do seu apartamento.</p><a class="btn green" id="a_doc" href="#">Enviar meus documentos</a></div>';
 h+='<div class="card noprint"><h3>Fale com um corretor</h3><p>Não entendeu como funciona a entrada parcelada, o financiamento pela Caixa ou o Minha Casa Minha Vida? Converse com um corretor: a gente explica cada passo com calma e monta a condição ideal pro seu bolso, sem compromisso.</p></div>';h+='<div class="noprint"><a class="btn green" id="a_wa" href="#">Falar com o corretor no WhatsApp</a> <button class="lite" onclick="window.print()">🖨 Imprimir tudo</button></div>';
 app.innerHTML=h;
@@ -69,10 +69,19 @@ window.addEventListener('beforeprint',function(){[].forEach.call(document.queryS
 render();
 function texto(){return ['Cliente: '+f.nome,'WhatsApp: '+f.fone,'Idade: '+p.idade+' anos','Renda bruta familiar: '+fm(f.renda),'36 meses de FGTS: '+(f.cotista?'Sim':'Não'),'FGTS: '+(f.fgts?fm(f.fgts):'Não tem'),'Empreendimento: '+nomeEmp,'Apartamento: '+un+(tt?' ('+String(tt).toUpperCase()+')':'')+' - '+fm(valor),'',PL.texto(plano)].join('\n')}
 g('b_mail').addEventListener('click',function(){
-  var em=g('i_mail').value.trim();if(!/^\S+@\S+\.\S+$/.test(em)){g('m_ok').textContent='Digite um e-mail válido.';return}
-  C.enviar('Simulação MCMV - '+f.nome,{Nome:f.nome,Email:em,WhatsApp:f.fone,Nascimento:f.nasc,Simulacao:texto(),_copia_cliente:'sim'});
-  g('m_ok').textContent='Pronto! Enviamos a simulação para '+em+' e para o corretor. Se não encontrar, olhe também a caixa de spam.';
+  var em=g('i_mail').value.trim();
+  var canal=(document.querySelector('[name=canal]:checked')||{}).value||'email';
+  if(canal==='email'){
+    if(!/^\S+@\S+\.\S+$/.test(em)){g('m_ok').textContent='Digite um e-mail válido (ou escolha WhatsApp).';return}
+    C.enviar('Simulação MCMV - '+f.nome,{Nome:f.nome,Email:em,WhatsApp:f.fone,Nascimento:f.nasc,Canal:'E-mail',Simulacao:texto(),_copia_cliente:'sim'});
+    g('m_ok').textContent='Pronto! Enviamos a simulação para '+em+' e para o corretor. Se não encontrar, olhe também a caixa de spam.';
+  }else{
+    C.enviar('Simulação MCMV (WhatsApp) - '+f.nome,{Nome:f.nome,Email:em,WhatsApp:f.fone,Nascimento:f.nasc,Canal:'WhatsApp',Simulacao:texto()});
+    try{window.open('https://wa.me/'+wa+'?text='+encodeURIComponent('Olá! Sou '+f.nome+'. Esta é a minha simulação do '+nomeEmp+' ('+un+'):\n\n'+texto()),'_blank')}catch(e){}
+    g('m_ok').textContent='Abrimos o WhatsApp com a sua simulação — é só tocar em enviar. Uma cópia também vai para o corretor.';
+  }
 });
+[].forEach.call(document.querySelectorAll('[name=canal]'),function(x){x.addEventListener('change',function(){g('row_mail').style.display=(document.querySelector('[name=canal]:checked').value==='whats')?'none':'';})});
 var sig='calc|'+f.nome+'|'+f.fone+'|'+un+'|'+emp;
 if(C.get('simEnvCalc')!==sig){C.set('simEnvCalc',sig);C.enviar('Nova simulação MCMV - '+f.nome,{Nome:f.nome,WhatsApp:f.fone,Nascimento:f.nasc,Simulacao:texto()})}
 C.rodape();
