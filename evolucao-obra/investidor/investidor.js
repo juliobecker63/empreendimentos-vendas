@@ -123,7 +123,7 @@ function enviar(){
   }
 }
 function modelosHTML(e){return DADOS.emp[e].u.map(function(u,i){return '<div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 2px;border-top:1px solid #e6e9ee"><div><b>'+esc(String(u[1]).replace(/ da (Torre|Bloco) [A-Za-z0-9]+$/,''))+(u[0]?' – '+esc(u[0]):'')+'</b><div style="color:#a9761c;font-weight:800;font-size:18px">'+fm(u[3])+'</div></div><button type="button" class="um" data-i="'+i+'">Simular</button></div>'}).join('')}
-function bindCards(e){var us=DADOS.emp[e].u;[].forEach.call(document.querySelectorAll('#modelos .um'),function(b){b.addEventListener('click',function(){monta(e,us[+this.getAttribute('data-i')])})})}
+function bindCards(e){var us=DADOS.emp[e].u;[].forEach.call(document.querySelectorAll('#modelos .um'),function(b){b.addEventListener('click',function(){monta(e,us[+this.getAttribute('data-i')]);try{g('calc').scrollIntoView({behavior:'smooth',block:'start'})}catch(_){}})})}
 if(alvo) monta(alvo.emp,alvo.u);
 else if(empValid){bindCards(emp);if(DADOS.emp[emp].u.length===1)monta(emp,DADOS.emp[emp].u[0]);}
 else{
